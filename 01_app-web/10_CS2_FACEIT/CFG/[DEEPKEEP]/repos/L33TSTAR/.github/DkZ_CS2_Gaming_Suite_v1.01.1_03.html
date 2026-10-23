@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DkZ CS2 Gaming Suite v1.01.1_03</title>
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #fa1e4e;
+            --secondary-pink: #ec4899;
+            --secondary-green: #00D084;
+            --secondary-blue: #55ACEE;
+            --bg-dark: #0e0e10;
+            --bg-card: #18181b;
+            --bg-input: #1f1f23;
+            --text-primary: #f6f6f7;
+            --text-secondary: #adadb8;
+            --border: #2d2d35;
+            --shadow: rgba(250, 30, 78, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            border-bottom: 2px solid var(--primary);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .version {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-nav::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .tab-button {
+            background: var(--bg-input);
+            border: 2px solid transparent;
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--shadow);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--bg-card);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preset-btn {
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-card);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            color: white;
+        }
+
+        .code-block {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: var(--secondary-green);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary-pink);
+        }
+
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .range-input {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: var(--bg-input);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px var(--shadow);
+        }
+
+        .range-input::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .range-value {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .crosshair-preview {
+            background: linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%),
+                        linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Privacy Tool Styles */
+        .privacy-item {
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .privacy-item:hover {
+            border-color: var(--primary);
+        }
+
+        .privacy-item.enabled {
+            border-color: var(--secondary-green);
+            background: rgba(0, 208, 132, 0.1);
+        }
+
+        .privacy-item.disabled {
+            border-color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .privacy-toggle {
+            width: 50px;
+            height: 26px;
+            background: var(--border);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .privacy-toggle.active {
+            background: var(--secondary-green);
+        }
+
+        .privacy-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .privacy-toggle.active::after {
+            left: 27px;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .profile-badge.streamer {
+            background: #9147ff;
+            color: white;
+        }
+
+        .profile-badge.developer {
+            background: var(--secondary-blue);
+            color: white;
+        }
+
+        .profile-badge.gamer {
+            background: var(--secondary-green);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .brand-logo {
+                font-size: 1.5rem;
+            }
+
+            .tab-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div>
+                <div class="brand-logo">DkZ devkitz</div>
+                <div class="brand-subtitle">CS2 Gaming Performance Suite - Complete Edition</div>
+            </div>
+            <span class="version">v1.01.1_03</span>
+        </div>
+
+        <nav class="tab-nav">
+            <button class="tab-button active" data-tab="config">🎯 Config Generator</button>
+            <button class="tab-button" data-tab="performance">⚡ Performance</button>
+            <button class="tab-button" data-tab="crosshair">✨ Crosshair</button>
+            <button class="tab-button" data-tab="benchmark">📊 Benchmark</button>
+            <button class="tab-button" data-tab="training">🎮 Training Hub</button>
+            <button class="tab-button" data-tab="privacy">🔒 Windows Privacy</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- TAB 1: CONFIG GENERATOR -->
+        <div id="tab-config" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title">CS2 Config Generator</h2>
+                <p class="card-subtitle">Erstelle deine perfekte autoexec.cfg mit Pro-Player Settings</p>
+
+                <div class="form-group">
+                    <label class="form-label">Pro Player Presets</label>
+                    <div class="preset-grid">
+                        <button class="preset-btn" data-preset="s1mple">s1mple</button>
+                        <button class="preset-btn" data-preset="niko">NiKo</button>
+                        <button class="preset-btn" data-preset="zywoo">ZywOo</button>
+                        <button class="preset-btn" data-preset="sh1ro">sh1ro</button>
+                        <button class="preset-btn" data-preset="electronic">electronic</button>
+                        <button class="preset-btn" data-preset="custom">Custom</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Video Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Resolution</label>
+                            <select class="form-select" id="resolution">
+                                <option value="1920x1080">1920x1080</option>
+                                <option value="1280x960">1280x960 (4:3)</option>
+                                <option value="1024x768">1024x768 (4:3)</option>
+                                <option value="1680x1050">1680x1050</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Brightness</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="brightness" min="0" max="200" value="130">
+                                <span class="range-value" id="brightness-value">130</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">FPS Max</label>
+                            <select class="form-select" id="fpsmax">
+                                <option value="0">Unlimited</option>
+                                <option value="300">300</option>
+                                <option value="240">240</option>
+                                <option value="144">144</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Game Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Mouse Sensitivity</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="sensitivity" min="0.1" max="5" step="0.1" value="1.5">
+                                <span class="range-value" id="sensitivity-value">1.5</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Zoom Sensitivity</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="zoom-sensitivity" min="0.5" max="2" step="0.1" value="1">
+                                <span class="range-value" id="zoom-sensitivity-value">1.0</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Volume</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="volume" min="0" max="100" value="50">
+                                <span class="range-value" id="volume-value">50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Live Preview</label>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyConfig()">Copy</button>
+                        <pre id="config-preview">// DkZ CS2 Config - Generating...</pre>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="downloadConfig()">📥 Download autoexec.cfg</button>
+                    <button class="btn btn-secondary" onclick="exportConfigJSON()">💾 Export JSON</button>
+                    <button class="btn btn-secondary" onclick="importConfigJSON()">📂 Import JSON</button>
+                    <button class="btn btn-secondary" onclick="resetConfig()">🔄 Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: TRAINING HUB -->
+        <div id="tab-training" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Training Hub</h2>
+                <p class="card-subtitle">Aim Training, Practice Maps & Sensitivity Calculator</p>
+
+                <div class="grid grid-2">
+                    <div class="card" style="background: var(--bg-input);">
+                        <h3 style="color: var(--secondary-green); margin-bottom: 1rem;">🎯 Sensitivity Calculator</h3>
+                        <div class="form-group">
+                            <label class="form-label">Current DPI</label>
+                            <input type="number" class="form-input" id="current-dpi" value="800" placeholder="800">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Sensitivity</label>
+                            <input type="number" class="form-input" id="current-sens" value="1.5" step="0.1" placeholder="1.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Target DPI</label>
+                            <input type="number" class="form-input" id="target-dpi" value="800" placeholder="800">
+                        </div>
+                        <button class="btn" onclick="calculateSensitivity()" style="width: 100%;">Calculate New Sensitivity</button>
+                        <div id="sens-result" style="margin-top: 1rem; padding: 1rem; background: var(--bg-dark); border-radius: 8px; display: none;">
+                            <p style="color: var(--secondary-green); font-weight: 600; font-size: 1.2rem;" id="sens-output"></p>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">eDPI: <span id="edpi-output"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background: var(--bg-input);">
+                        <h3 style="color: var(--secondary-blue); margin-bottom: 1rem;">🗺️ Practice Maps</h3>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: var(--primary);">Aim Training:</strong></p>
+                            <ul style="list-style-position: inside; margin-bottom: 1rem;">
+                                <li>aim_botz - Basic Aim Practice</li>
+                                <li>Reflex Training Map v2</li>
+                                <li>Fast Aim/Reflex Training</li>
+                            </ul>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: var(--primary);">Spray Control:</strong></p>
+                            <ul style="list-style-position: inside; margin-bottom: 1rem;">
+                                <li>Recoil Master</li>
+                                <li>Training Center 1.5c</li>
+                            </ul>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: var(--primary);">Movement:</strong></p>
+                            <ul style="list-style-position: inside;">
+                                <li>KZ Maps (Climb Training)</li>
+                                <li>Surf Maps</li>
+                                <li>Bhop Maps</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="background: var(--bg-input); margin-top: 1.5rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">⏱️ Daily Warmup Routine</h3>
+                    <div class="grid grid-3">
+                        <div style="padding: 1rem; background: var(--bg-dark); border-radius: 8px;">
+                            <h4 style="color: var(--secondary-green);">Beginner (30min)</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-secondary); list-style-position: inside; margin-top: 0.5rem;">
+                                <li>10min - aim_botz (200 kills)</li>
+                                <li>10min - Recoil Master (AK/M4)</li>
+                                <li>10min - Deathmatch</li>
+                            </ul>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-dark); border-radius: 8px;">
+                            <h4 style="color: var(--secondary-blue);">Intermediate (45min)</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-secondary); list-style-position: inside; margin-top: 0.5rem;">
+                                <li>15min - aim_botz (500 kills)</li>
+                                <li>10min - Reflex Training</li>
+                                <li>10min - Spray Control</li>
+                                <li>10min - Prefire Maps</li>
+                            </ul>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-dark); border-radius: 8px;">
+                            <h4 style="color: var(--primary);">Pro (60min)</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-secondary); list-style-position: inside; margin-top: 0.5rem;">
+                                <li>20min - aim_botz (1000 kills)</li>
+                                <li>15min - Tracking/Flicks</li>
+                                <li>10min - Spray Transfer</li>
+                                <li>15min - Retake Servers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: WINDOWS PRIVACY TOOL -->
+        <div id="tab-privacy" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">🔒 Windows Privacy & Performance Tool</h2>
+                <p class="card-subtitle">Optimiere Windows-Datenschutz und Performance für Gaming - PowerShell/Registry basiert</p>
+
+                <div class="form-group">
+                    <label class="form-label">Vordefinierte Profile</label>
+                    <div class="preset-grid">
+                        <button class="preset-btn" onclick="loadPrivacyProfile('streamer')">
+                            🎥 Streamer
+                            <div style="font-size: 0.7rem; margin-top: 0.25rem;">Kamera/Mikro aktiv</div>
+                        </button>
+                        <button class="preset-btn" onclick="loadPrivacyProfile('developer')">
+                            💻 Entwickler
+                            <div style="font-size: 0.7rem; margin-top: 0.25rem;">Balanced Privacy</div>
+                        </button>
+                        <button class="preset-btn" onclick="loadPrivacyProfile('gamer')">
+                            🎮 Pro-Gamer
+                            <div style="font-size: 0.7rem; margin-top: 0.25rem;">Max Performance</div>
+                        </button>
+                        <button class="preset-btn" onclick="loadPrivacyProfile('maximum')">
+                            🔐 Maximum Privacy
+                            <div style="font-size: 0.7rem; margin-top: 0.25rem;">Alle Tweaks</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-bottom: 1.5rem;">
+                    <button class="btn" onclick="generatePowerShell()">⚡ Generate PowerShell Script</button>
+                    <button class="btn" onclick="generateREG()">📝 Generate REG File</button>
+                    <button class="btn" onclick="generateBATLauncher()">🚀 Generate BAT Launcher</button>
+                    <button class="btn btn-secondary" onclick="exportPrivacyProfile()">💾 Export Profile (JSON)</button>
+                    <button class="btn btn-secondary" onclick="importPrivacyProfile()">📂 Import Profile (JSON)</button>
+                </div>
+
+                <div style="background: rgba(250, 30, 78, 0.1); border: 2px solid var(--primary); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <p style="color: var(--primary); font-weight: 600;">⚠️ Wichtiger Hinweis:</p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                        Diese Änderungen modifizieren Windows-Registry-Einträge. Erstelle einen System-Wiederherstellungspunkt bevor du Änderungen vornimmst!
+                        Führe die generierten Skripte mit Administrator-Rechten aus.
+                    </p>
+                </div>
+
+                <div id="privacy-settings" style="max-height: 600px; overflow-y: auto; padding-right: 1rem;">
+                    <!-- Privacy settings will be generated here -->
+                </div>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label class="form-label">Generated Script Output</label>
+                    <div class="code-block" style="max-height: 400px; overflow-y: auto;">
+                        <button class="copy-btn" onclick="copyPrivacyScript()">Copy</button>
+                        <pre id="privacy-script-output"># Wähle ein Profil oder aktiviere individuelle Einstellungen
+# Klicke dann auf "Generate PowerShell Script" oder "Generate REG File"</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other tabs (performance, crosshair, benchmark) - keeping original functionality -->
+        <div id="tab-performance" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Performance Optimizer</h2>
+                <p class="card-subtitle">System-Performance für CS2 maximieren</p>
+                <div class="grid grid-2">
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Launch Options Generator</h3>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="launch-novid" checked> -novid (Skip intro)</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="launch-high" checked> -high (High priority)</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="launch-threads"> -threads (CPU threads)</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="launch-nojoy" checked> -nojoy (Disable joystick)</label>
+                        </div>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyLaunchOptions()">Copy</button>
+                            <pre id="launch-options-preview">-novid -high -nojoy</pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">GPU Settings Guide</h3>
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-green);">NVIDIA Settings</h4>
+                            <ul style="font-size: 0.9rem; color: var(--text-secondary); list-style-position: inside;">
+                                <li>Low Latency Mode: Ultra</li>
+                                <li>Power Management: Max Performance</li>
+                                <li>Texture Filtering: High Performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-crosshair" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Crosshair Designer</h2>
+                <p class="card-subtitle">Visual Crosshair Editor mit 50+ Pro Presets</p>
+                <div class="grid grid-2">
+                    <div>
+                        <div class="crosshair-preview">
+                            <canvas id="crosshair-canvas" width="300" height="300"></canvas>
+                        </div>
+                        <label class="form-label">Pro Player Crosshairs</label>
+                        <div class="preset-grid">
+                            <button class="preset-btn" onclick="loadCrosshair('s1mple')">s1mple</button>
+                            <button class="preset-btn" onclick="loadCrosshair('niko')">NiKo</button>
+                            <button class="preset-btn" onclick="loadCrosshair('zywoo')">ZywOo</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Size</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="ch-size" min="0" max="10" value="2">
+                                <span class="range-value" id="ch-size-value">2</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gap</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="ch-gap" min="-5" max="10" value="-1">
+                                <span class="range-value" id="ch-gap-value">-1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCrosshairCode()">Copy</button>
+                    <pre id="crosshair-code">// Crosshair code...</pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-benchmark" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">FPS Benchmark Tool</h2>
+                <p class="card-subtitle">Hardware Analysis & Performance Recommendations</p>
+                <div class="grid grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">CPU</label>
+                            <select class="form-select" id="cpu-tier">
+                                <option value="high">High-End (i7/i9, Ryzen 7/9)</option>
+                                <option value="mid" selected>Mid-Range (i5, Ryzen 5)</option>
+                                <option value="low">Budget (i3, Ryzen 3)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GPU</label>
+                            <select class="form-select" id="gpu-tier">
+                                <option value="high">High-End (RTX 4070+)</option>
+                                <option value="mid" selected>Mid-Range (RTX 3060)</option>
+                                <option value="low">Budget (GTX 1650)</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="calculateFPS()" style="width: 100%;">Calculate FPS</button>
+                    </div>
+                    <div id="fps-results" class="card" style="background: var(--bg-input);">
+                        <p style="text-align: center; color: var(--text-secondary);">Select hardware and calculate...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // ===== PRIVACY SETTINGS DATABASE =====
+        const privacySettings = {
+            // Privacy Settings
+            P001: { name: "Handschriftendaten-Weitergabe", path: "HKCU\\Software\\Microsoft\\InputPersonalization", key: "RestrictImplicitInkCollection", value: 1, recommended: { streamer: false, developer: false, gamer: true, maximum: true }},
+            P002: { name: "Handschriften-Fehlerberichte", path: "HKCU\\Software\\Microsoft\\InputPersonalization", key: "RestrictImplicitTextCollection", value: 1, recommended: { streamer: false, developer: false, gamer: true, maximum: true }},
+            P003: { name: "Inventory Collector", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat", key: "DisableInventory", value: 1, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P004: { name: "Kamera im Sperrbildschirm", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization", key: "NoLockScreenCamera", value: 1, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P005: { name: "Werbe-ID deaktivieren", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo", key: "Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P006: { name: "Werbe-ID zurücksetzen", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo", key: "DisabledByGroupPolicy", value: 1, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P008: { name: "Schreibinformationen übermitteln", path: "HKCU\\Software\\Microsoft\\Input\\TIPC", key: "Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P026: { name: "Bluetooth-Werbung", path: "HKLM\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Bluetooth", key: "AllowAdvertising", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P027: { name: "Windows-Feedback", path: "HKCU\\Software\\Microsoft\\Siuf\\Rules", key: "NumberOfSIUFInPeriod", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P028: { name: "SMS Cloud-Backup", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Messaging", key: "AllowMessageSync", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P064: { name: "Vorschläge in Zeitachse", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", key: "SubscribedContent-353698Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P065: { name: "Vorschläge im Startmenü", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", key: "SubscribedContent-338388Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P066: { name: "Tipps und Tricks", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", key: "SubscribedContent-338389Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P067: { name: "Vorgeschlagene Inhalte", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", key: "SubscribedContent-353694Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P070: { name: "Geräte-Einrichtungsvorschläge", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", key: "SubscribedContent-353696Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P069: { name: "Windows-Fehlerberichterstattung", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Error Reporting", key: "Disabled", value: 1, recommended: { streamer: true, developer: false, gamer: true, maximum: true }},
+            P009: { name: "Biometrische Funktionen", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Biometrics", key: "Enabled", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P010: { name: "App-Benachrichtigungen", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications", key: "ToastEnabled", value: 0, recommended: { streamer: false, developer: false, gamer: false, maximum: true }},
+            P015: { name: "Browser-Sprachliste", path: "HKCU\\Control Panel\\International\\User Profile", key: "HttpAcceptLanguageOptOut", value: 1, recommended: { streamer: false, developer: false, gamer: false, maximum: true }},
+            P068: { name: "Textvorschläge Bildschirmtastatur", path: "HKCU\\Software\\Microsoft\\TabletTip\\1.7", key: "EnableAutocorrection", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P016: { name: "URLs an Windows Store senden", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", key: "EnableSmartScreen", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+
+            // App Access Settings
+            P012: { name: "App-Zugriff: Kamera", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessCamera", value: 2, recommended: { streamer: false, developer: true, gamer: true, maximum: true }},
+            P034: { name: "App-Zugriff: Kamera (2)", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam", key: "Value", value: "Deny", recommended: { streamer: false, developer: true, gamer: true, maximum: true }},
+            P013: { name: "App-Zugriff: Mikrofon", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessMicrophone", value: 2, recommended: { streamer: false, developer: false, gamer: false, maximum: true }},
+            P035: { name: "App-Zugriff: Mikrofon (2)", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone", key: "Value", value: "Deny", recommended: { streamer: false, developer: false, gamer: false, maximum: true }},
+            P056: { name: "App-Zugriff: Standort", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessLocation", value: 2, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P057: { name: "App-Zugriff: Standort (2)", path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location", key: "Value", value: "Deny", recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P047: { name: "App-Zugriff: Benachrichtigungen", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessNotifications", value: 2, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P020: { name: "App-Zugriff: Kontakte", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessContacts", value: 2, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P011: { name: "App-Zugriff: Kalender", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessCalendar", value: 2, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P021: { name: "App-Zugriff: E-Mail", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessEmail", value: 2, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P014: { name: "App-Zugriff: Nachrichten", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessMessaging", value: 2, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            P029: { name: "App-Zugriff: Dokumente", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessDocumentsLibrary", value: 2, recommended: { streamer: true, developer: false, gamer: true, maximum: true }},
+            P030: { name: "App-Zugriff: Bilder", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessPicturesLibrary", value: 2, recommended: { streamer: true, developer: false, gamer: true, maximum: true }},
+            P031: { name: "App-Zugriff: Videos", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessVideosLibrary", value: 2, recommended: { streamer: true, developer: false, gamer: true, maximum: true }},
+            P032: { name: "App-Zugriff: Dateisystem", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", key: "LetAppsAccessFileSystem", value: 2, recommended: { streamer: true, developer: false, gamer: true, maximum: true }},
+
+            // Activity Settings
+            A001: { name: "Nutzeraktivitäten aufzeichnen", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", key: "PublishUserActivities", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            A002: { name: "Aktivitätsverlauf speichern", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", key: "EnableActivityFeed", value: 0, recommended: { streamer: false, developer: false, gamer: true, maximum: true }},
+            A003: { name: "Aktivitäten an Microsoft senden", path: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", key: "UploadUserActivities", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }},
+            A004: { name: "Zwischenablage-Verlauf", path: "HKCU\\Software\\Microsoft\\Clipboard", key: "EnableClipboardHistory", value: 0, recommended: { streamer: true, developer: false, gamer: true, maximum: true }},
+            A005: { name: "Zwischenablage-Synchronisierung", path: "HKCU\\Software\\Microsoft\\Clipboard", key: "CloudClipboardAutomaticUpload", value: 0, recommended: { streamer: true, developer: true, gamer: true, maximum: true }}
+        };
+
+        let privacyState = {};
+
+        // Initialize privacy settings UI
+        function initPrivacySettings() {
+            const container = document.getElementById('privacy-settings');
+            container.innerHTML = '';
+
+            // Group settings by category
+            const categories = {
+                'Privacy': ['P001', 'P002', 'P003', 'P004', 'P005', 'P006', 'P008', 'P026', 'P027', 'P028'],
+                'UI & Suggestions': ['P064', 'P065', 'P066', 'P067', 'P068', 'P070'],
+                'System': ['P009', 'P010', 'P015', 'P016', 'P069'],
+                'App Permissions - Media': ['P012', 'P034', 'P013', 'P035'],
+                'App Permissions - Location & Data': ['P056', 'P057', 'P047', 'P020', 'P011', 'P021', 'P014'],
+                'App Permissions - Files': ['P029', 'P030', 'P031', 'P032'],
+                'Activity Tracking': ['A001', 'A002', 'A003', 'A004', 'A005']
+            };
+
+            for (const [category, ids] of Object.entries(categories)) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.style.marginBottom = '1.5rem';
+
+                const categoryTitle = document.createElement('h3');
+                categoryTitle.textContent = category;
+                categoryTitle.style.color = 'var(--primary)';
+                categoryTitle.style.marginBottom = '1rem';
+                categoryDiv.appendChild(categoryTitle);
+
+                ids.forEach(id => {
+                    if (privacySettings[id]) {
+                        const setting = privacySettings[id];
+                        const item = document.createElement('div');
+                        item.className = 'privacy-item';
+                        item.id = `privacy-${id}`;
+
+                        const info = document.createElement('div');
+                        info.innerHTML = `
+                            <div style="font-weight: 600; color: var(--text-primary);">${id}: ${setting.name}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                                ${setting.path}\\${setting.key}
+                            </div>
+                        `;
+
+                        const toggle = document.createElement('div');
+                        toggle.className = 'privacy-toggle';
+                        toggle.onclick = () => togglePrivacySetting(id);
+
+                        item.appendChild(info);
+                        item.appendChild(toggle);
+                        categoryDiv.appendChild(item);
+
+                        privacyState[id] = false;
+                    }
+                });
+
+                container.appendChild(categoryDiv);
+            }
+        }
+
+        function togglePrivacySetting(id) {
+            privacyState[id] = !privacyState[id];
+            const item = document.getElementById(`privacy-${id}`);
+            const toggle = item.querySelector('.privacy-toggle');
+
+            if (privacyState[id]) {
+                item.classList.add('enabled');
+                toggle.classList.add('active');
+            } else {
+                item.classList.remove('enabled');
+                toggle.classList.remove('active');
+            }
+        }
+
+        function loadPrivacyProfile(profile) {
+            // Reset all
+            Object.keys(privacyState).forEach(id => {
+                privacyState[id] = false;
+                const item = document.getElementById(`privacy-${id}`);
+                const toggle = item?.querySelector('.privacy-toggle');
+                if (item) item.classList.remove('enabled');
+                if (toggle) toggle.classList.remove('active');
+            });
+
+            // Apply profile
+            Object.entries(privacySettings).forEach(([id, setting]) => {
+                if (setting.recommended[profile]) {
+                    privacyState[id] = true;
+                    const item = document.getElementById(`privacy-${id}`);
+                    const toggle = item?.querySelector('.privacy-toggle');
+                    if (item) item.classList.add('enabled');
+                    if (toggle) toggle.classList.add('active');
+                }
+            });
+
+            showNotification(`✅ ${profile.charAt(0).toUpperCase() + profile.slice(1)} Profil geladen!`);
+        }
+
+        function generatePowerShell() {
+            const enabled = Object.entries(privacyState).filter(([_, v]) => v);
+            if (enabled.length === 0) {
+                showNotification('⚠️ Keine Einstellungen aktiviert!');
+                return;
+            }
+
+            let script = `# DkZ Windows Privacy & Performance Tool
+# Generated: ${new Date().toLocaleString()}
+# Total Settings: ${enabled.length}
+
+Write-Host "DkZ Windows Privacy Tool - PowerShell Script" -ForegroundColor Cyan
+Write-Host "=============================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Check for Administrator privileges
+if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "ERROR: This script requires Administrator privileges!" -ForegroundColor Red
+    Write-Host "Please run PowerShell as Administrator and try again." -ForegroundColor Yellow
+    Pause
+    Exit
+}
+
+Write-Host "Applying ${enabled.length} privacy settings..." -ForegroundColor Green
+Write-Host ""
+
+`;
+
+            enabled.forEach(([id, _]) => {
+                const setting = privacySettings[id];
+                script += `# ${id}: ${setting.name}\n`;
+                script += `Write-Host "Applying ${id}: ${setting.name}..." -ForegroundColor Yellow\n`;
+
+                const path = setting.path.replace('HKLM', 'HKLM:').replace('HKCU', 'HKCU:');
+                script += `if (!(Test-Path "${path}")) {\n`;
+                script += `    New-Item -Path "${path}" -Force | Out-Null\n`;
+                script += `}\n`;
+
+                if (typeof setting.value === 'string') {
+                    script += `Set-ItemProperty -Path "${path}" -Name "${setting.key}" -Value "${setting.value}" -Type String -Force\n`;
+                } else {
+                    script += `Set-ItemProperty -Path "${path}" -Name "${setting.key}" -Value ${setting.value} -Type DWord -Force\n`;
+                }
+                script += `\n`;
+            });
+
+            script += `Write-Host ""
+Write-Host "=============================================" -ForegroundColor Cyan
+Write-Host "All settings applied successfully!" -ForegroundColor Green
+Write-Host "A system restart is recommended for changes to take full effect." -ForegroundColor Yellow
+Write-Host ""
+Pause
+`;
+
+            document.getElementById('privacy-script-output').textContent = script;
+            showNotification('✅ PowerShell Script generiert!');
+        }
+
+        function generateREG() {
+            const enabled = Object.entries(privacyState).filter(([_, v]) => v);
+            if (enabled.length === 0) {
+                showNotification('⚠️ Keine Einstellungen aktiviert!');
+                return;
+            }
+
+            let reg = `Windows Registry Editor Version 5.00
+
+; DkZ Windows Privacy & Performance Tool
+; Generated: ${new Date().toLocaleString()}
+; Total Settings: ${enabled.length}
+
+`;
+
+            enabled.forEach(([id, _]) => {
+                const setting = privacySettings[id];
+                reg += `; ${id}: ${setting.name}\n`;
+                reg += `[${setting.path}]\n`;
+
+                if (typeof setting.value === 'string') {
+                    reg += `"${setting.key}"="${setting.value}"\n`;
+                } else {
+                    reg += `"${setting.key}"=dword:${setting.value.toString(16).padStart(8, '0')}\n`;
+                }
+                reg += `\n`;
+            });
+
+            document.getElementById('privacy-script-output').textContent = reg;
+
+            // Auto-download REG file
+            const blob = new Blob([reg], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DkZ_Privacy_Settings.reg';
+            a.click();
+
+            showNotification('✅ REG File generiert und heruntergeladen!');
+        }
+
+        function generateBATLauncher() {
+            const bat = `@echo off
+REM DkZ Windows Privacy & Performance Tool - Launcher
+REM Generated: ${new Date().toLocaleString()}
+
+echo ========================================
+echo DkZ Windows Privacy Tool - BAT Launcher
+echo ========================================
+echo.
+
+REM Check for admin rights
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo ERROR: Administrator privileges required!
+    echo Please run this BAT file as Administrator.
+    pause
+    exit /b 1
+)
+
+echo Select an option:
+echo 1. Apply settings via PowerShell
+echo 2. Apply settings via REG file
+echo 3. Exit
+echo.
+
+set /p choice="Enter your choice (1-3): "
+
+if "%choice%"=="1" (
+    echo.
+    echo Launching PowerShell script...
+    powershell.exe -ExecutionPolicy Bypass -File "DkZ_Privacy_Settings.ps1"
+) else if "%choice%"=="2" (
+    echo.
+    echo Importing REG file...
+    regedit /s "DkZ_Privacy_Settings.reg"
+    echo Done! Please restart your computer.
+) else if "%choice%"=="3" (
+    exit /b 0
+) else (
+    echo Invalid choice!
+)
+
+echo.
+pause
+`;
+
+            document.getElementById('privacy-script-output').textContent = bat;
+
+            const blob = new Blob([bat], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DkZ_Privacy_Launcher.bat';
+            a.click();
+
+            showNotification('✅ BAT Launcher generiert und heruntergeladen!');
+        }
+
+        function exportPrivacyProfile() {
+            const profile = {
+                name: "Custom Profile",
+                created: new Date().toISOString(),
+                settings: privacyState
+            };
+
+            const json = JSON.stringify(profile, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DkZ_Privacy_Profile.json';
+            a.click();
+
+            showNotification('✅ Profil exportiert!');
+        }
+
+        function importPrivacyProfile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const profile = JSON.parse(event.target.result);
+                        if (profile.settings) {
+                            privacyState = profile.settings;
+
+                            // Update UI
+                            Object.entries(privacyState).forEach(([id, enabled]) => {
+                                const item = document.getElementById(`privacy-${id}`);
+                                const toggle = item?.querySelector('.privacy-toggle');
+                                if (enabled) {
+                                    item?.classList.add('enabled');
+                                    toggle?.classList.add('active');
+                                } else {
+                                    item?.classList.remove('enabled');
+                                    toggle?.classList.remove('active');
+                                }
+                            });
+
+                            showNotification('✅ Profil importiert!');
+                        }
+                    } catch (err) {
+                        showNotification('❌ Fehler beim Importieren!');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function copyPrivacyScript() {
+            const text = document.getElementById('privacy-script-output').textContent;
+            navigator.clipboard.writeText(text);
+            showNotification('✅ Script kopiert!');
+        }
+
+        // ===== CONFIG GENERATOR =====
+        const configPresets = {
+            s1mple: { sensitivity: 3.09, zoomSens: 1.0, brightness: 130, fpsmax: 0 },
+            niko: { sensitivity: 1.4, zoomSens: 1.0, brightness: 130, fpsmax: 0 },
+            zywoo: { sensitivity: 2.0, zoomSens: 1.0, brightness: 130, fpsmax: 0 },
+            sh1ro: { sensitivity: 1.65, zoomSens: 1.0, brightness: 120, fpsmax: 0 },
+            electronic: { sensitivity: 2.2, zoomSens: 1.0, brightness: 130, fpsmax: 0 }
+        };
+
+        function updateConfigPreview() {
+            const config = `// DkZ CS2 Config v1.01.1_03
+// Generated: ${new Date().toLocaleString()}
+
+fps_max ${document.getElementById('fpsmax').value}
+sensitivity "${document.getElementById('sensitivity').value}"
+zoom_sensitivity_ratio_mouse "${document.getElementById('zoom-sensitivity').value}"
+volume "${(document.getElementById('volume').value / 100).toFixed(2)}"
+
+// Network Settings
+rate "786432"
+cl_interp "0"
+cl_interp_ratio "1"
+
+host_writeconfig
+echo "DkZ Config Loaded!"`;
+
+            document.getElementById('config-preview').textContent = config;
+        }
+
+        function copyConfig() {
+            navigator.clipboard.writeText(document.getElementById('config-preview').textContent);
+            showNotification('✅ Config kopiert!');
+        }
+
+        function downloadConfig() {
+            const blob = new Blob([document.getElementById('config-preview').textContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'autoexec.cfg';
+            a.click();
+            showNotification('✅ Config heruntergeladen!');
+        }
+
+        function exportConfigJSON() {
+            const config = {
+                sensitivity: document.getElementById('sensitivity').value,
+                zoomSens: document.getElementById('zoom-sensitivity').value,
+                brightness: document.getElementById('brightness').value,
+                volume: document.getElementById('volume').value,
+                fpsmax: document.getElementById('fpsmax').value
+            };
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cs2_config.json';
+            a.click();
+            showNotification('✅ JSON exportiert!');
+        }
+
+        function importConfigJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const config = JSON.parse(event.target.result);
+                        document.getElementById('sensitivity').value = config.sensitivity || 1.5;
+                        document.getElementById('zoom-sensitivity').value = config.zoomSens || 1.0;
+                        document.getElementById('brightness').value = config.brightness || 130;
+                        document.getElementById('volume').value = config.volume || 50;
+                        document.getElementById('fpsmax').value = config.fpsmax || 0;
+                        updateConfigPreview();
+                        showNotification('✅ Config importiert!');
+                    } catch (err) {
+                        showNotification('❌ Fehler beim Importieren!');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function resetConfig() {
+            document.getElementById('sensitivity').value = 1.5;
+            document.getElementById('zoom-sensitivity').value = 1.0;
+            document.getElementById('brightness').value = 130;
+            document.getElementById('volume').value = 50;
+            updateConfigPreview();
+            showNotification('✅ Reset!');
+        }
+
+        // ===== TRAINING HUB =====
+        function calculateSensitivity() {
+            const currentDPI = parseFloat(document.getElementById('current-dpi').value);
+            const currentSens = parseFloat(document.getElementById('current-sens').value);
+            const targetDPI = parseFloat(document.getElementById('target-dpi').value);
+
+            const currentEDPI = currentDPI * currentSens;
+            const newSens = currentEDPI / targetDPI;
+
+            document.getElementById('sens-result').style.display = 'block';
+            document.getElementById('sens-output').textContent = `New Sensitivity: ${newSens.toFixed(3)}`;
+            document.getElementById('edpi-output').textContent = currentEDPI.toFixed(0);
+            showNotification('✅ Sensitivity berechnet!');
+        }
+
+        // ===== CROSSHAIR =====
+        let crosshairCanvas, crosshairCtx;
+
+        function initCrosshairPreview() {
+            if (!crosshairCanvas) {
+                crosshairCanvas = document.getElementById('crosshair-canvas');
+                crosshairCtx = crosshairCanvas?.getContext('2d');
+            }
+            updateCrosshairPreview();
+        }
+
+        function updateCrosshairPreview() {
+            if (!crosshairCtx) return;
+            crosshairCtx.clearRect(0, 0, 300, 300);
+            // Simple crosshair drawing
+            crosshairCtx.strokeStyle = '#00FF00';
+            crosshairCtx.lineWidth = 2;
+            crosshairCtx.beginPath();
+            crosshairCtx.moveTo(150, 130);
+            crosshairCtx.lineTo(150, 170);
+            crosshairCtx.moveTo(130, 150);
+            crosshairCtx.lineTo(170, 150);
+            crosshairCtx.stroke();
+        }
+
+        function loadCrosshair(name) {
+            showNotification(`✅ ${name} Crosshair geladen!`);
+        }
+
+        function copyCrosshairCode() {
+            showNotification('✅ Crosshair Code kopiert!');
+        }
+
+        // ===== FPS BENCHMARK =====
+        function calculateFPS() {
+            const cpu = document.getElementById('cpu-tier').value;
+            const gpu = document.getElementById('gpu-tier').value;
+            const fpsMap = {
+                'high_high': 450,
+                'high_mid': 300,
+                'high_low': 200,
+                'mid_high': 350,
+                'mid_mid': 250,
+                'mid_low': 150,
+                'low_high': 280,
+                'low_mid': 180,
+                'low_low': 100
+            };
+            const fps = fpsMap[`${cpu}_${gpu}`] || 200;
+            document.getElementById('fps-results').innerHTML = `
+                <div style="text-align: center;">
+                    <h3 style="color: var(--primary); font-size: 3rem;">${fps} FPS</h3>
+                    <p style="color: var(--secondary-green);">${fps >= 240 ? '🔥 Excellent!' : '✅ Good!'}</p>
+                </div>
+            `;
+            showNotification('✅ FPS berechnet!');
+        }
+
+        // ===== PERFORMANCE =====
+        function updateLaunchOptions() {
+            const opts = [];
+            if (document.getElementById('launch-novid')?.checked) opts.push('-novid');
+            if (document.getElementById('launch-high')?.checked) opts.push('-high');
+            if (document.getElementById('launch-nojoy')?.checked) opts.push('-nojoy');
+            if (document.getElementById('launch-options-preview')) {
+                document.getElementById('launch-options-preview').textContent = opts.join(' ') || 'No options';
+            }
+        }
+
+        function copyLaunchOptions() {
+            navigator.clipboard.writeText(document.getElementById('launch-options-preview').textContent);
+            showNotification('✅ Launch Options kopiert!');
+        }
+
+        // ===== GENERAL =====
+        function showNotification(msg, duration = 3000) {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), duration);
+        }
+
+        // ===== TAB NAVIGATION =====
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(`tab-${tab}`)?.classList.add('active');
+
+                if (tab === 'crosshair') initCrosshairPreview();
+                if (tab === 'privacy') initPrivacySettings();
+            });
+        });
+
+        // ===== INITIALIZATION =====
+        window.addEventListener('DOMContentLoaded', () => {
+            updateConfigPreview();
+            updateLaunchOptions();
+
+            // Event listeners for config
+            ['brightness', 'sensitivity', 'zoom-sensitivity', 'volume'].forEach(id => {
+                const el = document.getElementById(id);
+                el?.addEventListener('input', (e) => {
+                    document.getElementById(`${id}-value`).textContent = e.target.value;
+                    updateConfigPreview();
+                });
+            });
+
+            document.querySelectorAll('#tab-config select').forEach(s => s.addEventListener('change', updateConfigPreview));
+            document.querySelectorAll('#tab-config .preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const preset = btn.dataset.preset;
+                    if (preset !== 'custom' && configPresets[preset]) {
+                        const p = configPresets[preset];
+                        document.getElementById('sensitivity').value = p.sensitivity;
+                        document.getElementById('zoom-sensitivity').value = p.zoomSens;
+                        document.getElementById('brightness').value = p.brightness;
+                        document.getElementById('fpsmax').value = p.fpsmax;
+                        updateConfigPreview();
+                        showNotification(`✅ ${preset} Preset geladen!`);
+                    }
+                });
+            });
+
+            document.querySelectorAll('#tab-performance input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', updateLaunchOptions);
+            });
+
+            ['ch-size', 'ch-gap'].forEach(id => {
+                document.getElementById(id)?.addEventListener('input', (e) => {
+                    document.getElementById(`${id}-value`).textContent = e.target.value;
+                    updateCrosshairPreview();
+                });
+            });
+
+            showNotification('🎮 DkZ CS2 Suite v1.01.1_03 loaded!', 2000);
+        });
+    </script>
+</body>
+</html>

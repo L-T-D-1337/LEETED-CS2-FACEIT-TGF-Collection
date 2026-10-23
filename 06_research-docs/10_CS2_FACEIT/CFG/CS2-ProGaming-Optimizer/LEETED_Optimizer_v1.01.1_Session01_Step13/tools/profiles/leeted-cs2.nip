@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-16"?>
+<!--
+  LEETED CS2 - Nvidia Profile Inspector Starterprofil
+  v1.01.1_Session01_Step13  powered by DkZ
+  Sichere, bekannte Competitive-Settings (GLOBAL).
+  >>> Fuer deine EXAKTEN Werte aus dem Video: in Nvidia Profile
+      Inspector einstellen, oben "Export" -> diese Datei ersetzen.
+      apply-nvidia.ps1 uebernimmt sie dann automatisch.
+-->
+<ArrayOfProfile>
+  <Profile>
+    <ProfileName>_GLOBAL_DRIVER_PROFILE (Base Profile)</ProfileName>
+    <Executeables />
+    <Settings>
+      <ProfileSetting>
+        <SettingNameInfo>Power management mode</SettingNameInfo>
+        <SettingID>274197361</SettingID>
+        <SettingValue>1</SettingValue>
+        <ValueType>Dword</ValueType>
+      </ProfileSetting>
+      <ProfileSetting>
+        <SettingNameInfo>Threaded optimization</SettingNameInfo>
+        <SettingID>553648903</SettingID>
+        <SettingValue>1</SettingValue>
+        <ValueType>Dword</ValueType>
+      </ProfileSetting>
+      <ProfileSetting>
+        <SettingNameInfo>Texture filtering - Quality</SettingNameInfo>
+        <SettingID>13510289</SettingID>
+        <SettingValue>20</SettingValue>
+        <ValueType>Dword</ValueType>
+      </ProfileSetting>
+    </Settings>
+  </Profile>
+</ArrayOfProfile>

@@ -1,0 +1,1395 @@
+[h1]🎮 CS2 ULTIMATE PRO GAMING SETUP - Complete Guide[/h1]
+
+[b]Von DkZ DEVKITZ & Community Contributors[/b]
+
+[i]Optimiere dein Counter-Strike 2 Spiel mit dem ultimativsten Setup-Guide. Von Config-Generierung über Windows-Optimierung bis hin zu Netzwerk-Tuning – erreiche professionelles Gaming-Niveau in wenigen Schritten![/i]
+
+[url=https://github.com/L33TSTAR/.github]🔗 GitHub Repository - DkZ CS2 Gaming Suite[/url]
+
+[hr][/hr]
+
+[h1]📑 INHALTSVERZEICHNIS[/h1]
+
+[list]
+[*]🚀 [b]QUICK START - DkZ Gaming Suite Installation[/b]
+[*]⚙️ [b]CONFIG GENERATOR - autoexec.cfg Setup[/b]
+[*]🖥️ [b]SYSTEM - Windows Gaming Optimierung[/b]
+[*]🎨 [b]GRAFIK - NVIDIA/AMD Settings[/b]
+[*]🎧 [b]SOUND - FxSound & Audio Optimierung[/b]
+[*]🎤 [b]VOICE - VoiceMeeter Setup[/b]
+[*]🖱️ [b]MOUSEFIX - Präzisions-Optimierung[/b]
+[*]📡 [b]NETCODE - Network Optimization[/b]
+[*]🔒 [b]PRIVACY - Windows Datenschutz[/b]
+[*]🌐 [b]VPN - Gaming VPN Setup[/b]
+[*]📊 [b]STATS TRACKER - Performance Analytics[/b]
+[*]🎯 [b]TRAINING - Skill Improvement Tools[/b]
+[/list]
+
+[hr][/hr]
+
+[h1]🚀 QUICK START - DkZ Gaming Suite Installation[/h1]
+
+[h2]Was ist die DkZ CS2 Gaming Suite?[/h2]
+
+Die [b]DkZ CS2 Gaming Suite v1.01.1_04 ULTIMATE EDITION[/b] ist eine All-in-One Tool-Suite mit 10+ professionellen Modulen für CS2 Spieler. Entwickelt von Gamern für Gamer - komplett kostenlos und Open Source.
+
+[h3]✨ Features:[/h3]
+[list]
+[*]📝 Config Generator mit Pro Player Presets (s1mple, NiKo, ZywOo, sh1ro, electronic)
+[*]🎯 Crosshair Designer mit 50+ Pro Crosshairs
+[*]⚡ Performance Optimizer (Launch Options, GPU Settings, Windows Tweaks)
+[*]📊 FPS Benchmark Tool mit Hardware Analysis
+[*]🎮 Training Hub (Sensitivity Calculator, Practice Maps, Warmup Routines)
+[*]🔒 Windows Privacy Tool (80+ Registry Settings mit PowerShell/REG/BAT Generator)
+[*]📈 Stats Tracker (Match Performance Analytics)
+[*]💰 Economy Calculator (Round-by-Round Management)
+[*]🗺️ Map Callout Trainer (7 Maps: Dust2, Mirage, Inferno, Nuke, Vertigo, Ancient, Anubis)
+[*]🌐 Netcode Gaming Guide (MTU/TTL Auto-Detection, VPN Integration)
+[/list]
+
+[h3]📥 Installation:[/h3]
+
+[b]Step 1: Download der Gaming Suite[/b]
+[code]
+1. Besuche: https://github.com/L33TSTAR/.github
+2. Download: DkZ_CS2_Gaming_Suite_v1.01.1_04_ULTIMATE.html
+3. Speichere die Datei auf deinem Desktop oder in einem Gaming-Ordner
+[/code]
+
+[b]Step 2: Öffne die Suite im Browser[/b]
+[list]
+[*]Doppelklick auf die HTML-Datei
+[*]Öffnet sich in deinem Standard-Browser (Chrome, Firefox, Edge)
+[*]✅ Funktioniert komplett offline - keine Installation nötig!
+[/list]
+
+[b]Step 3: Erkunde die Module[/b]
+[list]
+[*]Navigiere durch die 6 Haupt-Tabs
+[*]Alle Einstellungen werden automatisch in LocalStorage gespeichert
+[*]Export/Import Funktionen für Profile verfügbar
+[/list]
+
+[img]https://i.imgur.com/placeholder-suite-screenshot.png[/img]
+[i]Screenshot: DkZ CS2 Gaming Suite Interface[/i]
+
+[hr][/hr]
+
+[h1]⚙️ CONFIG GENERATOR - autoexec.cfg Setup[/h1]
+
+[h2]1. CS2 Launch Options einstellen[/h2]
+
+[b]Wie kommt man zu den Launch Options?[/b]
+[quote]
+Steam → Bibliothek → Rechtsklick auf "Counter-Strike 2" → Eigenschaften → Startoptionen festlegen
+[/quote]
+
+[h3]🎯 Empfohlene Launch Options:[/h3]
+[code]-high -vulkan -refresh 144 -exec autoexec.cfg -novid -console[/code]
+
+[h3]📋 Launch Options Erklärung:[/h3]
+[list]
+[*][b]-high[/b] → Setzt CS2 auf hohe CPU-Priorität
+[*][b]-vulkan[/b] → Nutzt Vulkan API (besser als DirectX für AMD GPUs)
+[*][b]-refresh 144[/b] → Erzwingt 144Hz Bildwiederholrate (passe an dein Monitor an: 60, 144, 165, 240, 360)
+[*][b]-exec autoexec.cfg[/b] → Lädt automatisch deine Config beim Start
+[*][b]-novid[/b] → Überspringt das Intro-Video
+[*][b]-console[/b] → Aktiviert die Entwicklerkonsole
+[/list]
+
+[h3]🔧 Zusätzliche Options (Optional):[/h3]
+[code]
+-nojoy          // Deaktiviert Joystick-Support (spart RAM)
+-threads 8      // Anzahl CPU-Threads (passe an deine CPU an)
+-tickrate 128   // Nur für eigene Server
++fps_max 0      // Unbegrenzte FPS (kann auch in autoexec.cfg gesetzt werden)
+[/code]
+
+[h2]2. autoexec.cfg mit DkZ Suite erstellen[/h2]
+
+[b]Schritt-für-Schritt:[/b]
+
+[b]Step 1: Öffne Config Generator in DkZ Suite[/b]
+[list]
+[*]Tab "🎯 Config Generator" öffnen
+[*]Wähle ein Pro Player Preset oder erstelle Custom Settings
+[/list]
+
+[b]Step 2: Einstellungen anpassen[/b]
+
+[h3]Video Settings:[/h3]
+[list]
+[*][b]Resolution:[/b] 1920x1080 (Fullscreen) oder 1280x960 (4:3 Stretched für größere Modelle)
+[*][b]Brightness:[/b] 130% (Empfohlen für Sichtbarkeit)
+[*][b]FPS Max:[/b] 0 (Unlimited) oder 300/400 (wenn stabiler)
+[/list]
+
+[h3]Game Settings:[/h3]
+[list]
+[*][b]Mouse Sensitivity:[/b] 1.5 - 3.0 (abhängig von DPI)
+[*][b]Zoom Sensitivity:[/b] 1.0 (Standard)
+[*][b]Volume:[/b] 50% (anpassen nach Headset)
+[/list]
+
+[h3]🎯 Pro Player Presets:[/h3]
+[table]
+[tr][th]Player[/th][th]Sensitivity[/th][th]DPI[/th][th]eDPI[/th][th]Resolution[/th][/tr]
+[tr][td]s1mple[/td][td]3.09[/td][td]400[/td][td]1236[/td][td]1280x960[/td][/tr]
+[tr][td]NiKo[/td][td]1.4[/td][td]400[/td][td]560[/td][td]1280x960[/td][/tr]
+[tr][td]ZywOo[/td][td]2.0[/td][td]400[/td][td]800[/td][td]1280x960[/td][/tr]
+[tr][td]sh1ro[/td][td]1.65[/td][td]400[/td][td]660[/td][td]1024x768[/td][/tr]
+[tr][td]electronic[/td][td]2.2[/td][td]400[/td][td]880[/td][td]1280x960[/td][/tr]
+[/table]
+
+[b]Step 3: Download & Installation[/b]
+[code]
+1. Klicke "📥 Download autoexec.cfg" in der Suite
+2. Navigiere zum CS2 Config-Ordner:
+   C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg\
+3. Kopiere autoexec.cfg in den Ordner
+4. Starte CS2 neu
+5. In CS2 Console: exec autoexec
+[/code]
+
+[h3]✅ Verification:[/h3]
+[quote]
+Öffne CS2 Console (Taste: ~)
+Gib ein: exec autoexec
+Du solltest sehen: "DkZ Config Loaded Successfully!"
+[/quote]
+
+[h2]3. Wichtige CS2 Console Commands[/h2]
+
+[h3]📊 Performance Commands:[/h3]
+[code]
+fps_max 0                    // Unlimited FPS
+mat_monitorgamma 1.3         // Brightness
+cl_forcepreload 1            // Preload Maps für schnellere Ladezeiten
+r_drawtracers_firstperson 0  // Entfernt eigene Tracer (FPS Boost)
+[/code]
+
+[h3]🎮 Gameplay Commands:[/h3]
+[code]
+sensitivity 1.5              // Maus Sensitivity
+zoom_sensitivity_ratio_mouse 1.0  // Zoom Sensitivity
+m_rawinput 1                 // Raw Input aktivieren
+m_mousespeed 0               // Mausbeschleunigung deaktivieren
+[/code]
+
+[h3]📡 Network Commands:[/h3]
+[code]
+rate 786432                  // Max Datenrate (wichtig!)
+cl_interp 0                  // Interpolation
+cl_interp_ratio 1            // Ratio
+cl_updaterate 128            // Update Rate
+cl_cmdrate 128               // Command Rate
+[/code]
+
+[h3]🗺️ Radar Commands:[/h3]
+[code]
+cl_radar_scale 0.4           // Radar Größe
+cl_radar_always_centered 0   // Fixed Radar (nicht zentriert)
+cl_radar_icon_scale_min 0.6  // Icon Größe
+cl_hud_radar_scale 1.15      // HUD Radar Scale
+[/code]
+
+[h3]🎨 HUD Commands:[/h3]
+[code]
+cl_hud_color 1               // HUD Farbe (1=Standard, 2=Weiß, etc.)
+cl_hud_background_alpha 0.5  // HUD Transparenz
+cl_hud_bomb_under_radar 1    // Bomben-Timer unter Radar
+cl_showfps 1                 // FPS Anzeige (1-5)
+[/code]
+
+[h3]🔫 Weapon Commands:[/h3]
+[code]
+cl_autowepswitch 0           // Auto Weapon Switch deaktivieren
+cl_use_opens_buy_menu 0      // E-Taste öffnet kein Buy-Menu
+closeonbuy 0                 // Buy-Menu bleibt offen
+[/code]
+
+[h2]4. Bind System[/h2]
+
+[h3]🎯 Essential Binds:[/h3]
+[code]
+// Jumpthrow Bind (für Smokes)
+alias "+jumpthrow" "+jump;-attack"
+alias "-jumpthrow" "-jump"
+bind "x" "+jumpthrow"
+
+// Clear Decals (entfernt Blut/Einschusslöcher)
+bind "shift" "+speed; r_cleardecals"
+
+// Volume Control
+bind "pgup" "volume 0.5"     // Volume hoch
+bind "pgdn" "volume 0.3"     // Volume runter
+
+// Quick Switch
+bind "q" "invnextnongrenade" // Schneller Waffentausch
+
+// Grenade Binds
+bind "4" "slot6"             // HE Grenade
+bind "z" "slot7"             // Flashbang
+bind "c" "slot8"             // Smoke
+bind "v" "slot10"            // Molotov/Incendiary
+[/code]
+
+[h3]💰 Buy Binds (Numpad):[/h3]
+[code]
+bind "kp_ins" "buy vesthelm"          // Armor + Helmet
+bind "kp_del" "buy defuser"           // Defuse Kit
+bind "kp_end" "buy ak47; buy m4a1"    // Rifle
+bind "kp_downarrow" "buy awp"         // AWP
+bind "kp_pgdn" "buy deagle"           // Desert Eagle
+bind "kp_leftarrow" "buy hegrenade"   // HE Grenade
+bind "kp_5" "buy flashbang"           // Flashbang
+bind "kp_rightarrow" "buy smokegrenade" // Smoke
+bind "kp_home" "buy molotov; buy incgrenade" // Molotov/Inc
+[/code]
+
+[hr][/hr]
+
+[h1]🖥️ SYSTEM - Windows Gaming Optimierung[/h1]
+
+[h2]1. Windows Privacy Tool (DkZ Suite)[/h2]
+
+Die DkZ Suite enthält ein umfassendes Windows Privacy & Performance Tool mit 80+ Registry-Einstellungen.
+
+[h3]🔒 Verfügbare Profile:[/h3]
+
+[b]1. Streamer Profile[/b]
+[list]
+[*]Kamera/Mikrofon: ✅ Aktiv (für Streaming)
+[*]Standort: ❌ Deaktiviert
+[*]Telemetrie: ❌ Deaktiviert
+[*]Werbe-ID: ❌ Deaktiviert
+[*]App-Berechtigungen: ⚖️ Balanced
+[/list]
+
+[b]2. Pro-Gamer Profile[/b]
+[list]
+[*]Alle Tracking: ❌ Deaktiviert
+[*]Performance: ✅ Maximum
+[*]Privacy: ✅ Maximum
+[*]Telemetrie: ❌ Komplett aus
+[*]Kamera/Mikrofon: ❌ Aus (außer für Spiele)
+[/list]
+
+[b]3. Developer Profile[/b]
+[list]
+[*]Balanced Settings
+[*]Benötigte Tools aktiv
+[*]Developer-Features: ✅ Aktiv
+[*]Privacy: ⚖️ Moderat
+[/list]
+
+[b]4. Maximum Privacy[/b]
+[list]
+[*]ALLE 80+ Tweaks aktiviert
+[*]Maximaler Datenschutz
+[*]Minimale Telemetrie
+[*]Performance-Optimiert
+[/list]
+
+[h3]📝 Anwendung:[/h3]
+[code]
+1. Öffne DkZ Suite → Tab "🔒 Windows Privacy"
+2. Wähle Profil: "Pro-Gamer" (empfohlen für Gaming)
+3. Klicke "⚡ Generate PowerShell Script"
+4. Speichere Script als Admin ausführen:
+   Rechtsklick → "Als Administrator ausführen"
+5. System-Neustart nach Anwendung
+[/code]
+
+[h3]⚠️ WICHTIG:[/h3]
+[quote]
+Erstelle VORHER einen System-Wiederherstellungspunkt!
+Systemsteuerung → System → Systemschutz → Erstellen
+[/quote]
+
+[h2]2. Windows Performance Optimierung[/h2]
+
+[h3]⚡ Energieeinstellungen:[/h3]
+[code]
+Windows-Taste → "Energieeinstellungen"
+→ Energiesparmodus: "Höchstleistung" auswählen
+
+Erweiterte Einstellungen:
+- USB Selective Suspend: Deaktivieren
+- PCI Express Link State Power Management: Aus
+- Prozessor-Energieverwaltung: Minimum 100%, Maximum 100%
+[/code]
+
+[h3]🎮 Game Mode:[/h3]
+[code]
+Einstellungen → Gaming → Game Mode → EIN
+Einstellungen → Gaming → Xbox Game Bar → AUS (spart Ressourcen)
+Einstellungen → Gaming → Aufnahmen → AUS (wenn nicht benötigt)
+[/code]
+
+[h3]🚀 Startup Optimierung:[/h3]
+[code]
+1. Task-Manager öffnen (Strg+Shift+Esc)
+2. Tab "Autostart"
+3. Deaktiviere ALLE unnötigen Programme
+   ✅ Behalten: Grafiktreiber, Audio-Software, Anti-Virus
+   ❌ Deaktivieren: Browser, Cloud-Sync, Office, etc.
+[/code]
+
+[h3]💾 Festplatten-Optimierung:[/h3]
+[code]
+1. Datenträgerbereinigung:
+   Windows-Taste + R → "cleanmgr" → Enter
+   → System laufwerk wählen → OK
+   → "Systemdateien bereinigen" klicken
+   → Alle Optionen auswählen → OK
+
+2. CS2 auf SSD installieren (WICHTIG für Ladezeiten!)
+   Steam → Bibliothek → Rechtsklick CS2 → Eigenschaften
+   → Lokale Dateien → Installationsordner verschieben
+
+3. Defragmentierung (nur HDD, NICHT SSD!):
+   Windows-Taste + R → "dfrgui" → Enter
+[/code]
+
+[h3]🧠 RAM-Optimierung:[/h3]
+[code]
+1. Pagefile anpassen:
+   Systemsteuerung → System → Erweiterte Systemeinstellungen
+   → Leistung → Einstellungen → Erweitert
+   → Virtueller Arbeitsspeicher → Ändern
+
+   Empfehlung:
+   - 16GB RAM: 8192 MB - 12288 MB
+   - 32GB RAM: 4096 MB - 8192 MB
+   - 64GB RAM: 2048 MB - 4096 MB
+[/code]
+
+[h3]🔧 Registry Tweaks:[/h3]
+
+[b]CMD als Admin öffnen und ausführen:[/b]
+[code]
+bcdedit /set useplatformclock false
+bcdedit /set tscsyncpolicy legacy
+bcdedit /set disabledynamictick no
+[/code]
+
+[h3]🗑️ Hintergrundprozesse beenden:[/h3]
+[code]
+Services deaktivieren (services.msc):
+✅ SICHER zu deaktivieren:
+- Windows Search (wenn nicht benötigt)
+- Superfetch/SysMain
+- Windows Update (manuell vor Gaming pausieren)
+- Print Spooler (wenn kein Drucker)
+- Fax
+- Tablet PC Input Service
+
+❌ NICHT deaktivieren:
+- Audio Services
+- Netzwerk Services
+- Grafiktreiber Services
+- Anti-Virus
+[/code]
+
+[hr][/hr]
+
+[h1]🎨 GRAFIK - NVIDIA/AMD Optimierung[/h1]
+
+[h2]NVIDIA Control Panel Settings[/h2]
+
+[h3]🎯 3D-Einstellungen verwalten → Globale Einstellungen:[/h3]
+
+[table]
+[tr][th]Einstellung[/th][th]Wert[/th][th]Grund[/th][/tr]
+[tr][td]Bildrate - Maximale Framerate[/td][td]Aus[/td][td]Keine FPS-Limitierung[/td][/tr]
+[tr][td]Energieverwaltungsmodus[/td][td]Maximale Leistung bevorzugen[/td][td]Max Performance[/td][/tr]
+[tr][td]Low Latency Mode[/td][td]Ultra[/td][td]Minimale Input Lag[/td][/tr]
+[tr][td]Vertikale Synchronisierung[/td][td]Aus[/td][td]Keine FPS-Limitierung[/td][/tr]
+[tr][td]Texturfilterung - Qualität[/td][td]Leistung[/td][td]Mehr FPS[/td][/tr]
+[tr][td]Threaded Optimization[/td][td]Ein[/td][td]Multi-Core Support[/td][/tr]
+[tr][td]Anisotrope Filterung[/td][td]Aus[/td][td]FPS Boost[/td][/tr]
+[tr][td]Antialiasing - Modus[/td][td]Anwendungsgesteuert[/td][td]CS2 regelt selbst[/td][/tr]
+[tr][td]CUDA - GPUs[/td][td]Alle[/td][td]Alle Kerne nutzen[/td][/tr]
+[tr][td]Maximale Vorwiedergabe[/td][td]1[/td][td]Niedrigste Latenz[/td][/tr]
+[/table]
+
+[h3]🖥️ Programm-Spezifisch für CS2:[/h3]
+[code]
+1. NVIDIA Control Panel → 3D-Einstellungen verwalten
+2. Programmeinstellungen-Tab
+3. "Hinzufügen" → Steam\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\cs2.exe
+4. Übernehme alle globalen Einstellungen
+5. Zusätzlich:
+   - G-Sync: Aus (wenn verfügbar)
+   - Reflex Low Latency: Ein + Boost (RTX-Karten)
+[/code]
+
+[h2]AMD Radeon Settings[/h2]
+
+[h3]🎮 Gaming → Globale Grafik:[/h3]
+[table]
+[tr][th]Einstellung[/th][th]Wert[/th][/tr]
+[tr][td]Anti-Lag[/td][td]Aktiviert[/td][/tr]
+[tr][td]Radeon Boost[/td][td]Aktiviert[/td][/tr]
+[tr][td]Radeon Chill[/td][td]Deaktiviert[/td][/tr]
+[tr][td]Radeon Image Sharpening[/td][td]80%[/td][/tr]
+[tr][td]Warten auf vertikale Aktualisierung[/td][td]Immer aus[/td][/tr]
+[tr][td]Texturfilterung Qualität[/td][td]Leistung[/td][/tr]
+[tr][td]Tessellation Mode[/td][td]AMD optimiert[/td][/tr]
+[/table]
+
+[h2]CS2 Ingame Grafikeinstellungen[/h2]
+
+[h3]🎯 Empfohlene Settings für Performance:[/h3]
+[table]
+[tr][th]Setting[/th][th]Low-End PC[/th][th]Mid-Range PC[/th][th]High-End PC[/th][/tr]
+[tr][td]Auflösung[/td][td]1024x768[/td][td]1280x960[/td][td]1920x1080[/td][/tr]
+[tr][td]Bildschirm-Modus[/td][td]Vollbild[/td][td]Vollbild[/td][td]Vollbild[/td][/tr]
+[tr][td]Seitenverhältnis[/td][td]4:3 Gestreckt[/td][td]4:3 Gestreckt[/td][td]16:9[/td][/tr]
+[tr][td]Global Shadow Quality[/td][td]Niedrig[/td][td]Mittel[/td][td]Hoch[/td][/tr]
+[tr][td]Model/Texture Detail[/td][td]Niedrig[/td][td]Mittel[/td][td]Hoch[/td][/tr]
+[tr][td]Effect Detail[/td][td]Niedrig[/td][td]Niedrig[/td][td]Mittel[/td][/tr]
+[tr][td]Shader Detail[/td][td]Niedrig[/td][td]Hoch[/td][td]Hoch[/td][/tr]
+[tr][td]Multicore Rendering[/td][td]Aktiviert[/td][td]Aktiviert[/td][td]Aktiviert[/td][/tr]
+[tr][td]MSAA[/td][td]Aus[/td][td]2x[/td][td]4x-8x[/td][/tr]
+[tr][td]FXAA[/td][td]Deaktiviert[/td][td]Deaktiviert[/td][td]Aktiviert[/td][/tr]
+[tr][td]Motion Blur[/td][td]Deaktiviert[/td][td]Deaktiviert[/td][td]Deaktiviert[/td][/tr]
+[/table]
+
+[h3]⚡ NVIDIA Reflex (RTX-Karten):[/h3]
+[quote]
+CS2 Einstellungen → Video → NVIDIA Reflex Low Latency: "Aktiviert + Boost"
+Reduziert Input Lag um bis zu 30-40%!
+[/quote]
+
+[hr][/hr]
+
+[h1]🎧 SOUND - Audio Optimierung[/h1]
+
+[h2]1. Windows Sound Settings[/h2]
+
+[h3]🎵 Grundeinstellungen:[/h3]
+[code]
+1. Rechtsklick auf Lautsprecher-Symbol → Sounds
+2. Wiedergabe-Tab → Dein Headset/Lautsprecher → Eigenschaften
+
+Erweitert-Tab:
+- Format: 24 Bit, 48000 Hz (Studio-Qualität)
+- Exklusivmodus: Beide Optionen AKTIVIEREN
+
+Verbesserungen-Tab:
+- Alle Soundeffekte DEAKTIVIEREN (wichtig!)
+[/code]
+
+[h3]🎮 Windows Sonic / Dolby Atmos:[/h3]
+[quote]
+Empfehlung: DEAKTIVIERT für CS2
+Grund: CS2 hat eingebautes HRTF (Head-Related Transfer Function)
+[/quote]
+
+[h2]2. CS2 Audio Settings[/h2]
+
+[h3]📊 Ingame Einstellungen:[/h3]
+[code]
+// In autoexec.cfg (via DkZ Suite Config Generator):
+
+volume "0.5"                      // Master Volume (50%)
+snd_musicvolume "0"               // Musik aus
+snd_menumusic_volume "0"          // Menu Musik aus
+snd_roundstart_volume "0"         // Round Start Musik aus
+snd_roundend_volume "0"           // Round End Musik aus
+snd_mapobjective_volume "0"       // Bomben-Musik aus
+snd_tensecondwarning_volume "0.2" // 10-Sekunden-Warning leise
+
+// HRTF & Advanced Audio
+snd_mixahead "0.05"               // Audio Latency (niedriger = responsiver)
+snd_headphone_pan_exponent "1.9"  // Headphone Panning
+snd_front_headphone_position "45.0"   // Front Position
+snd_rear_headphone_position "135.0"   // Rear Position
+[/code]
+
+[h3]🎯 Audio Ingame:[/h3]
+[quote]
+CS2 Settings → Audio:
+- Audio Output Configuration: Headphones
+- Enable 3D Audio Processing for Headphones: EIN
+- Advanced 3D Audio Processing: EIN
+[/quote]
+
+[h2]3. FxSound Enhancement (Optional)[/h2]
+
+[h3]📥 Installation:[/h3]
+[list]
+[*]Download: [url=https://www.fxsound.com/]FxSound Official[/url]
+[*]Installieren und starten
+[*]Preset: "Gaming" oder "FPS"
+[/list]
+
+[h3]⚙️ Empfohlene FxSound Settings:[/h3]
+[code]
+Bass Boost: 20-30%
+3D Surround: 40-50%
+Clarity: 60-70%
+Volume: 80-90%
+Dynamic Boost: 30%
+[/code]
+
+[quote]
+⚠️ Hinweis: FxSound kann Input Lag erhöhen. Teste ausgiebig!
+Alternative: Equalizer APO (kostenlos, open-source)
+[/quote]
+
+[hr][/hr]
+
+[h1]🎤 VOICE - VoiceMeeter Setup[/h1]
+
+[h2]Was ist VoiceMeeter?[/h2]
+
+VoiceMeeter ist eine virtuelle Audio-Mixing-Software, die es ermöglicht:
+[list]
+[*]Separate Volume-Kontrolle für Discord, CS2, Musik
+[*]Noise Gate & Compression für Mikrofon
+[*]Audio-Routing zwischen Anwendungen
+[*]EQ für bessere Stimmqualität
+[/list]
+
+[h2]Installation & Setup[/h2]
+
+[h3]📥 Download:[/h3]
+[url=https://vb-audio.com/Voicemeeter/]VoiceMeeter Banana (kostenlos)[/url]
+
+[h3]🎛️ Basic Setup:[/h3]
+[code]
+1. Installiere VoiceMeeter Banana
+2. Neustart erforderlich
+3. Starte VoiceMeeter Banana
+
+Hardware Out:
+- A1: Dein Headset/Lautsprecher auswählen
+
+Hardware Input 1:
+- Dein Mikrofon auswählen
+- Gate: -30 dB (reduziert Hintergrundgeräusche)
+- Comp: 3.0 (Compression für gleichmäßigere Lautstärke)
+
+Virtual Input (VAIO):
+- Dies ist dein neuer "Mikrofon"-Eingang für Discord/Steam
+[/code]
+
+[h3]🎮 Windows Sound Settings:[/h3]
+[code]
+Wiedergabe:
+- Standardgerät: VoiceMeeter Input (VB-Audio)
+
+Aufnahme:
+- Standardgerät: VoiceMeeter Output (VB-Audio)
+[/code]
+
+[h3]💬 Discord/Steam Voice:[/h3]
+[code]
+Discord → Einstellungen → Sprache & Video:
+- Eingabegerät: VoiceMeeter Output
+- Ausgabegerät: VoiceMeeter Input
+
+Steam → Einstellungen → Sprache:
+- Eingabegerät: VoiceMeeter Output
+[/code]
+
+[h2]Advanced: Noise Suppression[/h2]
+
+[h3]🔇 NVIDIA RTX Voice (RTX-Karten):[/h3]
+[list]
+[*]Download: [url=https://www.nvidia.com/en-us/geforce/guides/nvidia-rtx-voice-setup-guide/]NVIDIA Broadcast[/url]
+[*]Installieren und als Mikrofon-Input in VoiceMeeter setzen
+[*]AI-basierte Noise Cancellation (extrem effektiv!)
+[/list]
+
+[h3]🎙️ Alternative: Krisp (kostenpflichtig)[/h3]
+[list]
+[*]Funktioniert auf allen GPUs
+[*]Auch AI-basiert
+[*]Free Tier: 60 Min/Tag
+[/list]
+
+[hr][/hr]
+
+[h1]🖱️ MOUSEFIX - Präzisions-Optimierung[/h1]
+
+[h2]DkZ Suite MouseFix Tool[/h2]
+
+Die DkZ Suite enthält ein integriertes MouseFix Tool mit 9 DPI-Skalierungs-Presets.
+
+[h3]🎯 Verfügbare Presets:[/h3]
+[code]
+✅ Default (Deaktiviert)
+✅ 100% (Standard Windows 1:1)
+✅ 125% - 150% - 175%
+✅ 200% - 225% - 250%
+✅ 300% - 350%
+[/code]
+
+[h3]⚙️ Anwendung:[/h3]
+[code]
+1. DkZ Suite → Tab "Windows Privacy" → MouseFix Section
+2. Wähle deine Windows DPI-Skalierung (z.B. 100%, 125%, 150%)
+3. Klicke "Generate PowerShell Script"
+4. Script enthält automatisch MouseFix für gewählte DPI
+5. Als Admin ausführen
+6. Neustart
+[/code]
+
+[h2]Manuelle Windows Maus-Einstellungen[/h2]
+
+[h3]🖱️ Windows 11 Settings:[/h3]
+[code]
+Einstellungen → Bluetooth & Geräte → Maus:
+- Mauszeiger-Geschwindigkeit: 6/11 (exakt in der Mitte!)
+- Zusätzliche Mauseinstellungen:
+
+Zeigeroptionen:
+❌ Zeigerbewegung: 6/11 (Mitte)
+❌ Zeigergenauigkeit verbessern: DEAKTIVIEREN (WICHTIG!)
+❌ Zeiger automatisch auf Standardschaltfläche: AUS
+
+Rad:
+- Vertikaler Bildlauf: 3 Zeilen
+[/code]
+
+[h3]⚠️ KRITISCH:[/h3]
+[quote]
+"Zeigergenauigkeit verbessern" MUSS deaktiviert sein!
+Dies ist Windows-Mausbeschleunigung und zerstört dein Muscle Memory.
+[/quote]
+
+[h2]Registry MouseFix (GeekFreeks/MarkC)[/h2]
+
+[h3]📝 PowerShell Script:[/h3]
+
+Erstelle Datei: [b]mousefix_disable_accel.ps1[/b]
+[code]
+# DkZ MouseFix Script - Disable Windows Mouse Acceleration
+# Run as Administrator!
+
+Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSensitivity" -Value "10"
+Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSpeed" -Value "0"
+Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold1" -Value "0"
+Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Value "0"
+Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "SmoothMouseXCurve" -Type Binary -Value ([byte[]](0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xC0,0xCC,0x0C,0x00,0x00,0x00,0x00,0x00,0x80,0x99,0x19,0x00,0x00,0x00,0x00,0x00,0x40,0x66,0x26,0x00,0x00,0x00,0x00,0x00,0x00,0x33,0x33,0x00,0x00,0x00,0x00,0x00))
+Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "SmoothMouseYCurve" -Type Binary -Value ([byte[]](0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x38,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x70,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xA8,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xE0,0x00,0x00,0x00,0x00,0x00))
+
+Write-Host "MouseFix applied successfully!" -ForegroundColor Green
+Write-Host "Please restart your computer for changes to take effect." -ForegroundColor Yellow
+[/code]
+
+Ausführen:
+[code]
+Rechtsklick → "Mit PowerShell ausführen" → Als Administrator
+[/code]
+
+[h2]Logitech G Hub Settings (Logitech Mäuse)[/h2]
+
+[h3]🎮 Empfohlene Settings:[/h3]
+[code]
+DPI Settings:
+- 400 DPI, 800 DPI, 1600 DPI (3 Stufen)
+- Keine DPI-Shift-Taste
+
+Report Rate:
+- 1000 Hz (wichtig für präzises Tracking!)
+
+Surface Tuning:
+- Calibrate to your mousepad
+
+Angle Snapping: AUS
+Acceleration: AUS
+[/code]
+
+[h2]Raw Input in CS2[/h2]
+
+[code]
+// In autoexec.cfg:
+m_rawinput "1"               // Raw Input aktivieren
+m_mousespeed "0"             // Windows Mausbeschleunigung ignorieren
+m_customaccel "0"            // Custom Acceleration aus
+sensitivity "1.5"            // Deine Sensitivity (anpassen!)
+zoom_sensitivity_ratio_mouse "1.0"  // Zoom Ratio
+[/code]
+
+[h3]🎯 eDPI Calculator (DkZ Suite):[/h3]
+[quote]
+eDPI (effective DPI) = DPI × Sensitivity
+
+Beispiele:
+- 400 DPI × 2.0 Sens = 800 eDPI
+- 800 DPI × 1.0 Sens = 800 eDPI (gleiche Feeling!)
+
+Pro-Level eDPI: 600-1200
+[/quote]
+
+[hr][/hr]
+
+[h1]📡 NETCODE - Network Optimization[/h1]
+
+[h2]1. DkZ Suite Netcode Tool[/h2]
+
+[h3]🌐 Features:[/h3]
+[list]
+[*]MTU Auto-Detection (1100-1500)
+[*]TTL Optimization
+[*]Rate Configuration Presets
+[*]Network Analysis (Ping, Packet Loss, Jitter)
+[*]VPN Integration
+[/list]
+
+[h3]⚙️ Rate Configs:[/h3]
+
+[b]64 Tick (Matchmaking):[/b]
+[code]
+rate "196608"
+cl_updaterate "64"
+cl_cmdrate "64"
+cl_interp "0"
+cl_interp_ratio "1"
+[/code]
+
+[b]128 Tick (FaceIt/ESEA):[/b]
+[code]
+rate "786432"
+cl_updaterate "128"
+cl_cmdrate "128"
+cl_interp "0"
+cl_interp_ratio "1"
+[/code]
+
+[b]LAN/Offline:[/b]
+[code]
+rate "786432"
+cl_updaterate "128"
+cl_cmdrate "128"
+cl_interp "0"
+cl_interp_ratio "1"
+[/code]
+
+[h2]2. Windows Network Optimization[/h2]
+
+[h3]📡 TCP/IP Settings:[/h3]
+
+Erstelle: [b]network_optimization.bat[/b] (als Admin ausführen)
+[code]
+@echo off
+echo DkZ Network Optimization Script
+echo ================================
+
+REM TCP Auto-Tuning
+netsh int tcp set global autotuninglevel=normal
+netsh int tcp set global chimney=enabled
+netsh int tcp set global dca=enabled
+netsh int tcp set global netdma=enabled
+netsh int tcp set global ecncapability=enabled
+netsh int tcp set global timestamps=enabled
+
+REM QoS
+netsh int tcp set global rss=enabled
+netsh int tcp set global rsc=disabled
+
+REM MTU Settings (anpassen nach deiner Verbindung!)
+REM netsh interface ipv4 set subinterface "Ethernet" mtu=1492 store=persistent
+
+echo.
+echo Optimization applied successfully!
+echo Please restart your computer.
+pause
+[/code]
+
+[h3]🚀 Additional Registry Tweaks:[/h3]
+
+[code]
+Windows Registry Editor Version 5.00
+
+; Gaming Network Optimization
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile]
+"NetworkThrottlingIndex"=dword:ffffffff
+"SystemResponsiveness"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters]
+"MaxUserPort"=dword:0000fffe
+"TcpTimedWaitDelay"=dword:0000001e
+"DefaultTTL"=dword:00000080
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Psched]
+"NonBestEffortLimit"=dword:00000000
+[/code]
+
+[h2]3. Router Optimization[/h2]
+
+[h3]🌐 Port Forwarding für CS2:[/h3]
+[code]
+Steam:
+TCP: 27015-27030, 27036-27037
+UDP: 4380, 27000-27031, 27036
+
+CS2 Dedicated Server:
+TCP: 27015
+UDP: 27015, 27020
+
+Source TV:
+UDP: 27020
+[/code]
+
+[h3]⚙️ QoS Settings (Router):[/h3]
+[list]
+[*]Priorität für Gaming-PC setzen (höchste Priorität)
+[*]Port-basierte QoS für CS2-Ports aktivieren
+[*]UPnP aktivieren (für automatisches Port Forwarding)
+[/list]
+
+[h2]4. DNS Optimization[/h2]
+
+[h3]🌐 Empfohlene DNS Server:[/h3]
+
+[b]Cloudflare (schnellste):[/b]
+[code]
+Primary: 1.1.1.1
+Secondary: 1.0.0.1
+[/code]
+
+[b]Google Public DNS:[/b]
+[code]
+Primary: 8.8.8.8
+Secondary: 8.8.4.4
+[/code]
+
+[b]Quad9 (Privacy-fokussiert):[/b]
+[code]
+Primary: 9.9.9.9
+Secondary: 149.112.112.112
+[/code]
+
+[h3]⚙️ DNS Ändern:[/h3]
+[code]
+1. Systemsteuerung → Netzwerk → Adaptereinstellungen ändern
+2. Rechtsklick auf deine Verbindung → Eigenschaften
+3. Internet Protocol Version 4 (TCP/IPv4) → Eigenschaften
+4. "Folgende DNS-Serveradressen verwenden"
+5. Eingabe der DNS-Adressen
+6. OK → Neustart der Verbindung
+[/code]
+
+[h2]5. MTU Optimization[/h2]
+
+[h3]🔍 MTU Herausfinden:[/h3]
+[code]
+CMD öffnen:
+
+REM Test mit Packet Size (Start: 1500)
+ping google.com -f -l 1500
+
+REM Wenn "Packet needs to be fragmented" → Größe reduzieren
+ping google.com -f -l 1492
+ping google.com -f -l 1472
+
+REM Optimale MTU = größte Size ohne Fragmentation + 28
+REM Beispiel: 1464 funktioniert → MTU = 1492
+[/code]
+
+[h3]⚙️ MTU Setzen:[/h3]
+[code]
+CMD als Admin:
+
+REM Adapter-Namen herausfinden
+netsh interface ipv4 show interfaces
+
+REM MTU setzen (ersetze "Ethernet" mit deinem Adapter-Namen)
+netsh interface ipv4 set subinterface "Ethernet" mtu=1492 store=persistent
+
+REM Verification
+netsh interface ipv4 show subinterfaces
+[/code]
+
+[hr][/hr]
+
+[h1]🌐 VPN - Gaming VPN Setup[/h1]
+
+[h2]Warum VPN für Gaming?[/h2]
+
+[h3]✅ Vorteile:[/h3]
+[list]
+[*]DDoS-Schutz (wichtig für Streamer/Competitive Players)
+[*]Umgehung von geografischen Sperren
+[*]Stabilere Routing-Pfade (kann Ping verbessern!)
+[*]Schutz vor ISP-Drosselung
+[*]Privatsphäre (IP-Adresse versteckt)
+[/list]
+
+[h3]❌ Nachteile:[/h3]
+[list]
+[*]Kann Latenz erhöhen (wenn falscher Server gewählt)
+[*]Kosten (Premium VPNs)
+[*]Möglicherweise langsamer bei schlechter VPN-Qualität
+[*]Manche Anti-Cheat-Systeme mögen keine VPNs
+[/list]
+
+[h2]Empfohlene Gaming VPNs[/h2]
+
+[h3]🥇 ExitLag (Spezialisiert auf Gaming)[/h3]
+[list]
+[*]Website: [url=https://www.exitlag.com/]ExitLag[/url]
+[*]Kosten: ~$6.50/Monat
+[*]Features: Multi-Path Connection, Gaming-optimierte Server
+[*]Unterstützt: CS2, Valorant, LoL, etc.
+[*]Trial: 3 Tage kostenlos
+[/list]
+
+[b]Setup:[/b]
+[code]
+1. ExitLag Download & Installation
+2. Account erstellen (Trial oder Abo)
+3. CS2 in der Liste auswählen
+4. Server-Region wählen (näher = besser!)
+5. "Apply Routes" klicken
+6. CS2 starten → Ping-Verbesserung prüfen
+[/code]
+
+[h3]🥈 NordVPN (Allround mit Gaming-Features)[/h3]
+[list]
+[*]Website: [url=https://nordvpn.com/]NordVPN[/url]
+[*]Kosten: ~$3-12/Monat (je nach Plan)
+[*]Features: NordLynx (WireGuard), 5400+ Server, No-Logs
+[*]Gaming: Gute Geschwindigkeit, niedrige Latenz
+[/list]
+
+[b]Setup:[/b]
+[code]
+1. NordVPN Download & Installation
+2. Login mit Account
+3. Quick Connect ODER manuell Server wählen:
+   - Specialty Servers → P2P (optimiert für Speed)
+   - Land wählen (näher an CS2-Servern)
+4. Verbinden
+5. CS2 starten
+[/code]
+
+[h3]🥉 CyberGhost (Günstig & Anfängerfreundlich)[/h3]
+[list]
+[*]Website: [url=https://www.cyberghostvpn.com/]CyberGhost[/url]
+[*]Kosten: ~$2-13/Monat
+[*]Features: Gaming-Server, NoSpy Server, 9000+ Server
+[*]45-Tage Geld-zurück-Garantie
+[/list]
+
+[b]Setup:[/b]
+[code]
+1. CyberGhost Download & Installation
+2. Login
+3. "For Gaming" → Server auswählen
+4. Verbinden
+5. CS2 starten
+[/code]
+
+[h3]🏆 Surfshark (Unlimited Devices)[/h3]
+[list]
+[*]Website: [url=https://surfshark.com/]Surfshark[/url]
+[*]Kosten: ~$2-13/Monat
+[*]Features: Unlimited Geräte, WireGuard, CleanWeb
+[*]Gut für Familien/mehrere Geräte
+[/list]
+
+[h2]VPN für niedrigeren Ping?[/h2]
+
+[h3]🎯 So funktioniert's:[/h3]
+[quote]
+VPN kann Ping VERBESSERN, wenn:
+1. Dein ISP schlechtes Routing zu CS2-Servern hat
+2. VPN-Server bessere Peering-Agreements haben
+3. VPN näher am CS2-Server ist als dein ISP-Routing
+
+VPN erhöht Ping, wenn:
+1. VPN-Server weit weg ist
+2. VPN-Server überlastet ist
+3. Deine Verbindung bereits optimal ist
+[/quote]
+
+[h3]📊 Test Methode:[/h3]
+[code]
+1. Starte CS2 OHNE VPN
+2. Console: net_graph 1
+3. Notiere Ping zu Server (z.B. 35ms)
+4. Disconnecten
+5. VPN verbinden (Server in selber Region wie CS2-Server!)
+6. CS2 reconnecten
+7. Ping vergleichen
+
+Wenn VPN-Ping NIEDRIGER → VPN nutzen!
+Wenn VPN-Ping HÖHER → VPN nicht nutzen für diesen Server
+[/code]
+
+[h2]VPN + CS2 Competitive[/h2]
+
+[h3]⚠️ Wichtige Hinweise:[/h3]
+[list]
+[*]Valve VAC-System: VPNs sind ERLAUBT
+[*]FACEIT/ESEA: Manche Plattformen mögen VPNs nicht (prüfen!)
+[*]Matchmaking: VPN kann zu anderen Server-Regionen verbinden
+[*]Trust Factor: Kann theoretisch negativ beeinflusst werden
+[/list]
+
+[h3]🎯 Best Practices:[/h3]
+[code]
+1. VPN nur nutzen, wenn nötig (DDoS-Schutz, Ping-Verbesserung)
+2. Immer Server in deiner Region wählen
+3. Disconnect von VPN für Competitive, wenn nicht benötigt
+4. Teste VPN im Casual/DM vor Competitive
+5. Monitor deinen Ping konstant (net_graph 1)
+[/code]
+
+[hr][/hr]
+
+[h1]📊 STATS TRACKER - Performance Analytics[/h1]
+
+[h2]DkZ Suite Stats Tracker[/h2]
+
+Die DkZ Suite enthält ein vollständiges Stats Tracking System.
+
+[h3]📈 Features:[/h3]
+[list]
+[*]Match History mit Datum/Zeit
+[*]K/D Ratio Berechnung
+[*]Headshot Percentage Tracking
+[*]Win Rate Analytics
+[*]Performance Graphs
+[*]JSON Export/Import
+[/list]
+
+[h3]🎮 Verwendung:[/h3]
+[code]
+1. DkZ Suite → Tab "📊 Stats Tracker"
+2. Nach jedem Match:
+   - Map auswählen
+   - Result (Win/Loss/Draw)
+   - Kills, Deaths, Assists eingeben
+   - Headshots eingeben
+   - "Add Match" klicken
+3. Stats werden automatisch berechnet:
+   - Overall K/D
+   - Headshot %
+   - Win Rate
+   - Best/Worst Maps
+[/code]
+
+[h3]💾 Export:[/h3]
+[code]
+"Export to JSON" → Speichert alle Match-Daten
+Nützlich für:
+- Backup
+- Teilen mit Teammates
+- Import in andere Tools
+[/code]
+
+[h2]External Stats Tracking[/h2]
+
+[h3]🌐 Tracker.gg:[/h3]
+[list]
+[*]Website: [url=https://tracker.gg/csgo]Tracker.gg CS2[/url]
+[*]Features: Automatisches Tracking, Rank History, Leaderboards
+[*]Kostenlos
+[/list]
+
+[h3]📊 Leetify.com:[/h3]
+[list]
+[*]Website: [url=https://leetify.com/]Leetify[/url]
+[*]Features: AI-basierte Performance-Analyse, Heatmaps, Positioning-Analysis
+[*]Kostenlos + Premium ($4.99/Monat)
+[/list]
+
+[h3]🎯 CS2Stats.gg:[/h3]
+[list]
+[*]Website: [url=https://cs2stats.gg/]CS2Stats[/url]
+[*]Features: Detailed Match Analysis, Weapon Stats, Map Performance
+[*]Kostenlos
+[/list]
+
+[hr][/hr]
+
+[h1]🎯 TRAINING - Skill Improvement[/h1]
+
+[h2]DkZ Suite Training Hub[/h2]
+
+[h3]🎮 Sensitivity Calculator:[/h3]
+[code]
+1. DkZ Suite → Tab "🎮 Training Hub"
+2. Sensitivity Calculator Section:
+   - Current DPI eingeben (z.B. 800)
+   - Current Sensitivity eingeben (z.B. 1.5)
+   - Target DPI eingeben (z.B. 400)
+   - "Calculate" klicken
+3. Ergebnis: Neue Sensitivity für gleiches eDPI
+   - Beispiel: 800 DPI × 1.5 = 400 DPI × 3.0
+[/code]
+
+[h3]🗺️ Practice Maps:[/h3]
+
+[b]Aim Training:[/b]
+[list]
+[*]aim_botz - Basic Aim Practice (Steam Workshop)
+[*]Reflex Training Map v2 - Reaction Time
+[*]Fast Aim/Reflex Training - Speed Training
+[/list]
+
+[b]Spray Control:[/b]
+[list]
+[*]Recoil Master - All Weapons Spray Patterns
+[*]Training Center 1.5c - Comprehensive Training
+[/list]
+
+[b]Movement:[/b]
+[list]
+[*]KZ Maps - Climb/Bhop Training
+[*]Surf Maps - Movement Flow
+[/list]
+
+[h3]⏱️ Daily Warmup Routines:[/h3]
+
+[b]Beginner (30min):[/b]
+[code]
+10min - aim_botz (200 kills, headshots only)
+10min - Recoil Master (AK-47 & M4A4 sprays)
+10min - Deathmatch (FFA Server)
+[/code]
+
+[b]Intermediate (45min):[/b]
+[code]
+15min - aim_botz (500 kills, fast flicks)
+10min - Reflex Training (reaction drills)
+10min - Spray Transfer Practice
+10min - Prefire Maps (for each comp map)
+[/code]
+
+[b]Pro (60min):[/b]
+[code]
+20min - aim_botz (1000 kills, various drills)
+15min - Tracking/Flicks (specialized maps)
+10min - Spray Transfer & Burst Fire
+15min - Retake Servers (realistic scenarios)
+[/code]
+
+[h2]Aim Training External Tools[/h2]
+
+[h3]🎯 Aim Lab (Free):[/h3]
+[list]
+[*]Steam: [url=https://store.steampowered.com/app/714010/Aimlabs/]Aim Lab[/url]
+[*]Features: CS2-specific drills, Progress Tracking, AI Coaching
+[*]Tasks: Gridshot, Tracking, Flicking, etc.
+[/list]
+
+[h3]🎮 Kovaak's FPS Aim Trainer (Paid ~$10):[/h3]
+[list]
+[*]Steam: [url=https://store.steampowered.com/app/824270/KovaaKs/]Kovaak's[/url]
+[*]Features: Detailed Analytics, Custom Scenarios
+[*]Very Popular in Pro Scene
+[/list]
+
+[h2]CS2 Practice Config[/h2]
+
+[h3]📝 practice.cfg erstellen:[/h3]
+
+Speichere als [b]practice.cfg[/b] in csgo/cfg/ Ordner:
+[code]
+// DkZ CS2 Practice Config
+// Load: exec practice
+
+sv_cheats 1
+mp_limitteams 0
+mp_autoteambalance 0
+mp_roundtime 60
+mp_roundtime_defuse 60
+mp_maxmoney 60000
+mp_startmoney 60000
+mp_buytime 9999
+mp_buy_anywhere 1
+mp_freezetime 0
+mp_restartgame 1
+
+// God Mode & Noclip
+god
+noclip
+
+// Infinite Ammo
+sv_infinite_ammo 1
+ammo_grenade_limit_total 5
+
+// No Damage
+mp_damage_scale_ct_body 0
+mp_damage_scale_t_body 0
+
+// Grenade Practice
+sv_grenade_trajectory 1
+sv_grenade_trajectory_time 10
+sv_showimpacts 1
+
+// Useful Binds
+bind "n" "noclip"
+bind "m" "sv_rethrow_last_grenade"
+bind "j" "mp_restartgame 1"
+
+echo "DkZ Practice Config Loaded!"
+echo "Binds: N=Noclip, M=Rethrow Grenade, J=Restart"
+[/code]
+
+In CS2 Console:
+[code]
+exec practice
+[/code]
+
+[hr][/hr]
+
+[h1]🎬 FAZIT[/h1]
+
+[h2]✅ Checklist: Complete Setup[/h2]
+
+[h3]🎮 CS2 Configuration:[/h3]
+[list]
+[*]✅ Launch Options gesetzt
+[*]✅ autoexec.cfg via DkZ Suite erstellt und installiert
+[*]✅ Crosshair optimiert (Pro Player Preset oder Custom)
+[*]✅ Binds konfiguriert (Jumpthrow, Clear Decals, Buy Binds)
+[*]✅ Network Settings optimiert (Rate, Interp)
+[*]✅ practice.cfg erstellt
+[/list]
+
+[h3]🖥️ Windows Optimization:[/h3]
+[list]
+[*]✅ Windows Privacy Tool (DkZ Suite) angewendet
+[*]✅ Energieeinstellungen: Höchstleistung
+[*]✅ Game Mode aktiviert
+[*]✅ Hintergrundprozesse minimiert
+[*]✅ CS2 auf SSD installiert
+[/list]
+
+[h3]🎨 Graphics:[/h3]
+[list]
+[*]✅ NVIDIA/AMD Settings optimiert
+[*]✅ CS2 Ingame Settings angepasst
+[*]✅ NVIDIA Reflex aktiviert (RTX-Karten)
+[*]✅ Grafiktreiber aktuell
+[/list]
+
+[h3]🎧 Audio:[/h3]
+[list]
+[*]✅ Windows Sound Settings korrekt
+[*]✅ CS2 Audio Config (HRTF aktiviert)
+[*]✅ VoiceMeeter installiert (optional)
+[*]✅ Mikrofon Noise Suppression (RTX Voice/Krisp)
+[/list]
+
+[h3]🖱️ Mouse:[/h3]
+[list]
+[*]✅ MouseFix angewendet (GeekFreeks/MarkC)
+[*]✅ Windows Zeigergenauigkeit DEAKTIVIERT
+[*]✅ Raw Input in CS2 aktiviert
+[*]✅ Sensitivity optimiert (eDPI Calculator)
+[/list]
+
+[h3]📡 Network:[/h3]
+[list]
+[*]✅ Network Optimization Scripts ausgeführt
+[*]✅ DNS auf Cloudflare/Google geändert
+[*]✅ MTU optimiert
+[*]✅ Router QoS konfiguriert
+[*]✅ VPN getestet (falls benötigt)
+[/list]
+
+[h2]📈 Expected Results[/h2]
+
+Nach kompletter Anwendung dieses Guides solltest du erleben:
+[list]
+[*]🚀 [b]+20-50% FPS Boost[/b] (abhängig von Hardware)
+[*]⚡ [b]Reduzierte Input Lag[/b] (spürbar flüssigeres Gameplay)
+[*]🎯 [b]Präziseres Aiming[/b] (durch MouseFix & Raw Input)
+[*]📡 [b]Stabilerer Ping[/b] (durch Network Optimization)
+[*]🔒 [b]Bessere Privacy[/b] (weniger Windows Telemetrie)
+[*]🎮 [b]Konsistenteres Gameplay[/b] (optimierte Settings)
+[/list]
+
+[h2]🔄 Maintenance[/h2]
+
+[h3]Wöchentlich:[/h3]
+[list]
+[*]Grafiktreiber auf Updates prüfen
+[*]CS2 Config Backup erstellen
+[*]Stats in DkZ Suite tracken
+[/list]
+
+[h3]Monatlich:[/h3]
+[list]
+[*]Windows Updates durchführen
+[*]Datenträgerbereinigung
+[*]Network Settings prüfen (MTU, DNS)
+[*]VPN Performance testen
+[/list]
+
+[h2]🆘 Support & Community[/h2]
+
+[b]DkZ CS2 Gaming Suite:[/b]
+[list]
+[*]GitHub: [url=https://github.com/L33TSTAR/.github]L33TSTAR/.github[/url]
+[*]Issues: [url=https://github.com/L33TSTAR/.github/issues]Bug Reports & Features[/url]
+[*]Discussions: [url=https://github.com/L33TSTAR/.github/discussions]Community Forum[/url]
+[/list]
+
+[b]CS2 Community:[/b]
+[list]
+[*]Reddit: [url=https://reddit.com/r/GlobalOffensive]/r/GlobalOffensive[/url]
+[*]Discord: CS2 Community Servers
+[*]Steam Guides: Weitere Guides & Tutorials
+[/list]
+
+[hr][/hr]
+
+[h1]📜 Credits & License[/h1]
+
+[b]Guide Erstellt von:[/b] DkZ DEVKITZ
+[b]Contributors:[/b] Community Members
+[b]Version:[/b] v1.01.1_04 ULTIMATE
+[b]Letztes Update:[/b] 2025
+
+[b]Special Thanks:[/b]
+[list]
+[*]CS2 Pro Players (s1mple, NiKo, ZywOo, sh1ro, electronic)
+[*]GeekFreeks (MouseFix)
+[*]MarkC (MouseFix)
+[*]LEETED Contributors
+[*]CS2 Community
+[/list]
+
+[b]License:[/b] MIT License
+[quote]
+Alle Tools und Configs sind Open Source und kostenlos.
+Teilen, Modifizieren und Verbessern ist ausdrücklich erwünscht!
+[/quote]
+
+[hr][/hr]
+
+[h1]⭐ Support the Project[/h1]
+
+Wenn dir dieser Guide geholfen hat:
+[list]
+[*]⭐ Gib dem Guide einen Daumen hoch!
+[*]💬 Hinterlasse einen Kommentar mit deinen Erfahrungen
+[*]🔗 Teile den Guide mit deinen Freunden
+[*]🐛 Melde Bugs oder Verbesserungsvorschläge auf GitHub
+[*]🤝 Contribute zum DkZ Suite Repository
+[/list]
+
+[hr][/hr]
+
+[center]
+[h2]🎮 GOOD LUCK & HAVE FUN! 🎮[/h2]
+
+[b]Made with ❤️ for the CS2 Community[/b]
+
+[i]DkZ DEVKITZ - Professional Gaming Tools[/i]
+
+[url=https://github.com/L33TSTAR/.github]🔗 Visit GitHub[/url]
+[/center]

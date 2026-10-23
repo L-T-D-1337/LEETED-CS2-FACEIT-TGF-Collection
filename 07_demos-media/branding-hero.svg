@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="100%" height="320">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#060608"/>
+      <stop offset="50%" stop-color="#0d0d12"/>
+      <stop offset="100%" stop-color="#14080e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fa1e4e"/>
+      <stop offset="100%" stop-color="#00ff88"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="320" rx="16" fill="url(#bg)" stroke="#fa1e4e" stroke-width="2"/>
+  <rect x="40" y="36" width="260" height="32" rx="6" fill="#fa1e4e" fill-opacity="0.15" stroke="#fa1e4e"/>
+  <text x="56" y="57" fill="#fa1e4e" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700">L-T-D-1337 // LEETED-CS2-FACEIT-TGF-</text>
+  <text x="40" y="135" fill="#f0f0f5" font-family="Inter, sans-serif" font-size="38" font-weight="900">LEETED™ 1337 — CS2 FACEIT, TGF Tuning Pack</text>
+  <text x="40" y="180" fill="#8a8a9e" font-family="Inter, sans-serif" font-size="18">CS2 FACEIT Suite (CFG, Demo-Analysis, Launch-Options, Profiles), TGF Tuning</text>
+  <rect x="40" y="225" width="1120" height="4" rx="2" fill="url(#accent)"/>
+  <text x="40" y="268" fill="#00ff88" font-family="JetBrains Mono, monospace" font-size="14">● DkZ™ DESIGN SYSTEM v2 · 7-FOLDER ARCHITECTURE · SHA-256 VERIFIED · OWNER: 777 (7IKED)</text>
+</svg>

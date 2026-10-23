@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DkZ CS2 Gaming Suite v1.01.1_01</title>
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* DkZ Branding Colors */
+            --primary: #fa1e4e;
+            --secondary-pink: #ec4899;
+            --secondary-green: #00D084;
+            --secondary-blue: #55ACEE;
+            --bg-dark: #0e0e10;
+            --bg-card: #18181b;
+            --bg-input: #1f1f23;
+            --text-primary: #f6f6f7;
+            --text-secondary: #adadb8;
+            --border: #2d2d35;
+            --shadow: rgba(250, 30, 78, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER & BRANDING ===== */
+        .header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            border-bottom: 2px solid var(--primary);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            text-shadow: 0 0 30px var(--shadow);
+        }
+
+        .brand-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .version {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* ===== TAB NAVIGATION ===== */
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-nav::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .tab-button {
+            background: var(--bg-input);
+            border: 2px solid transparent;
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tab-button:hover::before {
+            left: 100%;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== CARDS & SECTIONS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--shadow);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--bg-card);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* ===== GRID LAYOUTS ===== */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        /* ===== PRESET BUTTONS ===== */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preset-btn {
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-card);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-pink) 100%);
+            color: white;
+        }
+
+        /* ===== CODE DISPLAY ===== */
+        .code-block {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: var(--secondary-green);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary-pink);
+        }
+
+        /* ===== RANGE SLIDERS ===== */
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .range-input {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: var(--bg-input);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px var(--shadow);
+        }
+
+        .range-input::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .range-value {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* ===== CROSSHAIR PREVIEW ===== */
+        .crosshair-preview {
+            background: linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%),
+                        linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== NOTIFICATIONS ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .brand-logo {
+                font-size: 1.5rem;
+            }
+
+            .tab-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .preset-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        /* ===== LOADING ANIMATION ===== */
+        .spinner {
+            border: 3px solid var(--bg-input);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== TOOLTIP ===== */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--secondary-blue);
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="brand">
+            <div>
+                <div class="brand-logo">DkZ devkitz</div>
+                <div class="brand-subtitle">CS2 Gaming Performance Suite</div>
+            </div>
+            <span class="version">v1.01.1_01</span>
+        </div>
+
+        <!-- TAB NAVIGATION -->
+        <nav class="tab-nav">
+            <button class="tab-button active" data-tab="config">
+                🎯 Config Generator
+            </button>
+            <button class="tab-button" data-tab="performance">
+                ⚡ Performance Optimizer
+            </button>
+            <button class="tab-button" data-tab="crosshair">
+                ✨ Crosshair Designer
+            </button>
+            <button class="tab-button" data-tab="benchmark">
+                📊 FPS Benchmark
+            </button>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- TAB 1: CONFIG GENERATOR -->
+        <div id="tab-config" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title">CS2 Config Generator</h2>
+                <p class="card-subtitle">Erstelle deine perfekte autoexec.cfg mit FPS-optimierten Einstellungen</p>
+
+                <!-- Pro Player Presets -->
+                <div class="form-group">
+                    <label class="form-label">Pro Player Presets</label>
+                    <div class="preset-grid">
+                        <button class="preset-btn" data-preset="s1mple">s1mple</button>
+                        <button class="preset-btn" data-preset="niko">NiKo</button>
+                        <button class="preset-btn" data-preset="zywoo">ZywOo</button>
+                        <button class="preset-btn" data-preset="custom">Custom</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <!-- Video Settings -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Video Settings</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Resolution</label>
+                            <select class="form-select" id="resolution">
+                                <option value="1920x1080">1920x1080</option>
+                                <option value="1280x960">1280x960 (4:3)</option>
+                                <option value="1024x768">1024x768 (4:3)</option>
+                                <option value="1680x1050">1680x1050</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Brightness</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="brightness" min="0" max="200" value="130">
+                                <span class="range-value" id="brightness-value">130</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">FPS Max</label>
+                            <select class="form-select" id="fpsmax">
+                                <option value="0">Unlimited</option>
+                                <option value="300">300</option>
+                                <option value="240">240</option>
+                                <option value="144">144</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Game Settings -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Game Settings</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Mouse Sensitivity</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="sensitivity" min="0.1" max="5" step="0.1" value="1.5">
+                                <span class="range-value" id="sensitivity-value">1.5</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Zoom Sensitivity</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="zoom-sensitivity" min="0.5" max="2" step="0.1" value="1">
+                                <span class="range-value" id="zoom-sensitivity-value">1.0</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Volume</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="volume" min="0" max="100" value="50">
+                                <span class="range-value" id="volume-value">50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Config Preview -->
+                <div class="form-group">
+                    <label class="form-label">Live Preview</label>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyConfig()">Copy</button>
+                        <pre id="config-preview">// DkZ CS2 Config - Generating...</pre>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="downloadConfig()">📥 Download autoexec.cfg</button>
+                    <button class="btn btn-secondary" onclick="resetConfig()">🔄 Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: PERFORMANCE OPTIMIZER -->
+        <div id="tab-performance" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Performance Optimizer</h2>
+                <p class="card-subtitle">Optimiere dein System für maximale FPS in CS2</p>
+
+                <div class="grid grid-2">
+                    <!-- Launch Options -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Launch Options Generator</h3>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="launch-novid" checked> -novid (Skip intro)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="launch-high" checked> -high (High priority)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="launch-threads"> -threads (CPU threads)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="launch-nojoy" checked> -nojoy (Disable joystick)
+                            </label>
+                        </div>
+
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyLaunchOptions()">Copy</button>
+                            <pre id="launch-options-preview">-novid -high -nojoy</pre>
+                        </div>
+                    </div>
+
+                    <!-- NVIDIA Settings -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">GPU Settings Guide</h3>
+
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-green); margin-bottom: 0.5rem;">NVIDIA Control Panel</h4>
+                            <ul style="font-size: 0.9rem; color: var(--text-secondary); list-style-position: inside;">
+                                <li>Power Management: Maximum Performance</li>
+                                <li>Texture Filtering: High Performance</li>
+                                <li>Low Latency Mode: Ultra</li>
+                                <li>Vertical Sync: Off</li>
+                                <li>Max Frame Rate: Unlimited</li>
+                            </ul>
+                        </div>
+
+                        <div class="card" style="background: var(--bg-input); padding: 1rem; margin-top: 1rem;">
+                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">AMD Radeon Settings</h4>
+                            <ul style="font-size: 0.9rem; color: var(--text-secondary); list-style-position: inside;">
+                                <li>Anti-Lag: Enabled</li>
+                                <li>Radeon Boost: Enabled</li>
+                                <li>Texture Filtering: Performance</li>
+                                <li>Wait for Vertical Refresh: Off</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Windows Tweaks -->
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Windows Gaming Tweaks</h3>
+                    <div class="grid grid-3">
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-blue);">⚡ Power Plan</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Setze Windows Power Plan auf "High Performance"</p>
+                        </div>
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-blue);">🎮 Game Mode</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Aktiviere Windows Game Mode in den Einstellungen</p>
+                        </div>
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-blue);">💾 Virtual Memory</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Setze Page File auf 1.5x deines RAM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CROSSHAIR DESIGNER -->
+        <div id="tab-crosshair" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Crosshair Designer</h2>
+                <p class="card-subtitle">Erstelle dein perfektes Crosshair mit Live-Preview</p>
+
+                <div class="grid grid-2">
+                    <!-- Crosshair Preview -->
+                    <div>
+                        <label class="form-label">Live Preview</label>
+                        <div class="crosshair-preview" id="crosshair-preview">
+                            <canvas id="crosshair-canvas" width="300" height="300"></canvas>
+                        </div>
+
+                        <!-- Pro Player Crosshairs -->
+                        <label class="form-label">Pro Player Crosshairs</label>
+                        <div class="preset-grid">
+                            <button class="preset-btn" onclick="loadCrosshair('s1mple')">s1mple</button>
+                            <button class="preset-btn" onclick="loadCrosshair('niko')">NiKo</button>
+                            <button class="preset-btn" onclick="loadCrosshair('zywoo')">ZywOo</button>
+                        </div>
+                    </div>
+
+                    <!-- Crosshair Settings -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Crosshair Settings</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Style</label>
+                            <select class="form-select" id="ch-style">
+                                <option value="0">Default</option>
+                                <option value="1">Default Static</option>
+                                <option value="2">Classic</option>
+                                <option value="3">Classic Dynamic</option>
+                                <option value="4" selected>Classic Static</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Size</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="ch-size" min="0" max="10" value="2">
+                                <span class="range-value" id="ch-size-value">2</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Gap</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="ch-gap" min="-5" max="10" value="-1">
+                                <span class="range-value" id="ch-gap-value">-1</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Thickness</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="ch-thickness" min="0" max="5" step="0.5" value="0.5">
+                                <span class="range-value" id="ch-thickness-value">0.5</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Color</label>
+                            <select class="form-select" id="ch-color">
+                                <option value="0">Red</option>
+                                <option value="1" selected>Green</option>
+                                <option value="2">Yellow</option>
+                                <option value="3">Blue</option>
+                                <option value="4">Cyan</option>
+                                <option value="5">Custom</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Outline</label>
+                            <div class="range-container">
+                                <input type="range" class="range-input" id="ch-outline" min="0" max="2" step="0.5" value="1">
+                                <span class="range-value" id="ch-outline-value">1</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="ch-dot"> Center Dot
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crosshair Code -->
+                <div class="form-group">
+                    <label class="form-label">Crosshair Code</label>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCrosshairCode()">Copy</button>
+                        <pre id="crosshair-code">// Crosshair commands will appear here</pre>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="exportCrosshair()">💾 Save Crosshair</button>
+                    <button class="btn btn-secondary" onclick="importCrosshair()">📂 Import Code</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: FPS BENCHMARK -->
+        <div id="tab-benchmark" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">FPS Benchmark Tool</h2>
+                <p class="card-subtitle">Analysiere deine System-Performance und erhalte Optimierungs-Empfehlungen</p>
+
+                <div class="grid grid-2">
+                    <!-- System Info -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">System Information</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">CPU</label>
+                            <select class="form-select" id="cpu-tier">
+                                <option value="high">High-End (i7/i9, Ryzen 7/9)</option>
+                                <option value="mid" selected>Mid-Range (i5, Ryzen 5)</option>
+                                <option value="low">Budget (i3, Ryzen 3)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">GPU</label>
+                            <select class="form-select" id="gpu-tier">
+                                <option value="high">High-End (RTX 4070+, RX 7800+)</option>
+                                <option value="mid" selected>Mid-Range (RTX 3060, RX 6600)</option>
+                                <option value="low">Budget (GTX 1650, RX 5500)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">RAM</label>
+                            <select class="form-select" id="ram-amount">
+                                <option value="8">8 GB</option>
+                                <option value="16" selected>16 GB</option>
+                                <option value="32">32 GB</option>
+                            </select>
+                        </div>
+
+                        <button class="btn" onclick="calculateFPS()" style="width: 100%;">📊 Calculate Expected FPS</button>
+                    </div>
+
+                    <!-- Results -->
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Performance Analysis</h3>
+
+                        <div id="fps-results" class="card" style="background: var(--bg-input); padding: 1.5rem; min-height: 200px;">
+                            <p style="color: var(--text-secondary); text-align: center;">
+                                Wähle deine Hardware und klicke auf "Calculate Expected FPS"
+                            </p>
+                        </div>
+
+                        <div id="recommendations" style="margin-top: 1rem;">
+                            <!-- Recommendations will appear here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Impact -->
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Settings Impact on FPS</h3>
+                    <div class="grid grid-3">
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-green);">✅ Low Impact</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-secondary); list-style-position: inside;">
+                                <li>Texture Quality</li>
+                                <li>Anisotropic Filtering</li>
+                                <li>Sound Quality</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--secondary-blue);">⚠️ Medium Impact</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-secondary); list-style-position: inside;">
+                                <li>Shadow Quality</li>
+                                <li>Effect Detail</li>
+                                <li>Model Detail</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                            <h4 style="color: var(--primary);">🔥 High Impact</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-secondary); list-style-position: inside;">
+                                <li>Anti-Aliasing</li>
+                                <li>NVIDIA Reflex</li>
+                                <li>Resolution</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // ===== GLOBAL STATE =====
+        const state = {
+            config: {},
+            crosshair: {},
+            currentTab: 'config'
+        };
+
+        // ===== TAB NAVIGATION =====
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.dataset.tab;
+
+                // Update buttons
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Update content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`tab-${tabName}`).classList.add('active');
+
+                state.currentTab = tabName;
+
+                // Initialize tab-specific functions
+                if (tabName === 'crosshair') {
+                    initCrosshairPreview();
+                }
+            });
+        });
+
+        // ===== NOTIFICATION SYSTEM =====
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
+        // ===== CONFIG GENERATOR =====
+        function updateConfigPreview() {
+            const brightness = document.getElementById('brightness').value;
+            const sensitivity = document.getElementById('sensitivity').value;
+            const zoomSens = document.getElementById('zoom-sensitivity').value;
+            const volume = document.getElementById('volume').value;
+            const fpsMax = document.getElementById('fpsmax').value;
+            const resolution = document.getElementById('resolution').value;
+
+            const config = `// DkZ CS2 Gaming Suite - Config v1.01.1_01
+// Generated: ${new Date().toLocaleString()}
+
+// === VIDEO SETTINGS ===
+fps_max ${fpsMax}
+mat_monitorgamma_tv_enabled "0"
+mat_monitorgamma "${(brightness / 100).toFixed(2)}"
+
+// === MOUSE SETTINGS ===
+sensitivity "${sensitivity}"
+zoom_sensitivity_ratio_mouse "${zoomSens}"
+m_rawinput "1"
+m_mousespeed "0"
+
+// === AUDIO SETTINGS ===
+volume "${(volume / 100).toFixed(2)}"
+snd_musicvolume "0"
+snd_menumusic_volume "0"
+snd_roundstart_volume "0"
+snd_roundend_volume "0"
+snd_mapobjective_volume "0"
+snd_tensecondwarning_volume "0.2"
+
+// === NETWORK SETTINGS ===
+rate "786432"
+cl_interp "0"
+cl_interp_ratio "1"
+cl_updaterate "128"
+cl_cmdrate "128"
+
+// === PERFORMANCE SETTINGS ===
+cl_forcepreload "1"
+r_drawtracers_firstperson "0"
+cl_showhelp "0"
+cl_disablefreezecam "1"
+cl_freezecampanel_position_dynamic "0"
+
+// === RADAR SETTINGS ===
+cl_radar_scale "0.4"
+cl_radar_always_centered "0"
+cl_radar_icon_scale_min "0.6"
+cl_hud_radar_scale "1.15"
+
+// === HUD SETTINGS ===
+cl_hud_color "1"
+cl_hud_background_alpha "0.5"
+cl_hud_bomb_under_radar "1"
+cl_hud_healthammo_style "0"
+
+// === MISC SETTINGS ===
+cl_autowepswitch "0"
+cl_use_opens_buy_menu "0"
+closeonbuy "0"
+hud_showtargetid "1"
+cl_show_clan_in_death_notice "0"
+
+host_writeconfig
+echo "DkZ Config Loaded Successfully!"`;
+
+            document.getElementById('config-preview').textContent = config;
+            state.config.current = config;
+        }
+
+        // Range input value updates
+        document.getElementById('brightness').addEventListener('input', (e) => {
+            document.getElementById('brightness-value').textContent = e.target.value;
+            updateConfigPreview();
+        });
+
+        document.getElementById('sensitivity').addEventListener('input', (e) => {
+            document.getElementById('sensitivity-value').textContent = e.target.value;
+            updateConfigPreview();
+        });
+
+        document.getElementById('zoom-sensitivity').addEventListener('input', (e) => {
+            document.getElementById('zoom-sensitivity-value').textContent = e.target.value;
+            updateConfigPreview();
+        });
+
+        document.getElementById('volume').addEventListener('input', (e) => {
+            document.getElementById('volume-value').textContent = e.target.value;
+            updateConfigPreview();
+        });
+
+        // Select change listeners
+        document.querySelectorAll('#tab-config select').forEach(select => {
+            select.addEventListener('change', updateConfigPreview);
+        });
+
+        // Pro Player Presets
+        const presets = {
+            s1mple: {
+                sensitivity: 3.09,
+                zoomSens: 1.0,
+                brightness: 130,
+                fpsmax: 0,
+                resolution: '1280x960'
+            },
+            niko: {
+                sensitivity: 1.4,
+                zoomSens: 1.0,
+                brightness: 130,
+                fpsmax: 0,
+                resolution: '1280x960'
+            },
+            zywoo: {
+                sensitivity: 2.0,
+                zoomSens: 1.0,
+                brightness: 130,
+                fpsmax: 0,
+                resolution: '1280x960'
+            }
+        };
+
+        document.querySelectorAll('#tab-config .preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const preset = btn.dataset.preset;
+
+                document.querySelectorAll('#tab-config .preset-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (preset !== 'custom' && presets[preset]) {
+                    const p = presets[preset];
+                    document.getElementById('sensitivity').value = p.sensitivity;
+                    document.getElementById('sensitivity-value').textContent = p.sensitivity;
+                    document.getElementById('zoom-sensitivity').value = p.zoomSens;
+                    document.getElementById('zoom-sensitivity-value').textContent = p.zoomSens;
+                    document.getElementById('brightness').value = p.brightness;
+                    document.getElementById('brightness-value').textContent = p.brightness;
+                    document.getElementById('fpsmax').value = p.fpsmax;
+                    document.getElementById('resolution').value = p.resolution;
+
+                    updateConfigPreview();
+                    showNotification(`✅ ${preset} Preset loaded!`);
+                }
+            });
+        });
+
+        function copyConfig() {
+            navigator.clipboard.writeText(state.config.current || document.getElementById('config-preview').textContent);
+            showNotification('✅ Config copied to clipboard!');
+        }
+
+        function downloadConfig() {
+            const blob = new Blob([state.config.current || document.getElementById('config-preview').textContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'autoexec.cfg';
+            a.click();
+            showNotification('✅ Config downloaded!');
+        }
+
+        function resetConfig() {
+            document.getElementById('sensitivity').value = 1.5;
+            document.getElementById('zoom-sensitivity').value = 1.0;
+            document.getElementById('brightness').value = 130;
+            document.getElementById('volume').value = 50;
+            document.getElementById('fpsmax').value = 0;
+            document.querySelectorAll('#tab-config .preset-btn').forEach(b => b.classList.remove('active'));
+            updateConfigPreview();
+            showNotification('✅ Config reset to defaults');
+        }
+
+        // ===== PERFORMANCE OPTIMIZER =====
+        function updateLaunchOptions() {
+            const options = [];
+
+            if (document.getElementById('launch-novid').checked) options.push('-novid');
+            if (document.getElementById('launch-high').checked) options.push('-high');
+            if (document.getElementById('launch-threads').checked) options.push('-threads 8');
+            if (document.getElementById('launch-nojoy').checked) options.push('-nojoy');
+
+            document.getElementById('launch-options-preview').textContent = options.join(' ') || 'No options selected';
+        }
+
+        document.querySelectorAll('#tab-performance input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateLaunchOptions);
+        });
+
+        function copyLaunchOptions() {
+            const text = document.getElementById('launch-options-preview').textContent;
+            navigator.clipboard.writeText(text);
+            showNotification('✅ Launch options copied!');
+        }
+
+        // ===== CROSSHAIR DESIGNER =====
+        let crosshairCanvas, crosshairCtx;
+
+        function initCrosshairPreview() {
+            if (!crosshairCanvas) {
+                crosshairCanvas = document.getElementById('crosshair-canvas');
+                crosshairCtx = crosshairCanvas.getContext('2d');
+            }
+            updateCrosshairPreview();
+        }
+
+        function updateCrosshairPreview() {
+            if (!crosshairCtx) return;
+
+            const size = parseInt(document.getElementById('ch-size').value);
+            const gap = parseInt(document.getElementById('ch-gap').value);
+            const thickness = parseFloat(document.getElementById('ch-thickness').value);
+            const outline = parseFloat(document.getElementById('ch-outline').value);
+            const showDot = document.getElementById('ch-dot').checked;
+            const colorIndex = parseInt(document.getElementById('ch-color').value);
+
+            const colors = ['#FF0000', '#00FF00', '#FFFF00', '#0000FF', '#00FFFF', '#FFFFFF'];
+            const color = colors[colorIndex];
+
+            // Clear canvas
+            crosshairCtx.clearRect(0, 0, 300, 300);
+
+            const centerX = 150;
+            const centerY = 150;
+            const lineLength = size * 10;
+            const gapSize = gap * 3;
+            const lineThickness = thickness * 2;
+
+            // Draw outline
+            if (outline > 0) {
+                crosshairCtx.strokeStyle = '#000000';
+                crosshairCtx.lineWidth = lineThickness + (outline * 2);
+                drawCrosshairLines(centerX, centerY, lineLength, gapSize);
+            }
+
+            // Draw main crosshair
+            crosshairCtx.strokeStyle = color;
+            crosshairCtx.lineWidth = lineThickness;
+            drawCrosshairLines(centerX, centerY, lineLength, gapSize);
+
+            // Draw center dot
+            if (showDot) {
+                if (outline > 0) {
+                    crosshairCtx.fillStyle = '#000000';
+                    crosshairCtx.beginPath();
+                    crosshairCtx.arc(centerX, centerY, 2 + outline, 0, Math.PI * 2);
+                    crosshairCtx.fill();
+                }
+                crosshairCtx.fillStyle = color;
+                crosshairCtx.beginPath();
+                crosshairCtx.arc(centerX, centerY, 2, 0, Math.PI * 2);
+                crosshairCtx.fill();
+            }
+
+            updateCrosshairCode();
+        }
+
+        function drawCrosshairLines(x, y, length, gap) {
+            crosshairCtx.beginPath();
+            // Top
+            crosshairCtx.moveTo(x, y - gap);
+            crosshairCtx.lineTo(x, y - gap - length);
+            // Bottom
+            crosshairCtx.moveTo(x, y + gap);
+            crosshairCtx.lineTo(x, y + gap + length);
+            // Left
+            crosshairCtx.moveTo(x - gap, y);
+            crosshairCtx.lineTo(x - gap - length, y);
+            // Right
+            crosshairCtx.moveTo(x + gap, y);
+            crosshairCtx.lineTo(x + gap + length, y);
+            crosshairCtx.stroke();
+        }
+
+        function updateCrosshairCode() {
+            const style = document.getElementById('ch-style').value;
+            const size = document.getElementById('ch-size').value;
+            const gap = document.getElementById('ch-gap').value;
+            const thickness = document.getElementById('ch-thickness').value;
+            const color = document.getElementById('ch-color').value;
+            const outline = document.getElementById('ch-outline').value;
+            const dot = document.getElementById('ch-dot').checked ? '1' : '0';
+
+            const code = `// DkZ Crosshair Code
+cl_crosshairstyle "${style}"
+cl_crosshairsize "${size}"
+cl_crosshairgap "${gap}"
+cl_crosshairthickness "${thickness}"
+cl_crosshaircolor "${color}"
+cl_crosshair_drawoutline "${outline > 0 ? 1 : 0}"
+cl_crosshair_outlinethickness "${outline}"
+cl_crosshairdot "${dot}"
+cl_crosshairusealpha "1"
+cl_crosshairalpha "255"`;
+
+            document.getElementById('crosshair-code').textContent = code;
+        }
+
+        // Crosshair input listeners
+        ['ch-style', 'ch-size', 'ch-gap', 'ch-thickness', 'ch-color', 'ch-outline'].forEach(id => {
+            document.getElementById(id).addEventListener('input', (e) => {
+                if (id !== 'ch-style' && id !== 'ch-color') {
+                    const valueId = id + '-value';
+                    if (document.getElementById(valueId)) {
+                        document.getElementById(valueId).textContent = e.target.value;
+                    }
+                }
+                updateCrosshairPreview();
+            });
+        });
+
+        document.getElementById('ch-dot').addEventListener('change', updateCrosshairPreview);
+
+        // Pro Player Crosshairs
+        const crosshairPresets = {
+            s1mple: { style: 4, size: 3, gap: -3, thickness: 0, color: 1, outline: 0, dot: 0 },
+            niko: { style: 4, size: 2, gap: -1, thickness: 0.5, color: 1, outline: 1, dot: 0 },
+            zywoo: { style: 4, size: 2.5, gap: -2, thickness: 1, color: 1, outline: 1, dot: 0 }
+        };
+
+        function loadCrosshair(preset) {
+            if (crosshairPresets[preset]) {
+                const ch = crosshairPresets[preset];
+                document.getElementById('ch-style').value = ch.style;
+                document.getElementById('ch-size').value = ch.size;
+                document.getElementById('ch-size-value').textContent = ch.size;
+                document.getElementById('ch-gap').value = ch.gap;
+                document.getElementById('ch-gap-value').textContent = ch.gap;
+                document.getElementById('ch-thickness').value = ch.thickness;
+                document.getElementById('ch-thickness-value').textContent = ch.thickness;
+                document.getElementById('ch-color').value = ch.color;
+                document.getElementById('ch-outline').value = ch.outline;
+                document.getElementById('ch-outline-value').textContent = ch.outline;
+                document.getElementById('ch-dot').checked = ch.dot === 1;
+
+                updateCrosshairPreview();
+                showNotification(`✅ ${preset} crosshair loaded!`);
+            }
+        }
+
+        function copyCrosshairCode() {
+            navigator.clipboard.writeText(document.getElementById('crosshair-code').textContent);
+            showNotification('✅ Crosshair code copied!');
+        }
+
+        function exportCrosshair() {
+            const data = {
+                style: document.getElementById('ch-style').value,
+                size: document.getElementById('ch-size').value,
+                gap: document.getElementById('ch-gap').value,
+                thickness: document.getElementById('ch-thickness').value,
+                color: document.getElementById('ch-color').value,
+                outline: document.getElementById('ch-outline').value,
+                dot: document.getElementById('ch-dot').checked
+            };
+
+            localStorage.setItem('dkz_crosshair', JSON.stringify(data));
+            showNotification('✅ Crosshair saved to browser!');
+        }
+
+        function importCrosshair() {
+            const saved = localStorage.getItem('dkz_crosshair');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('ch-style').value = data.style;
+                document.getElementById('ch-size').value = data.size;
+                document.getElementById('ch-gap').value = data.gap;
+                document.getElementById('ch-thickness').value = data.thickness;
+                document.getElementById('ch-color').value = data.color;
+                document.getElementById('ch-outline').value = data.outline;
+                document.getElementById('ch-dot').checked = data.dot;
+                updateCrosshairPreview();
+                showNotification('✅ Crosshair loaded from browser!');
+            } else {
+                showNotification('❌ No saved crosshair found!');
+            }
+        }
+
+        // ===== FPS BENCHMARK =====
+        function calculateFPS() {
+            const cpuTier = document.getElementById('cpu-tier').value;
+            const gpuTier = document.getElementById('gpu-tier').value;
+            const ram = parseInt(document.getElementById('ram-amount').value);
+
+            const fpsTable = {
+                high_high: { avg: 400, min: 300, max: 600 },
+                high_mid: { avg: 300, min: 220, max: 450 },
+                high_low: { avg: 200, min: 150, max: 280 },
+                mid_high: { avg: 350, min: 280, max: 500 },
+                mid_mid: { avg: 250, min: 180, max: 350 },
+                mid_low: { avg: 150, min: 100, max: 220 },
+                low_high: { avg: 280, min: 200, max: 400 },
+                low_mid: { avg: 180, min: 120, max: 250 },
+                low_low: { avg: 100, min: 60, max: 150 }
+            };
+
+            const key = `${cpuTier}_${gpuTier}`;
+            const fps = fpsTable[key];
+
+            // RAM bonus
+            if (ram >= 32) {
+                fps.avg += 20;
+                fps.max += 30;
+            } else if (ram >= 16) {
+                fps.avg += 10;
+                fps.max += 15;
+            }
+
+            const resultHTML = `
+                <div style="text-align: center;">
+                    <h3 style="color: var(--primary); font-size: 3rem; margin: 1rem 0;">${fps.avg} FPS</h3>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                        Range: ${fps.min} - ${fps.max} FPS
+                    </p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-dark); border-radius: 8px;">
+                        <p style="color: var(--secondary-green); font-weight: 600;">
+                            ${fps.avg >= 240 ? '🔥 Excellent Performance!' : fps.avg >= 144 ? '✅ Great Performance!' : fps.avg >= 60 ? '👍 Good Performance' : '⚠️ Needs Optimization'}
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('fps-results').innerHTML = resultHTML;
+
+            // Generate recommendations
+            const recommendations = [];
+            if (fps.avg < 144) {
+                recommendations.push('• Reduziere Auflösung auf 1280x960 oder 1024x768');
+                recommendations.push('• Deaktiviere Anti-Aliasing komplett');
+                recommendations.push('• Setze alle Grafik-Einstellungen auf Low');
+            }
+            if (ram < 16) {
+                recommendations.push('• Upgrade auf mindestens 16GB RAM empfohlen');
+            }
+            if (gpuTier === 'low') {
+                recommendations.push('• GPU-Upgrade würde größten Performance-Boost bringen');
+            }
+            if (fps.avg < 240) {
+                recommendations.push('• Aktiviere NVIDIA Reflex Low Latency');
+                recommendations.push('• Nutze -high und -threads Launch Options');
+            }
+
+            if (recommendations.length > 0) {
+                const recHTML = `
+                    <div class="card" style="background: var(--bg-input); padding: 1rem;">
+                        <h4 style="color: var(--secondary-blue); margin-bottom: 0.5rem;">💡 Optimierungs-Empfehlungen</h4>
+                        <ul style="font-size: 0.9rem; color: var(--text-secondary); list-style-position: inside;">
+                            ${recommendations.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                document.getElementById('recommendations').innerHTML = recHTML;
+            } else {
+                document.getElementById('recommendations').innerHTML = '<div class="card" style="background: var(--bg-input); padding: 1rem; text-align: center; color: var(--secondary-green);">🎯 Dein System ist optimal konfiguriert!</div>';
+            }
+        }
+
+        // ===== INITIALIZATION =====
+        window.addEventListener('DOMContentLoaded', () => {
+            updateConfigPreview();
+            updateLaunchOptions();
+            showNotification('🎮 DkZ CS2 Suite loaded!', 2000);
+        });
+
+        // ===== LOCAL STORAGE AUTO-SAVE =====
+        window.addEventListener('beforeunload', () => {
+            const appState = {
+                currentTab: state.currentTab,
+                lastVisit: new Date().toISOString()
+            };
+            localStorage.setItem('dkz_app_state', JSON.stringify(appState));
+        });
+    </script>
+</body>
+</html>

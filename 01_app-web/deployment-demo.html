@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>LEETED™ 1337 — CS2 FACEIT, TGF Tuning Pack, JARVIS & MouseRecorder — DkZ™ v2 Interactive Explorer</title>
+  <style>
+    :root { --bg: #060608; --surface: #0d0d12; --accent: #fa1e4e; --green: #00ff88; --text: #f0f0f5; --muted: #8a8a9e; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 32px; }
+    .card { background: var(--surface); border: 1px solid rgba(250,30,78,0.3); border-radius: 14px; padding: 24px; max-width: 1200px; margin: 0 auto 24px; }
+    h1 { margin: 0 0 8px; color: var(--text); }
+    .sub { color: var(--muted); margin-bottom: 16px; }
+    .badge { background: rgba(250,30,78,0.15); color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; padding: 2px 8px; font-family: monospace; font-size: 12px; }
+    .ok { color: var(--green); font-family: monospace; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    th { color: var(--accent); font-family: monospace; }
+    input { width: 100%; padding: 10px 14px; background: #060608; border: 1px solid var(--accent); color: var(--text); border-radius: 8px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">L-T-D-1337/LEETED-CS2-FACEIT-TGF-Collection</span>
+    <h1>LEETED™ 1337 — CS2 FACEIT, TGF Tuning Pack, JARVIS & MouseRecorder</h1>
+    <div class="sub">CS2 FACEIT Suite (CFG, Demo-Analysis, Launch-Options, Profiles), TGF Tuning Pack, JARVIS CS2 Archive, MouseMovementRecorder & Netcode2 Reports</div>
+    <div class="ok">● STATUS: ONLINE · 0 KONVERSATIONEN & WORKSPACE-ARTEFAKTE INTEGRIERT</div>
+  </div>
+  <div class="card">
+    <input type="text" id="q" placeholder="Konversationen, Ergebnisse, Pläne oder Workspaces filtern..." oninput="filterRows()">
+    <table id="tbl">
+      <thead><tr><th>Datum</th><th>ID</th><th>Workspace</th><th>Konversation / Ergebnis</th><th>Artefakte</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <script>
+    function filterRows() {
+      const q = document.getElementById('q').value.toLowerCase();
+      document.querySelectorAll('#tbl tbody tr').forEach(tr => {
+        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

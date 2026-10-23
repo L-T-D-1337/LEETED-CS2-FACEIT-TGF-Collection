@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DkZ CS2 Control v1.01.1_04</title>
+<hta:application
+    id="DkZApp"
+    applicationname="DkZ_CS2_Control"
+    border="thin"
+    borderstyle="normal"
+    caption="yes"
+    maximizebutton="no"
+    minimizebutton="yes"
+    singleinstance="yes"
+    sysmenu="yes"
+    scroll="no"
+    icon=""
+    windowstate="normal" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0e0e10; color: #f6f6f7;
+    font-family: "Segoe UI", Arial, sans-serif; font-size: 13px;
+    padding: 16px; overflow: hidden;
+  }
+  h1 { font-size: 17px; color: #fa1e4e; letter-spacing: 1px; }
+  h1 span { color: #f6f6f7; font-weight: normal; }
+  .sub { color: #888; font-size: 11px; margin-bottom: 12px; }
+  .grid { width: 100%; }
+  .btn {
+    display: inline-block; background: #1a1a1e; color: #f6f6f7;
+    border: 1px solid #333; padding: 10px 14px; margin: 3px 4px 3px 0;
+    cursor: pointer; font-size: 12px; font-weight: bold;
+  }
+  .btn:hover { border-color: #fa1e4e; color: #fa1e4e; }
+  .btn.primary { background: #fa1e4e; color: #fff; border-color: #fa1e4e; font-size: 13px; padding: 12px 20px; }
+  .btn.primary:hover { background: #d0173f; color: #fff; }
+  .btn.green { border-color: #00D084; color: #00D084; }
+  .btn.blue  { border-color: #55ACEE; color: #55ACEE; }
+  .section { margin-top: 12px; border-top: 1px solid #222; padding-top: 10px; }
+  .label { color: #ec4899; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  /* Progress */
+  #barWrap { background: #1a1a1e; border: 1px solid #333; height: 22px; width: 100%; margin: 8px 0; position: relative; }
+  #bar { background: #fa1e4e; height: 100%; width: 0%; transition: width .3s; }
+  #barTxt { position: absolute; top: 2px; left: 0; width: 100%; text-align: center; font-size: 11px; font-weight: bold; }
+  #steps { background: #131316; border: 1px solid #222; height: 130px; overflow-y: auto; padding: 6px; font-family: Consolas, monospace; font-size: 11px; }
+  .ok  { color: #00D084; }
+  .err { color: #fa1e4e; font-weight: bold; }
+  .inf { color: #55ACEE; }
+  .run { color: #ec4899; }
+  /* AI area */
+  textarea {
+    width: 100%; background: #131316; color: #f6f6f7; border: 1px solid #333;
+    font-family: Consolas, monospace; font-size: 11px; padding: 6px; resize: none;
+  }
+  #aiPrompt { height: 90px; border-color: #fa1e4e; }
+  #aiAnswer { height: 60px; border-color: #00D084; }
+  .hint { color: #666; font-size: 10px; margin-top: 2px; }
+</style>
+
+<script language="JScript">
+var WSH  = new ActiveXObject("WScript.Shell");
+var FSO  = new ActiveXObject("Scripting.FileSystemObject");
+var SHA  = new ActiveXObject("Shell.Application");
+var TEMP = WSH.ExpandEnvironmentStrings("%TEMP%");
+var LOG  = TEMP + "\\dkz_status.log";
+var PS1  = TEMP + "\\dkz_setres.ps1";
+var BAT  = TEMP + "\\dkz_worker.bat";
+var AIB  = TEMP + "\\dkz_ai_fix.bat";
+var AILOG= TEMP + "\\dkz_ai_out.log";
+var pollTimer = null;
+var lastSize = 0;
+var NATW = screen.width, NATH = screen.height;
+
+/* ---------- [ADMIN AUTO-ELEVATION] ---------- */
+function isAdmin() {
+  try { return WSH.Run("cmd /c net session >nul 2>&1", 0, true) === 0; }
+  catch (e) { return false; }
+}
+function elevate() {
+  var self = DkZApp.commandLine.replace(/"/g, "");
+  SHA.ShellExecute("mshta.exe", '"' + self + '"', "", "runas", 1);
+  window.close();
+}
+
+/* ---------- [HELPER-DATEIEN SCHREIBEN] ---------- */
+function writeFile(path, content) {
+  var f = FSO.CreateTextFile(path, true);
+  f.Write(content);
+  f.Close();
+}
+
+function writeHelpers() {
+  /* PowerShell Resolution-Helper (mit Modus-Test) */
+  var ps = ""
+  + "param([int]$w,[int]$h)\r\n"
+  + "$ErrorActionPreference='Stop'\r\n"
+  + "try {\r\n"
+  + "Add-Type @'\r\n"
+  + "using System;\r\n"
+  + "using System.Runtime.InteropServices;\r\n"
+  + "[StructLayout(LayoutKind.Sequential,CharSet=CharSet.Ansi)]\r\n"
+  + "public struct DEVMODE {\r\n"
+  + " [MarshalAs(UnmanagedType.ByValTStr,SizeConst=32)] public string dmDeviceName;\r\n"
+  + " public short dmSpecVersion; public short dmDriverVersion; public short dmSize; public short dmDriverExtra;\r\n"
+  + " public int dmFields; public int dmOrientation; public int dmPaperSize; public int dmPaperLength; public int dmPaperWidth;\r\n"
+  + " public int dmScale; public int dmCopies; public int dmDefaultSource; public int dmPrintQuality; public int dmColor;\r\n"
+  + " public int dmDuplex; public int dmYResolution; public int dmTTOption; public int dmCollate;\r\n"
+  + " [MarshalAs(UnmanagedType.ByValTStr,SizeConst=32)] public string dmFormName;\r\n"
+  + " public short dmLogPixels; public int dmBitsPerPel; public int dmPelsWidth; public int dmPelsHeight;\r\n"
+  + " public int dmDisplayFlags; public int dmDisplayFrequency; public int dmICMMethod; public int dmICMVersion;\r\n"
+  + " public int dmDitherType; public int dmReserved1; public int dmReserved2; public int dmPanningWidth; public int dmPanningHeight;\r\n"
+  + "}\r\n"
+  + "public class User32 {\r\n"
+  + " [DllImport(\"user32.dll\",CharSet=CharSet.Ansi)] public static extern int ChangeDisplaySettings(ref DEVMODE devMode,int flags);\r\n"
+  + " [DllImport(\"user32.dll\",CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string deviceName,int modeNum,ref DEVMODE devMode);\r\n"
+  + "}\r\n"
+  + "'@\r\n"
+  + "$d=New-Object DEVMODE\r\n"
+  + "$d.dmSize=[System.Runtime.InteropServices.Marshal]::SizeOf($d)\r\n"
+  + "[User32]::EnumDisplaySettings($null,-1,[ref]$d)|Out-Null\r\n"
+  + "$d.dmPelsWidth=$w; $d.dmPelsHeight=$h; $d.dmFields=0x180000\r\n"
+  + "$t=[User32]::ChangeDisplaySettings([ref]$d,2)\r\n"
+  + "if($t -ne 0){ Write-Host \"MODUS_NICHT_UNTERSTUETZT Code=$t\"; exit 2 }\r\n"
+  + "$r=[User32]::ChangeDisplaySettings([ref]$d,0)\r\n"
+  + "if($r -eq 0){ Write-Host \"OK $w x $h\"; exit 0 } else { Write-Host \"FEHLER Code=$r\"; exit 1 }\r\n"
+  + "} catch { Write-Host \"EXCEPTION: $_\"; exit 1 }\r\n";
+  writeFile(PS1, ps);
+
+  /* Worker-Batch: schreibt Fortschritt/Fehler in dkz_status.log
+     Protokoll:  STEP|n|total|Text   OK|Text   ERR|Text|Detail   DONE */
+  var b = ""
+  + "@echo off\r\n"
+  + "setlocal EnableDelayedExpansion\r\n"
+  + "set LOG=" + LOG + "\r\n"
+  + "set PS=" + PS1 + "\r\n"
+  + "set MODE=%~1\r\n"
+  + "set NW=%~2\r\n"
+  + "set NH=%~3\r\n"
+  + "type nul > \"%LOG%\"\r\n"
+  + "\r\n"
+  + "if /I \"%MODE%\"==\"ONECLICK\" goto ONECLICK\r\n"
+  + "if /I \"%MODE%\"==\"REGFIX\"   goto S_REGFIX\r\n"
+  + "if /I \"%MODE%\"==\"FSOFIX\"   goto S_FSOFIX\r\n"
+  + "if /I \"%MODE%\"==\"NPI\"      goto S_NPI\r\n"
+  + "if /I \"%MODE%\"==\"RES960\"   goto S_RES960\r\n"
+  + "if /I \"%MODE%\"==\"RES1024\"  goto S_RES1024\r\n"
+  + "if /I \"%MODE%\"==\"RESTORE\"  goto S_RESTORE\r\n"
+  + "echo ERR^|Unbekannter Modus^|%MODE%>>\"%LOG%\"\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 1\r\n"
+  + "\r\n"
+  + ":ONECLICK\r\n"
+  + "echo STEP^|1^|6^|Registry: GPU-Skalierung Vollbild...>>\"%LOG%\"\r\n"
+  + "call :DO_REGFIX\r\n"
+  + "echo STEP^|2^|6^|Fullscreen-Optimierungen cs2.exe...>>\"%LOG%\"\r\n"
+  + "call :DO_FSOFIX\r\n"
+  + "echo STEP^|3^|6^|Aufloesung 1280x960 setzen...>>\"%LOG%\"\r\n"
+  + "call :DO_RES 1280 960\r\n"
+  + "if errorlevel 1 ( echo ERR^|Aufloesung^|1280x960 fehlgeschlagen - Details oben>>\"%LOG%\" & echo DONE>>\"%LOG%\" & exit /b 1 )\r\n"
+  + "echo STEP^|4^|6^|CS2 starten...>>\"%LOG%\"\r\n"
+  + "start \"\" \"steam://rungameid/730\"\r\n"
+  + "echo OK^|CS2-Start ausgeloest (Steam)>>\"%LOG%\"\r\n"
+  + "echo STEP^|5^|6^|Warte auf CS2 (max 90s)...>>\"%LOG%\"\r\n"
+  + "set /a W=0\r\n"
+  + ":OC_WAIT1\r\n"
+  + "timeout /t 5 >nul\r\n"
+  + "tasklist /FI \"IMAGENAME eq cs2.exe\" 2>nul | findstr /I \"cs2.exe\" >nul && goto OC_RUN\r\n"
+  + "set /a W+=5\r\n"
+  + "if !W! GEQ 90 ( echo ERR^|CS2-Start^|Prozess nach 90s nicht gefunden>>\"%LOG%\" & call :DO_RES %NW% %NH% & echo DONE>>\"%LOG%\" & exit /b 1 )\r\n"
+  + "goto OC_WAIT1\r\n"
+  + ":OC_RUN\r\n"
+  + "echo OK^|CS2 laeuft - Panel ueberwacht im Hintergrund>>\"%LOG%\"\r\n"
+  + ":OC_WAIT2\r\n"
+  + "timeout /t 5 >nul\r\n"
+  + "tasklist /FI \"IMAGENAME eq cs2.exe\" 2>nul | findstr /I \"cs2.exe\" >nul && goto OC_WAIT2\r\n"
+  + "echo STEP^|6^|6^|CS2 beendet - stelle %NW%x%NH% wieder her...>>\"%LOG%\"\r\n"
+  + "call :DO_RES %NW% %NH%\r\n"
+  + "echo OK^|Native Aufloesung wiederhergestellt>>\"%LOG%\"\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":S_REGFIX\r\n"
+  + "echo STEP^|1^|1^|Registry-Fix...>>\"%LOG%\"\r\n"
+  + "call :DO_REGFIX\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + ":S_FSOFIX\r\n"
+  + "echo STEP^|1^|1^|FSO-Fix...>>\"%LOG%\"\r\n"
+  + "call :DO_FSOFIX\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + ":S_NPI\r\n"
+  + "echo STEP^|1^|2^|Nvidia Profile Inspector laden...>>\"%LOG%\"\r\n"
+  + "call :DO_NPI\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + ":S_RES960\r\n"
+  + "echo STEP^|1^|1^|1280x960 setzen...>>\"%LOG%\"\r\n"
+  + "call :DO_RES 1280 960\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + ":S_RES1024\r\n"
+  + "echo STEP^|1^|1^|1280x1024 setzen...>>\"%LOG%\"\r\n"
+  + "call :DO_RES 1280 1024\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + ":S_RESTORE\r\n"
+  + "echo STEP^|1^|1^|Native Aufloesung %NW%x%NH%...>>\"%LOG%\"\r\n"
+  + "call :DO_RES %NW% %NH%\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_REGFIX\r\n"
+  + "set FIXED=0\r\n"
+  + "for /f \"delims=\" %%K in ('reg query \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\Configuration\" 2^^^>nul') do (\r\n"
+  + "  echo %%K | findstr /I \"Configuration\\\\\" >nul && (\r\n"
+  + "    reg add \"%%K\" /v Scaling /t REG_DWORD /d 4 /f >nul 2>&1 && set FIXED=1\r\n"
+  + "  )\r\n"
+  + ")\r\n"
+  + "if \"!FIXED!\"==\"1\" ( echo OK^|GPU-Skalierung=Vollbild gesetzt (Neustart/Abmelden empfohlen)>>\"%LOG%\" ) else ( echo ERR^|Registry-Fix^|Keine Display-Profile gefunden oder Zugriff verweigert>>\"%LOG%\" )\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_FSOFIX\r\n"
+  + "set STEAMPATH=\r\n"
+  + "for /f \"tokens=2*\" %%A in ('reg query \"HKCU\\Software\\Valve\\Steam\" /v SteamPath 2^^^>nul ^^^| findstr SteamPath') do set STEAMPATH=%%B\r\n"
+  + "if not defined STEAMPATH ( echo ERR^|FSO-Fix^|Steam-Registry-Eintrag nicht gefunden>>\"%LOG%\" & exit /b 1 )\r\n"
+  + "set STEAMPATH=!STEAMPATH:/=\\!\r\n"
+  + "set CS2EXE=!STEAMPATH!\\steamapps\\common\\Counter-Strike Global Offensive\\game\\bin\\win64\\cs2.exe\r\n"
+  + "if exist \"!CS2EXE!\" (\r\n"
+  + "  reg add \"HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers\" /v \"!CS2EXE!\" /t REG_SZ /d \"DISABLEDXMAXIMIZEDWINDOWEDMODE\" /f >nul 2>&1\r\n"
+  + "  echo OK^|FSO deaktiviert fuer cs2.exe>>\"%LOG%\"\r\n"
+  + ") else (\r\n"
+  + "  echo ERR^|FSO-Fix^|cs2.exe nicht gefunden: !CS2EXE!>>\"%LOG%\"\r\n"
+  + ")\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_NPI\r\n"
+  + "set NPIDIR=%USERPROFILE%\\Desktop\\DkZ_NPI\r\n"
+  + "if not exist \"!NPIDIR!\" mkdir \"!NPIDIR!\"\r\n"
+  + "if exist \"!NPIDIR!\\nvidiaProfileInspector.exe\" goto NPI_START\r\n"
+  + "powershell -NoProfile -Command \"$ProgressPreference='SilentlyContinue'; try { $r=Invoke-RestMethod 'https://api.github.com/repos/Orbmu2k/nvidiaProfileInspector/releases/latest'; $u=($r.assets|Where-Object{$_.name -like '*.zip'}|Select-Object -First 1).browser_download_url; Invoke-WebRequest $u -OutFile '%USERPROFILE%\\Desktop\\DkZ_NPI\\npi.zip'; Expand-Archive '%USERPROFILE%\\Desktop\\DkZ_NPI\\npi.zip' -DestinationPath '%USERPROFILE%\\Desktop\\DkZ_NPI' -Force; Remove-Item '%USERPROFILE%\\Desktop\\DkZ_NPI\\npi.zip'; exit 0 } catch { exit 1 }\"\r\n"
+  + "if errorlevel 1 ( echo ERR^|NPI-Download^|GitHub nicht erreichbar - Internet pruefen>>\"%LOG%\" & exit /b 1 )\r\n"
+  + ":NPI_START\r\n"
+  + "echo STEP^|2^|2^|Inspector starten...>>\"%LOG%\"\r\n"
+  + "start \"\" \"!NPIDIR!\\nvidiaProfileInspector.exe\"\r\n"
+  + "echo OK^|Inspector gestartet - Settings-Guide siehe Panel unten>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_RES\r\n"
+  + "for /f \"delims=\" %%O in ('powershell -NoProfile -ExecutionPolicy Bypass -File \"%PS%\" -w %1 -h %2 2^^^>^^^&1') do set PSOUT=%%O\r\n"
+  + "echo !PSOUT! | findstr /I \"^OK\" >nul && ( echo OK^|Aufloesung %1x%2 aktiv>>\"%LOG%\" & exit /b 0 )\r\n"
+  + "echo ERR^|Aufloesung %1x%2^|!PSOUT!>>\"%LOG%\"\r\n"
+  + "exit /b 1\r\n";
+  writeFile(BAT, b);
+}
+
+/* ---------- [WORKER STARTEN + LOG POLLEN] ---------- */
+function runTask(mode) {
+  document.getElementById("steps").innerHTML = "";
+  document.getElementById("aiPrompt").value = "";
+  setBar(0, "Starte: " + mode);
+  try { if (FSO.FileExists(LOG)) FSO.DeleteFile(LOG); } catch (e) {}
+  WSH.Run('cmd /c ""' + BAT + '" ' + mode + ' ' + NATW + ' ' + NATH + '"', 0, false);
+  lastSize = 0;
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = window.setInterval(pollLog, 500);
+}
+
+function pollLog() {
+  var txt = "";
+  try {
+    if (!FSO.FileExists(LOG)) return;
+    var s = FSO.OpenTextFile(LOG, 1);
+    txt = s.AtEndOfStream ? "" : s.ReadAll();
+    s.Close();
+  } catch (e) { return; }
+  if (txt.length === lastSize) return;
+  lastSize = txt.length;
+  renderLog(txt);
+}
+
+function renderLog(txt) {
+  var lines = txt.split("\r\n"), html = "", done = false;
+  for (var i = 0; i < lines.length; i++) {
+    var L = lines[i]; if (!L) continue;
+    var p = L.split("|");
+    if (p[0] === "STEP") {
+      setBar(Math.round((parseInt(p[1],10)-0.5) / parseInt(p[2],10) * 100), p[3]);
+      html += '<div class="run">&#9654; ' + p[3] + '</div>';
+    } else if (p[0] === "OK") {
+      html += '<div class="ok">&#10004; ' + p[1] + '</div>';
+    } else if (p[0] === "ERR") {
+      html += '<div class="err">&#10008; FEHLER: ' + p[1] + ' &mdash; ' + (p[2]||"") + '</div>';
+      buildAiPrompt(p[1], p[2] || "keine Details", txt);
+    } else if (p[0] === "DONE") {
+      done = true;
+    }
+  }
+  if (done) {
+    setBar(100, "Abgeschlossen");
+    clearInterval(pollTimer); pollTimer = null;
+  }
+  var el = document.getElementById("steps");
+  el.innerHTML = html;
+  el.scrollTop = el.scrollHeight;
+}
+
+function setBar(pct, txt) {
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("barTxt").innerText = pct + "% — " + txt;
+}
+
+/* ---------- [FEHLER -> KI-PROMPT] ---------- */
+function buildAiPrompt(step, detail, fullLog) {
+  var os = "unbekannt";
+  try {
+    os = WSH.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProductName")
+       + " Build " + WSH.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\CurrentBuildNumber");
+  } catch (e) {}
+  var prompt = ""
+    + "Ich nutze das DkZ CS2 Stretched Control Panel (HTA + Batch + PowerShell) auf " + os + ".\n"
+    + "Native Aufloesung: " + NATW + "x" + NATH + ". Ziel: CS2 in 1280x960 (4:3 stretched), GPU-Skalierung Vollbild per Registry (HKLM\\...\\GraphicsDrivers\\Configuration, Scaling=4).\n"
+    + "FEHLGESCHLAGENER SCHRITT: " + step + "\n"
+    + "FEHLERDETAILS: " + detail + "\n"
+    + "VOLLSTAENDIGES LOG:\n" + fullLog + "\n"
+    + "Gib mir NUR die Windows-CMD-Befehle (Batch-kompatibel, eine Aktion pro Zeile, keine Erklaerungen), die das Problem beheben. Keine Drittanbieter-Software.";
+  document.getElementById("aiPrompt").value = prompt;
+}
+
+function copyPrompt() {
+  var t = document.getElementById("aiPrompt");
+  t.select(); document.execCommand("copy");
+  setBar(100, "Prompt kopiert - in KI einfuegen");
+}
+
+/* ---------- [KI-ANTWORT AUSFUEHREN] ---------- */
+function runAiAnswer() {
+  var cmd = document.getElementById("aiAnswer").value;
+  cmd = cmd.replace(/```[a-z]*\r?\n?/gi, "").replace(/```/g, "").replace(/^\s+|\s+$/g, "");
+  if (!cmd) { alert("Keine KI-Antwort eingetragen."); return; }
+  /* Sicherheits-Gate: Befehle IMMER vorher anzeigen und bestaetigen lassen */
+  if (!confirm("Diese Befehle werden mit ADMIN-Rechten ausgefuehrt:\n\n" + cmd + "\n\nAusfuehren?")) return;
+  writeFile(AIB, "@echo off\r\n" + cmd.replace(/\n/g, "\r\n") + "\r\n");
+  var rc = WSH.Run('cmd /c ""' + AIB + '" > "' + AILOG + '" 2>&1"', 0, true);
+  var out = "";
+  try { var s = FSO.OpenTextFile(AILOG, 1); out = s.AtEndOfStream ? "(keine Ausgabe)" : s.ReadAll(); s.Close(); } catch (e) { out = "(Log nicht lesbar)"; }
+  var el = document.getElementById("steps");
+  el.innerHTML += '<div class="' + (rc === 0 ? 'ok' : 'err') + '">KI-Fix ausgefuehrt (Exit ' + rc + '):</div><div class="inf">' + out.replace(/</g,"&lt;").replace(/\n/g,"<br>") + '</div>';
+  el.scrollTop = el.scrollHeight;
+  setBar(100, rc === 0 ? "KI-Fix erfolgreich" : "KI-Fix mit Fehlern (Exit " + rc + ")");
+}
+
+/* ---------- [INIT] ---------- */
+function init() {
+  window.resizeTo(720, 860);
+  if (!isAdmin()) {
+    document.getElementById("barTxt").innerText = "Fordere Admin-Rechte an...";
+    elevate();
+    return;
+  }
+  writeHelpers();
+  document.getElementById("sysinfo").innerText =
+    "Admin: JA  |  Native: " + NATW + "x" + NATH + "  |  Log: %TEMP%\\dkz_status.log";
+  setBar(0, "Bereit");
+}
+</script>
+</head>
+
+<body onload="init()">
+  <h1>DkZ <span>| CS2 STRETCHED CONTROL</span></h1>
+  <div class="sub">v1.01.1_04 &nbsp;·&nbsp; <span id="sysinfo">Initialisiere...</span></div>
+
+  <div class="grid">
+    <button class="btn primary" onclick="runTask('ONECLICK')">&#9658; 1-KLICK-SETUP (Fixes + 1280x960 + CS2 + Auto-Restore)</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Aufl&ouml;sung</div>
+    <button class="btn" onclick="runTask('RES960')">1280 x 960 (4:3)</button>
+    <button class="btn" onclick="runTask('RES1024')">1280 x 1024 (5:4)</button>
+    <button class="btn blue" onclick="runTask('RESTORE')">Native zur&uuml;ck</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Fixes</div>
+    <button class="btn" onclick="runTask('REGFIX')">GPU-Skalierung Vollbild</button>
+    <button class="btn" onclick="runTask('FSOFIX')">FSO f&uuml;r cs2.exe aus</button>
+    <button class="btn" onclick="runTask('NPI')">Nvidia Inspector laden</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Fortschritt</div>
+    <div id="barWrap"><div id="bar"></div><div id="barTxt">0% — Bereit</div></div>
+    <div id="steps"></div>
+  </div>
+
+  <div class="section">
+    <div class="label">Fehler &rarr; KI-Prompt (automatisch generiert)</div>
+    <textarea id="aiPrompt" readonly></textarea>
+    <button class="btn" onclick="copyPrompt()">Prompt kopieren</button>
+    <div class="hint">Bei einem Fehler erscheint hier automatisch ein fertiger Prompt mit System-Infos + Log. In eine KI einf&uuml;gen.</div>
+  </div>
+
+  <div class="section">
+    <div class="label">KI-Antwort hier eintragen &rarr; ausf&uuml;hren</div>
+    <textarea id="aiAnswer" placeholder="CMD-Befehle der KI hier einfuegen..."></textarea>
+    <button class="btn green" onclick="runAiAnswer()">&#9658; KI-Fix ausf&uuml;hren</button>
+    <div class="hint">Befehle werden vor Ausf&uuml;hrung IMMER angezeigt und m&uuml;ssen best&auml;tigt werden (Schutz vor fehlerhaften KI-Antworten).</div>
+  </div>
+
+  <div class="section hint">
+    Nvidia Inspector Guide: Profil "Counter-Strike 2" &rarr; VSync Off · Low Latency Ultra · Texture Filtering High Performance · Prefer Max Performance · Threaded Optimization On &rarr; Apply changes.<br>
+    Keine Booster-/"Optimizer"-Apps installieren &mdash; nur Windows-Bordmittel + offizieller Inspector (GitHub).
+  </div>
+</body>
+</html>

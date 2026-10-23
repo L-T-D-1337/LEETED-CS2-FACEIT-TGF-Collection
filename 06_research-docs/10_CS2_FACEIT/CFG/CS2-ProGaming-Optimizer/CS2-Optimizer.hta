@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CS2 Pro Gaming Optimizer</title>
+<HTA:APPLICATION
+    ID="CS2Optimizer"
+    APPLICATIONNAME="CS2 Pro Gaming Optimizer"
+    BORDER="thin"
+    BORDERSTYLE="normal"
+    CAPTION="yes"
+    ICON="assets/icon.ico"
+    MAXIMIZEBUTTON="yes"
+    MINIMIZEBUTTON="yes"
+    SHOWINTASKBAR="yes"
+    SINGLEINSTANCE="yes"
+    SYSMENU="yes"
+    VERSION="1.0"
+    WINDOWSTATE="normal"
+/>
+<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+<style>
+/* ============================================================
+   CS2 PRO GAMING OPTIMIZER — Cyberclean Dark Theme
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+    --bg: #060608;
+    --bg-card: rgba(18,18,24,0.92);
+    --bg-panel: rgba(12,12,18,0.95);
+    --accent: #fa1e4e;
+    --accent-soft: rgba(250,30,78,0.15);
+    --green: #00ff88;
+    --yellow: #ffb800;
+    --red: #ff3b5c;
+    --blue: #3b82f6;
+    --cyan: #22d3ee;
+    --text: #e8e8ec;
+    --text2: #8a8a9a;
+    --mono: 'JetBrains Mono', monospace;
+    --font: 'Inter', sans-serif;
+    --radius: 12px;
+    --glow: 0 0 20px rgba(250,30,78,0.3);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* --- Background Blobs --- */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+body::before {
+    width: 500px; height: 500px;
+    background: var(--accent);
+    top: -100px; left: -100px;
+}
+body::after {
+    width: 400px; height: 400px;
+    background: var(--green);
+    bottom: -80px; right: -80px;
+}
+
+/* --- Header --- */
+.header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid rgba(250,30,78,0.3);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(20px);
+}
+.header h1 {
+    font-size: 22px; font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), #ff6b8a);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header .win-badge {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--accent-soft); color: var(--accent);
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid rgba(250,30,78,0.3);
+}
+.header .autofix-btn {
+    background: linear-gradient(135deg, var(--accent), #d4163f);
+    border: none; color: #fff; padding: 8px 20px;
+    border-radius: 8px; font-weight: 700; font-size: 13px;
+    cursor: pointer; font-family: var(--font);
+    box-shadow: var(--glow);
+    transition: all 0.2s;
+}
+.header .autofix-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(250,30,78,0.5); }
+
+/* --- Tabs --- */
+.tabs {
+    display: flex; gap: 2px;
+    background: var(--bg-panel);
+    padding: 4px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.tab {
+    padding: 10px 18px; cursor: pointer;
+    color: var(--text2); font-size: 12px; font-weight: 600;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.2s; border: 1px solid transparent;
+    background: transparent; font-family: var(--font);
+}
+.tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.tab.active {
+    color: var(--accent); background: rgba(250,30,78,0.08);
+    border-color: rgba(250,30,78,0.2);
+    border-bottom: 2px solid var(--accent);
+}
+
+/* --- Panels --- */
+.panel-container { position: relative; padding: 20px 24px; z-index: 1; min-height: 500px; }
+.panel { display: none; animation: fadeIn 0.3s; }
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- Cards --- */
+.card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s;
+}
+.card:hover { border-color: rgba(250,30,78,0.2); }
+.card h3 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+/* --- Status Badges --- */
+.badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; font-family: var(--mono); }
+.badge-ok { background: rgba(0,255,136,0.12); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+.badge-warn { background: rgba(255,184,0,0.12); color: var(--yellow); border: 1px solid rgba(255,184,0,0.2); }
+.badge-fail { background: rgba(255,59,92,0.12); color: var(--red); border: 1px solid rgba(255,59,92,0.2); }
+.badge-info { background: rgba(59,130,246,0.12); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+
+/* --- Buttons --- */
+.btn {
+    padding: 10px 20px; border: none; border-radius: 8px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    font-family: var(--font); transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #d4163f; transform: scale(1.03); }
+.btn-green { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+.btn-green:hover { background: rgba(0,255,136,0.25); }
+.btn-blue { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+.btn-blue:hover { background: rgba(59,130,246,0.25); }
+.btn-yellow { background: rgba(255,184,0,0.15); color: var(--yellow); border: 1px solid rgba(255,184,0,0.3); }
+.btn-yellow:hover { background: rgba(255,184,0,0.25); }
+.btn-sm { padding: 6px 14px; font-size: 11px; }
+
+/* --- Progress Bar --- */
+.progress-wrap { background: rgba(255,255,255,0.05); border-radius: 8px; height: 8px; overflow: hidden; margin: 10px 0; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 8px; width: 0%; transition: width 0.5s ease; }
+
+/* --- Score Ring --- */
+.score-ring {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 900; font-family: var(--mono);
+    margin: 10px auto;
+}
+.score-high { background: conic-gradient(var(--green) var(--score-pct), rgba(255,255,255,0.05) 0); }
+.score-mid { background: conic-gradient(var(--yellow) var(--score-pct), rgba(255,255,255,0.05) 0); }
+.score-low { background: conic-gradient(var(--red) var(--score-pct), rgba(255,255,255,0.05) 0); }
+.score-inner {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--bg); display: flex;
+    align-items: center; justify-content: center;
+}
+
+/* --- Toggle Switch --- */
+.toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.toggle-row:last-child { border-bottom: none; }
+.toggle-label { font-size: 13px; }
+.toggle-desc { font-size: 10px; color: var(--text2); }
+.toggle { position: relative; width: 44px; height: 24px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle .slider {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.1); border-radius: 24px;
+    transition: 0.3s;
+}
+.toggle .slider::before {
+    content: ''; position: absolute;
+    width: 18px; height: 18px; left: 3px; bottom: 3px;
+    background: var(--text2); border-radius: 50%;
+    transition: 0.3s;
+}
+.toggle input:checked + .slider { background: var(--green); }
+.toggle input:checked + .slider::before { transform: translateX(20px); background: #fff; }
+
+/* --- Terminal --- */
+.terminal {
+    background: #0a0a0e;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 12px;
+    height: 300px;
+    overflow-y: auto;
+    padding: 12px;
+    color: var(--green);
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.terminal-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 12px;
+    width: 100%;
+    margin-top: 8px;
+    outline: none;
+}
+.terminal-input:focus { border-color: var(--accent); }
+
+/* --- Copilot Chat --- */
+.chat-messages {
+    height: 320px; overflow-y: auto;
+    padding: 12px;
+    background: #0a0a0e;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+}
+.chat-msg {
+    margin-bottom: 10px; padding: 8px 12px;
+    border-radius: 10px; max-width: 85%;
+    font-size: 13px; line-height: 1.5;
+}
+.chat-msg.user {
+    background: var(--accent-soft); border: 1px solid rgba(250,30,78,0.2);
+    margin-left: auto;
+}
+.chat-msg.bot {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+}
+.chat-input-row { display: flex; gap: 8px; margin-top: 8px; }
+.chat-input {
+    flex: 1; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 10px 14px;
+    color: var(--text); font-family: var(--font);
+    font-size: 13px; outline: none;
+}
+.chat-input:focus { border-color: var(--accent); }
+
+/* --- Result Item --- */
+.result-item {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 13px;
+}
+.result-item:last-child { border: none; }
+.result-key { color: var(--text2); }
+.result-val { font-family: var(--mono); font-weight: 600; }
+
+/* --- Toast --- */
+.toast {
+    position: fixed; bottom: 20px; right: 20px;
+    background: var(--bg-card); border: 1px solid rgba(0,255,136,0.3);
+    border-radius: var(--radius); padding: 12px 20px;
+    color: var(--green); font-weight: 600;
+    z-index: 9999; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+    animation: slideUp 0.3s ease;
+    display: none;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>⚡ CS2 PRO GAMING OPTIMIZER</h1>
+    <span class="win-badge" id="winBadge">Detecting...</span>
+    <button class="autofix-btn" onclick="runAutoFixAll()">⚡ AUTOFIX ALL</button>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('analyse')">🔍 Analyse</div>
+    <div class="tab" onclick="switchTab('cs2')">🎮 CS2</div>
+    <div class="tab" onclick="switchTab('faceit')">🏆 FACEIT</div>
+    <div class="tab" onclick="switchTab('tweaks')">⚡ Tweaks</div>
+    <div class="tab" onclick="switchTab('copilot')">🤖 Copilot</div>
+    <div class="tab" onclick="switchTab('terminal')">💻 Terminal</div>
+</div>
+
+<!-- Panel Container -->
+<div class="panel-container">
+
+    <!-- ===== ANALYSE ===== -->
+    <div class="panel active" id="panel-analyse">
+        <div style="text-align:center;margin-bottom:16px;">
+            <button class="btn btn-primary" onclick="runAnalyse()" style="font-size:16px;padding:14px 40px;">
+                🔍 System-Analyse starten
+            </button>
+        </div>
+        <div class="progress-wrap"><div class="progress-bar" id="analyseProgress"></div></div>
+        <div id="analyseStatus" style="text-align:center;font-size:12px;color:var(--text2);margin-bottom:16px;">Bereit...</div>
+
+        <div class="card-grid" id="analyseResults" style="display:none;">
+            <div class="card" id="cardOS"><h3>💻 Betriebssystem</h3><div id="resOS">—</div></div>
+            <div class="card" id="cardBIOS"><h3>🔧 BIOS / UEFI</h3><div id="resBIOS">—</div></div>
+            <div class="card" id="cardTPM"><h3>🔐 TPM</h3><div id="resTPM">—</div></div>
+            <div class="card" id="cardSecureBoot"><h3>🛡 Secure Boot</h3><div id="resSecureBoot">—</div></div>
+            <div class="card" id="cardGPU"><h3>🎮 GPU</h3><div id="resGPU">—</div></div>
+            <div class="card" id="cardCPU"><h3>⚙ CPU</h3><div id="resCPU">—</div></div>
+            <div class="card" id="cardRAM"><h3>💾 RAM</h3><div id="resRAM">—</div></div>
+            <div class="card" id="cardPower"><h3>⚡ Power Plan</h3><div id="resPower">—</div></div>
+            <div class="card" id="cardGameDVR"><h3>📹 Game DVR</h3><div id="resGameDVR">—</div></div>
+            <div class="card" id="cardMouse"><h3>🖱 Maus-Beschleunigung</h3><div id="resMouse">—</div></div>
+            <div class="card" id="cardCS2"><h3>🔫 CS2</h3><div id="resCS2">—</div></div>
+            <div class="card" id="cardFACEIT"><h3>🏆 FACEIT</h3><div id="resFACEIT">—</div></div>
+        </div>
+    </div>
+
+    <!-- ===== CS2 ===== -->
+    <div class="panel" id="panel-cs2">
+        <div class="card">
+            <h3>🚀 CS2 Launch Options</h3>
+            <p style="font-size:12px;color:var(--text2);margin-bottom:12px;">Empfohlene Steam Launch Options für Pro Gaming</p>
+            <div style="background:#0a0a0e;padding:12px;border-radius:8px;font-family:var(--mono);font-size:14px;color:var(--green);margin-bottom:12px;">
+                -novid -high -nojoy -w 1280 -h 960 -fullscreen
+            </div>
+            <button class="btn btn-green btn-sm" onclick="copyText('-novid -high -nojoy -w 1280 -h 960 -fullscreen')">📋 Kopieren</button>
+        </div>
+
+        <div class="card">
+            <h3>📺 Resolution: 1280×960 Stretched</h3>
+            <div class="card-grid">
+                <div>
+                    <p style="font-size:12px;color:var(--text2);">In-Game Settings:</p>
+                    <div class="result-item"><span class="result-key">Display Mode</span><span class="result-val" style="color:var(--green)">Fullscreen</span></div>
+                    <div class="result-item"><span class="result-key">Aspect Ratio</span><span class="result-val" style="color:var(--green)">4:3 (Normal)</span></div>
+                    <div class="result-item"><span class="result-key">Resolution</span><span class="result-val" style="color:var(--green)">1280×960</span></div>
+                    <div class="result-item"><span class="result-key">NVIDIA Reflex</span><span class="result-val" style="color:var(--green)">Enabled + Boost</span></div>
+                    <div class="result-item"><span class="result-key">V-Sync</span><span class="result-val" style="color:var(--red)">DISABLED</span></div>
+                </div>
+                <div>
+                    <p style="font-size:12px;color:var(--text2);">GPU Scaling:</p>
+                    <div class="result-item"><span class="result-key">Scaling Mode</span><span class="result-val" style="color:var(--green)">Full-screen</span></div>
+                    <div class="result-item"><span class="result-key">Perform on</span><span class="result-val" style="color:var(--green)">GPU</span></div>
+                    <div class="result-item"><span class="result-key">Override</span><span class="result-val" style="color:var(--green)">Enabled</span></div>
+                </div>
+            </div>
+            <div style="margin-top:12px;">
+                <button class="btn btn-primary btn-sm" onclick="runResolution()">📺 1280×960 Setup ausführen</button>
+                <button class="btn btn-blue btn-sm" onclick="runCS2Optimize()">🎮 CS2 Optimize</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>⚙ Pro Video Settings</h3>
+            <div class="card-grid-3">
+                <div class="result-item"><span class="result-key">Shadows</span><span class="result-val">High</span></div>
+                <div class="result-item"><span class="result-key">Model Detail</span><span class="result-val">Low</span></div>
+                <div class="result-item"><span class="result-key">Texture</span><span class="result-val">Low</span></div>
+                <div class="result-item"><span class="result-key">Shader</span><span class="result-val">Low</span></div>
+                <div class="result-item"><span class="result-key">Particle</span><span class="result-val">Low</span></div>
+                <div class="result-item"><span class="result-key">Anti-Alias</span><span class="result-val">CMAA2</span></div>
+                <div class="result-item"><span class="result-key">Boost Contrast</span><span class="result-val" style="color:var(--green)">ON</span></div>
+                <div class="result-item"><span class="result-key">FPS Max</span><span class="result-val">0 (Unlimited)</span></div>
+                <div class="result-item"><span class="result-key">Multisampling</span><span class="result-val">None</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FACEIT ===== -->
+    <div class="panel" id="panel-faceit">
+        <div style="text-align:center;margin-bottom:16px;">
+            <div class="score-ring score-mid" id="faceitScoreRing" style="--score-pct:0%;">
+                <div class="score-inner"><span id="faceitScoreVal">—</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);">FACEIT Readiness Score</div>
+        </div>
+
+        <div class="card">
+            <h3>✅ FACEIT Requirements Checklist</h3>
+            <div class="result-item"><span class="result-key">TPM 2.0</span><span id="fqTPM" class="badge badge-info">?</span></div>
+            <div class="result-item"><span class="result-key">Secure Boot</span><span id="fqSecureBoot" class="badge badge-info">?</span></div>
+            <div class="result-item"><span class="result-key">UEFI Boot</span><span id="fqUEFI" class="badge badge-info">?</span></div>
+            <div class="result-item"><span class="result-key">Game DVR aus</span><span id="fqGameDVR" class="badge badge-info">?</span></div>
+            <div class="result-item"><span class="result-key">High Performance Plan</span><span id="fqPower" class="badge badge-info">?</span></div>
+            <div class="result-item"><span class="result-key">FACEIT Client</span><span id="fqFACEIT" class="badge badge-info">?</span></div>
+        </div>
+
+        <div class="card">
+            <h3>🔧 FACEIT Fixes</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="runFACEITFix()">🏆 FACEIT Fix (Cache + Reset)</button>
+                <button class="btn btn-green btn-sm" onclick="runCmd('ipconfig /flushdns')">🌐 DNS Flush</button>
+                <button class="btn btn-yellow btn-sm" onclick="runCmd('netsh winsock reset')">🔄 Winsock Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TWEAKS ===== -->
+    <div class="panel" id="panel-tweaks">
+        <div class="card">
+            <h3>⚡ Windows Gaming Tweaks</h3>
+            <div class="toggle-row">
+                <div><div class="toggle-label">Game DVR deaktivieren</div><div class="toggle-desc">Entfernt Xbox Game Bar Overlay</div></div>
+                <label class="toggle"><input type="checkbox" id="twkGameDVR" onchange="toggleTweak('GameDVR')"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <div><div class="toggle-label">High Performance Power Plan</div><div class="toggle-desc">Maximale CPU/GPU Leistung</div></div>
+                <label class="toggle"><input type="checkbox" id="twkPowerPlan" onchange="toggleTweak('PowerPlan')"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <div><div class="toggle-label">Maus-Beschleunigung deaktivieren</div><div class="toggle-desc">Rohe 1:1 Mausbewegung (Pro Standard)</div></div>
+                <label class="toggle"><input type="checkbox" id="twkMouseAccel" onchange="toggleTweak('MouseAccel')"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <div><div class="toggle-label">Fullscreen Optimizations deaktivieren</div><div class="toggle-desc">Reduziert Input Lag in Fullscreen</div></div>
+                <label class="toggle"><input type="checkbox" id="twkFSO" onchange="toggleTweak('FSO')"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <div><div class="toggle-label">GPU Priority Maximum</div><div class="toggle-desc">GPU Priority auf 8 setzen (Registry)</div></div>
+                <label class="toggle"><input type="checkbox" id="twkGPUPriority" onchange="toggleTweak('GPUPriority')"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <div><div class="toggle-label">Telemetrie reduzieren</div><div class="toggle-desc">Weniger Hintergrund-Datensammlung</div></div>
+                <label class="toggle"><input type="checkbox" id="twkTelemetry" onchange="toggleTweak('Telemetry')"><span class="slider"></span></label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🔧 Schnellaktionen</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="importReg()">📥 Registry Tweaks importieren</button>
+                <button class="btn btn-green btn-sm" onclick="runExplorerRestart()">🔄 Explorer Restart</button>
+                <button class="btn btn-blue btn-sm" onclick="runCmd('powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c')">⚡ Force High Perf</button>
+                <button class="btn btn-sm" onclick="runKillAI()" style="background:#ff3b5c;color:#fff;">🛑 AI & Node beenden (RAM)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== COPILOT ===== -->
+    <div class="panel" id="panel-copilot">
+        <div class="card">
+            <h3>🤖 Gaming Copilot (Gemma 4)</h3>
+            <p style="font-size:11px;color:var(--text2);margin-bottom:12px;">KI-Assistent für individuelle Gaming-Optimierung. Hat Zugriff auf deine System-Analyse.</p>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">
+                    Hallo! Ich bin dein <b>CS2 Gaming Copilot</b>. 🎮<br><br>
+                    Ich kann dir helfen mit:<br>
+                    • System-Analyse interpretieren<br>
+                    • Individuelle Optimierungsempfehlungen<br>
+                    • FACEIT Probleme lösen<br>
+                    • Registry-Tweaks erklären<br>
+                    • Terminal-Befehle vorschlagen<br><br>
+                    <i>Starte zuerst die System-Analyse, dann kann ich deine Daten lesen!</i>
+                </div>
+            </div>
+            <div class="chat-input-row">
+                <input class="chat-input" id="chatInput" placeholder="Frage stellen... (z.B. 'Warum hab ich FPS Drops?')" onkeydown="if(event.keyCode===13)sendChat()">
+                <button class="btn btn-primary btn-sm" onclick="sendChat()">📤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TERMINAL ===== -->
+    <div class="panel" id="panel-terminal">
+        <div class="card">
+            <h3>💻 System Terminal</h3>
+            <p style="font-size:11px;color:var(--text2);margin-bottom:8px;">Direkter CMD/PowerShell Zugriff auf dein System</p>
+            <div class="terminal" id="termOutput">CS2 Pro Gaming Optimizer — Terminal v1.0
+Bereit für Befehle. Tippe 'help' für eine Übersicht.
+&gt; </div>
+            <input class="terminal-input" id="termInput" placeholder="Befehl eingeben... (z.B. systeminfo, ipconfig, powershell Get-Tpm)" onkeydown="if(event.keyCode===13)execTermCmd()">
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CS2 PRO GAMING OPTIMIZER — Engine
+// ============================================================
+
+var shell = new ActiveXObject("WScript.Shell");
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var appPath = getAppPath();
+var systemData = null;
+
+function getAppPath() {
+    var path = document.location.pathname;
+    path = path.replace(/\//g, "\\");
+    if (path.charAt(0) === "\\") path = path.substr(1);
+    return path.substring(0, path.lastIndexOf("\\") + 1);
+}
+
+// --- Tab Switching ---
+function switchTab(name) {
+    var tabs = document.querySelectorAll('.tab');
+    var panels = document.querySelectorAll('.panel');
+    for (var i = 0; i < tabs.length; i++) { tabs[i].className = 'tab'; }
+    for (var i = 0; i < panels.length; i++) { panels[i].className = 'panel'; }
+    document.getElementById('panel-' + name).className = 'panel active';
+    var tabNames = ['analyse','cs2','faceit','tweaks','copilot','terminal'];
+    for (var i = 0; i < tabNames.length; i++) {
+        if (tabNames[i] === name) tabs[i].className = 'tab active';
+    }
+}
+
+// --- Toast ---
+function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.innerHTML = msg;
+    t.style.display = 'block';
+    t.style.borderColor = type === 'error' ? 'rgba(255,59,92,0.3)' : type === 'warn' ? 'rgba(255,184,0,0.3)' : 'rgba(0,255,136,0.3)';
+    t.style.color = type === 'error' ? '#ff3b5c' : type === 'warn' ? '#ffb800' : '#00ff88';
+    setTimeout(function() { t.style.display = 'none'; }, 3500);
+}
+
+// --- Copy to clipboard ---
+function copyText(txt) {
+    shell.Run('cmd /c echo ' + txt + ' | clip', 0, true);
+    showToast('✓ In Zwischenablage kopiert!', 'ok');
+}
+
+// --- Run PowerShell Command (return output) ---
+function runPS(cmd) {
+    var tmpFile = shell.ExpandEnvironmentStrings("%TEMP%") + "\\cs2opt_output.txt";
+    shell.Run('powershell -ExecutionPolicy Bypass -Command "' + cmd + ' | Out-File -FilePath \'' + tmpFile + '\' -Encoding UTF8"', 0, true);
+    if (fso.FileExists(tmpFile)) {
+        var f = fso.OpenTextFile(tmpFile, 1, false, -1);
+        var output = f.ReadAll();
+        f.Close();
+        fso.DeleteFile(tmpFile);
+        return output.replace(/^\s+|\s+$/g, '');
+    }
+    return '';
+}
+
+// --- Run CMD Command ---
+function runCmd(cmd) {
+    appendTermOutput('> ' + cmd);
+    var tmpFile = shell.ExpandEnvironmentStrings("%TEMP%") + "\\cs2opt_cmd.txt";
+    shell.Run('cmd /c ' + cmd + ' > "' + tmpFile + '" 2>&1', 0, true);
+    if (fso.FileExists(tmpFile)) {
+        var f = fso.OpenTextFile(tmpFile, 1);
+        var output = f.ReadAll();
+        f.Close();
+        fso.DeleteFile(tmpFile);
+        appendTermOutput(output);
+    }
+    showToast('✓ Befehl ausgeführt: ' + cmd, 'ok');
+}
+
+// --- System Analyse ---
+function runAnalyse() {
+    var pb = document.getElementById('analyseProgress');
+    var status = document.getElementById('analyseStatus');
+    var results = document.getElementById('analyseResults');
+
+    pb.style.width = '5%';
+    status.innerHTML = 'Analyse läuft...';
+
+    var tmpJson = shell.ExpandEnvironmentStrings("%TEMP%") + "\\cs2opt_analyse.json";
+    pb.style.width = '10%';
+    status.innerHTML = '[1/12] Windows erkennen...';
+
+    // Run the full analysis script
+    shell.Run('powershell -ExecutionPolicy Bypass -File "' + appPath + 'analyze.ps1" -JsonOnly -OutputFile "' + tmpJson + '"', 0, true);
+
+    pb.style.width = '90%';
+    status.innerHTML = 'Ergebnisse laden...';
+
+    if (fso.FileExists(tmpJson)) {
+        var f = fso.OpenTextFile(tmpJson, 1, false, -1);
+        var json = f.ReadAll();
+        f.Close();
+
+        try {
+            systemData = eval('(' + json + ')');
+            displayResults(systemData);
+            results.style.display = 'grid';
+            pb.style.width = '100%';
+            status.innerHTML = '✓ Analyse abgeschlossen!';
+            showToast('✓ System-Analyse abgeschlossen!', 'ok');
+
+            // Update Windows badge
+            if (systemData.OS) {
+                document.getElementById('winBadge').innerHTML = systemData.OS.Version + ' Build ' + systemData.OS.Build;
+            }
+
+            // Update FACEIT panel
+            updateFACEITPanel(systemData);
+        } catch(e) {
+            status.innerHTML = '✗ Fehler beim Parsen: ' + e.message;
+            showToast('Fehler: ' + e.message, 'error');
+        }
+    } else {
+        status.innerHTML = '✗ Analyse fehlgeschlagen (Admin-Rechte nötig?)';
+        showToast('Analyse fehlgeschlagen! Als Administrator starten.', 'error');
+    }
+}
+
+function displayResults(d) {
+    setResult('resOS', d.OS, function(o){
+        return ri('Version', o.Version, o.Version==='Windows 11'?'green':'blue') +
+               ri('Build', o.Build) + ri('Edition', o.Edition) + ri('Arch', o.Architecture);
+    });
+    setResult('resBIOS', d.BIOS, function(o){
+        return ri('Hersteller', o.Manufacturer) + ri('Version', o.Version) +
+               ri('Firmware', o.FirmwareType, o.FirmwareType==='UEFI'?'green':'yellow');
+    });
+    setResult('resTPM', d.TPM, function(o){
+        return ri('Present', o.Present?'Ja':'Nein', o.Present?'green':'red') +
+               ri('Ready', o.Ready?'Ja':'Nein', o.Ready?'green':'red') +
+               ri('Version', o.Version);
+    });
+    setResult('resSecureBoot', d.SecureBoot, function(o){
+        return ri('Enabled', o.Enabled?'Ja':'Nein', o.Enabled?'green':'red');
+    });
+    setResult('resGPU', d.GPU, function(o){
+        return ri('Name', o.Name) + ri('Brand', o.Brand, 'blue') +
+               ri('Treiber', o.DriverVersion) + ri('VRAM', o.VRAM_MB + ' MB');
+    });
+    setResult('resCPU', d.CPU, function(o){
+        return ri('Name', o.Name) + ri('Kerne', o.Cores + 'C/' + o.LogicalCores + 'T') +
+               ri('Max MHz', o.MaxClockMHz);
+    });
+    setResult('resRAM', d.RAM, function(o){
+        return ri('Gesamt', o.TotalGB + ' GB', o.TotalGB>=16?'green':'yellow') + ri('Sticks', o.Sticks);
+    });
+    setResult('resPower', d.PowerPlan, function(o){
+        return ri('Aktiv', o.Active, o.IsHighPerformance?'green':'yellow') +
+               ri('Optimal', o.IsHighPerformance?'Ja ✓':'Nein ⚠', o.IsHighPerformance?'green':'red');
+    });
+    setResult('resGameDVR', d.GameDVR, function(o){
+        return ri('Status', o.Enabled?'AN ⚠':'AUS ✓', o.Enabled?'red':'green');
+    });
+    setResult('resMouse', d.MouseAcceleration, function(o){
+        return ri('Beschleunigung', o.Enabled?'AN ⚠':'AUS ✓', o.Enabled?'red':'green');
+    });
+    setResult('resCS2', d.CS2, function(o){
+        return ri('Gefunden', o.Found?'Ja ✓':'Nein', o.Found?'green':'yellow') +
+               (o.Path ? ri('Pfad', o.Path) : '');
+    });
+    setResult('resFACEIT', d.FACEIT, function(o){
+        return ri('Installiert', o.Installed?'Ja ✓':'Nein', o.Installed?'green':'yellow') +
+               ri('AC Service', o.ACServiceRunning?'Running ✓':'Stopped', o.ACServiceRunning?'green':'yellow');
+    });
+}
+
+function setResult(id, data, fn) {
+    if (!data) { document.getElementById(id).innerHTML = '<span style="color:var(--text2)">Nicht verfügbar</span>'; return; }
+    document.getElementById(id).innerHTML = fn(data);
+}
+
+function ri(key, val, color) {
+    var c = color ? ('style="color:var(--' + color + ')"') : '';
+    return '<div class="result-item"><span class="result-key">' + esc(key) + '</span><span class="result-val" ' + c + '>' + esc(String(val||'—')) + '</span></div>';
+}
+
+function esc(s) { var d = document.createElement('div'); d.innerText = s; return d.innerHTML; }
+
+// --- FACEIT Panel Update ---
+function updateFACEITPanel(d) {
+    setBadge('fqTPM', d.TPM && d.TPM.Present && d.TPM.Ready, 'Aktiv ✓', 'Fehlt ✗');
+    setBadge('fqSecureBoot', d.SecureBoot && d.SecureBoot.Enabled, 'Aktiv ✓', 'Aus ✗');
+    setBadge('fqUEFI', d.BIOS && d.BIOS.FirmwareType === 'UEFI', 'UEFI ✓', 'Legacy ✗');
+    setBadge('fqGameDVR', d.GameDVR && !d.GameDVR.Enabled, 'Aus ✓', 'An ✗');
+    setBadge('fqPower', d.PowerPlan && d.PowerPlan.IsHighPerformance, 'Ja ✓', 'Nein ✗');
+    setBadge('fqFACEIT', d.FACEIT && d.FACEIT.Installed, 'Installiert ✓', 'Fehlt');
+
+    var score = d.FACEITReadiness ? d.FACEITReadiness.Score : 0;
+    var ring = document.getElementById('faceitScoreRing');
+    ring.style.cssText = '--score-pct:' + score + '%;';
+    ring.className = 'score-ring ' + (score >= 80 ? 'score-high' : score >= 50 ? 'score-mid' : 'score-low');
+    document.getElementById('faceitScoreVal').innerHTML = score;
+}
+
+function setBadge(id, ok, okText, failText) {
+    var el = document.getElementById(id);
+    el.className = 'badge ' + (ok ? 'badge-ok' : 'badge-fail');
+    el.innerHTML = ok ? okText : failText;
+}
+
+// --- Run Fix Scripts ---
+function runAutoFixAll() {
+    if (confirm('⚡ AUTOFIX ALL ausführen?\n\nDies ändert Registry-Einträge und erstellt einen Wiederherstellungspunkt.\n\nFortfahren?')) {
+        showToast('⚡ AutoFix ALL gestartet...', 'warn');
+        shell.Run('cmd /c "' + appPath + 'fixes\\autofix-all.bat"', 1, false);
+    }
+}
+
+function runResolution() {
+    showToast('📺 Resolution Setup wird ausgeführt...', 'warn');
+    shell.Run('powershell -ExecutionPolicy Bypass -File "' + appPath + 'fixes\\set-resolution.ps1"', 1, false);
+}
+
+function runCS2Optimize() {
+    showToast('🎮 CS2 Optimierung wird ausgeführt...', 'warn');
+    shell.Run('cmd /c "' + appPath + 'fixes\\cs2-optimize.bat"', 1, false);
+}
+
+function runFACEITFix() {
+    showToast('🏆 FACEIT Fix wird ausgeführt...', 'warn');
+    shell.Run('cmd /c "' + appPath + 'fixes\\faceit-fix.bat"', 1, false);
+}
+
+function runExplorerRestart() {
+    showToast('🔄 Explorer wird neu gestartet...', 'warn');
+    shell.Run('cmd /c "' + appPath + 'fixes\\explorer-restart.bat"', 0, false);
+}
+
+function importReg() {
+    if (confirm('📥 Gaming Registry Tweaks importieren?\n\nDies ändert:\n- Game DVR\n- GPU Priority\n- Mouse Acceleration\n- Fullscreen Optimizations\n\nFortfahren?')) {
+        shell.Run('regedit /s "' + appPath + 'fixes\\gaming-optimize.reg"', 0, true);
+        showToast('✓ Registry Tweaks importiert!', 'ok');
+    }
+}
+
+function runKillAI() {
+    showToast('🛑 AI Background Tasks werden beendet...', 'warn');
+    shell.Run('cmd /c "' + appPath + 'fixes\\kill-ai.bat"', 1, false);
+}
+
+// --- Toggle Tweaks ---
+function toggleTweak(name) {
+    var cmds = {
+        'GameDVR': 'reg add "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 0 /f',
+        'PowerPlan': 'powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c',
+        'MouseAccel': 'reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f',
+        'FSO': 'reg add "HKCU\\System\\GameConfigStore" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f',
+        'GPUPriority': 'reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "GPU Priority" /t REG_DWORD /d 8 /f',
+        'Telemetry': 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f'
+    };
+    if (cmds[name]) {
+        shell.Run('cmd /c ' + cmds[name], 0, true);
+        showToast('✓ ' + name + ' angewendet!', 'ok');
+    }
+}
+
+// --- Copilot Chat ---
+function sendChat() {
+    var input = document.getElementById('chatInput');
+    var msg = input.value;
+    if (!msg) return;
+    input.value = '';
+
+    addChatMsg(msg, 'user');
+
+    // Local Copilot response (rule-based for offline, Gemma 4 via Ollama if available)
+    var response = getCopilotResponse(msg);
+    addChatMsg(response, 'bot');
+}
+
+function addChatMsg(text, type) {
+    var html = '<div class="chat-msg ' + type + '">' + text + '</div>';
+    var el = document.getElementById('chatMessages');
+    el.innerHTML += html;
+    el.scrollTop = el.scrollHeight;
+}
+
+function getCopilotResponse(msg) {
+    var m = msg.toLowerCase();
+
+    // Try Ollama/Gemma 4 first
+    try {
+        var xhr = new ActiveXObject("MSXML2.XMLHTTP");
+        xhr.Open("POST", "http://localhost:11434/api/generate", false);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        var sysInfo = systemData ? ' System-Info: ' + JSON.stringify(systemData.OS) + ', GPU: ' + (systemData.GPU?systemData.GPU.Name:'unbekannt') : '';
+        var payload = '{"model":"gemma3","prompt":"Du bist ein CS2 Pro Gaming Optimizer Copilot. Antworte kurz und präzise auf Deutsch. ' + sysInfo + ' Frage: ' + msg.replace(/"/g,'\\"') + '","stream":false}';
+        xhr.Send(payload);
+        if (xhr.Status === 200) {
+            var resp = eval('(' + xhr.ResponseText + ')');
+            return resp.response || 'Keine Antwort von Gemma.';
+        }
+    } catch(e) {
+        // Fallback: Rule-based
+    }
+
+    // Rule-based fallback
+    if (m.indexOf('fps') !== -1 || m.indexOf('drop') !== -1) {
+        return '🎮 <b>FPS-Drops beheben:</b><br>1. Game DVR deaktivieren (Tab Tweaks)<br>2. Power Plan auf High Performance<br>3. NVIDIA Reflex: Enabled + Boost<br>4. Hintergrund-Apps schließen<br>5. GPU Treiber aktualisieren<br>6. V-Sync IMMER aus!';
+    }
+    if (m.indexOf('faceit') !== -1) {
+        return '🏆 <b>FACEIT Probleme?</b><br>1. TPM 2.0 im BIOS aktivieren<br>2. Secure Boot einschalten<br>3. FACEIT Cache löschen (Tab FACEIT)<br>4. Windows vollständig updaten<br>5. Client neu installieren wenn nötig';
+    }
+    if (m.indexOf('resolution') !== -1 || m.indexOf('1280') !== -1 || m.indexOf('stretched') !== -1) {
+        return '📺 <b>1280×960 Stretched Setup:</b><br>1. CS2: Display Mode → Fullscreen<br>2. Aspect Ratio → 4:3<br>3. Resolution → 1280×960<br>4. NVIDIA Control Panel → Scaling: Full-screen, GPU<br>5. Override scaling aktivieren';
+    }
+    if (m.indexOf('maus') !== -1 || m.indexOf('mouse') !== -1) {
+        return '🖱 <b>Maus-Optimierung:</b><br>1. Maus-Beschleunigung AUS (Tab Tweaks)<br>2. Windows: Enhanced Pointer Precision = OFF<br>3. CS2: Raw Input = ON<br>4. DPI: 400-800 (Pro Standard)<br>5. Sens: 1.0-2.0 je nach DPI';
+    }
+    if (m.indexOf('registry') !== -1 || m.indexOf('reg') !== -1) {
+        return '📝 <b>Registry-Tweaks erklärt:</b><br>• Game DVR: Xbox Overlay entfernen → weniger CPU<br>• GPU Priority 8: GPU bekommt höchste Priorität<br>• Nagle off: Netzwerkpakete sofort senden<br>• FSO off: Echtes Fullscreen statt Borderless<br><br>⚠ Immer Wiederherstellungspunkt erstellen!';
+    }
+    if (m.indexOf('help') !== -1 || m.indexOf('hilfe') !== -1) {
+        return '📋 <b>Copilot Hilfe:</b><br>Frag mich zu:<br>• "FPS Drops" → Optimierungstipps<br>• "FACEIT Probleme" → Readiness Check<br>• "1280x960" → Resolution Setup<br>• "Maus" → Sensitivity & Accel<br>• "Registry" → Tweak-Erklärungen<br>• Oder stelle eine freie Frage!';
+    }
+
+    return '🤖 Ich verstehe deine Frage. Hier ein allgemeiner Tipp:<br><br>1. Führe zuerst die <b>System-Analyse</b> aus (Tab Analyse)<br>2. Prüfe deinen <b>FACEIT Readiness Score</b><br>3. Nutze die <b>Toggle-Switches</b> im Tweaks-Tab<br>4. Bei Problemen: <b>AutoFix ALL</b> als Komplettlösung<br><br>Frag mich gerne spezifischer zu FPS, FACEIT, Maus, Resolution oder Registry!';
+}
+
+// --- Terminal ---
+function appendTermOutput(text) {
+    var el = document.getElementById('termOutput');
+    el.innerHTML += '\n' + esc(text);
+    el.scrollTop = el.scrollHeight;
+}
+
+function execTermCmd() {
+    var input = document.getElementById('termInput');
+    var cmd = input.value;
+    if (!cmd) return;
+    input.value = '';
+
+    if (cmd === 'help') {
+        appendTermOutput('> help');
+        appendTermOutput('Verfügbare Befehle:');
+        appendTermOutput('  analyse     — System-Analyse starten');
+        appendTermOutput('  autofix     — Alle Fixes ausführen');
+        appendTermOutput('  faceit      — FACEIT Fix starten');
+        appendTermOutput('  explorer    — Explorer neu starten');
+        appendTermOutput('  resolution  — 1280x960 Setup');
+        appendTermOutput('  cls         — Terminal leeren');
+        appendTermOutput('  [cmd]       — Beliebigen CMD-Befehl ausführen');
+        appendTermOutput('> ');
+        return;
+    }
+    if (cmd === 'cls') {
+        document.getElementById('termOutput').innerHTML = 'Terminal bereinigt.\n> ';
+        return;
+    }
+    if (cmd === 'analyse') { runAnalyse(); return; }
+    if (cmd === 'autofix') { runAutoFixAll(); return; }
+    if (cmd === 'faceit') { runFACEITFix(); return; }
+    if (cmd === 'explorer') { runExplorerRestart(); return; }
+    if (cmd === 'resolution') { runResolution(); return; }
+
+    runCmd(cmd);
+    appendTermOutput('> ');
+}
+
+// --- Init ---
+function initApp() {
+    // Detect Windows version
+    try {
+        var build = runPS('[int](Get-ItemProperty \"HKLM:\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\").CurrentBuildNumber');
+        var winVer = parseInt(build) >= 22000 ? 'Win 11' : 'Win 10';
+        document.getElementById('winBadge').innerHTML = winVer + ' Build ' + build;
+    } catch(e) {
+        document.getElementById('winBadge').innerHTML = 'Windows';
+    }
+}
+
+// Auto-Elevation Check
+try {
+    shell.Run('net session', 0, true);
+} catch(e) {
+    if (confirm('⚠ Dieses Tool benötigt Administrator-Rechte!\n\nOhne Admin-Rechte funktionieren Registry-Änderungen und System-Scans nicht.\n\nJetzt als Administrator neu starten?')) {
+        var app = new ActiveXObject("Shell.Application");
+        app.ShellExecute("mshta.exe", '"' + document.location.pathname + '"', "", "runas", 1);
+        window.close();
+    }
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>

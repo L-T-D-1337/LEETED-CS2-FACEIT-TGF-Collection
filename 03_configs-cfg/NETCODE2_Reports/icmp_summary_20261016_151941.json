@@ -1,0 +1,11 @@
+﻿{
+    "target":  "158.173.155.192",
+    "datetime":  "2026-10-16T15:20:03.7444615+02:00",
+    "requested":  20,
+    "replies":  20,
+    "loss_percent":  0,
+    "min_ms":  12,
+    "avg_ms":  12.95,
+    "max_ms":  13,
+    "important":  "ICMP reply times are not CS2 UDP server latency or WireGuard throughput. Blocked ICMP is not proof of packet loss."
+}

@@ -1,0 +1,376 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+CS2ServerPicker
+</name>
+</assembly>
+<members>
+<member name="T:CS2ServerPicker.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Beijing___Mobile__China___pekm_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Beijing___Telecom__China___pekt_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Beijing___Unicom__China___peku_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Chengdu___Mobile__China___ctum_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Chengdu___Telecom__China___ctut_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Chengdu___Unicom__China___ctuu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Shanghai___Mobile__China___pvgm_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Shanghai___Telecom__China___pvgt_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Shanghai___Unicom__China___pvgu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Shanghai_Alicloud___Mobile__China___pvgm_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Shanghai_Alicloud___Telecom__China___pvgt_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Alibaba_Cloud_Shanghai_Alicloud___Unicom__China___pvgu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Amsterdam__Netherlands___ams_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Atlanta__Georgia___atl_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Buenos_Aires__Argentina___eze_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Chennai___Ambattur__India___maa2_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Chicago__Illinois___ord_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.China">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Dallas__Texas___dfw_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Dubai__United_Arab_Emirates___dxb_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Frankfurt__Germany___fra_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.GitHub_Mark">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Helsinki__Finland___hel_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Hong_Kong__hkg_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.India">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Japan">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Johannesburg__South_Africa___jnb_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Lima__Peru___lim_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.London__England___lhr_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Los_Angeles__California___lax_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Madrid__Spain___mad_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Multiplay_Amsterdam__Netherlands___ams4_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Multiplay_Dallas__Texas___dfw2_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Multiplay_Hong_Kong__hkg4_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Mumbai__India___bom2_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.New_York__jfk_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Paris__France___par_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Paypal">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World__sha_4__Backbone__Shanghai__China___shb_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Guangdong_1__China___pwg_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Guangdong_2___Mobile__China___canm_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Guangdong_2___Telecom__China___cant_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Guangdong_2___Unicom__China___canu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Hebei__China___pwu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Shanghai___Mobile__China___sham_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Shanghai___Telecom__China___shat_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Shanghai___Unicom__China___shau_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Tianjin___Mobile__China___tsnm_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Tianjin___Telecom__China___tsnt_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Tianjin___Unicom__China___tsnu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Tianjin__China___pwj_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Wuhan__China___pww_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Perfect_World_Zhejiang__China___pwz_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Santiago__Chile___scl_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Sao_Paulo__Brazil___gru_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Seattle__Washington___sea_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Seoul__South_Korea___seo_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Settings">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Singapore__sgp_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Sterling__Virginia___iad_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Stockholm___Bromma__Sweden___sto2_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Stockholm___Kista__Sweden___sto_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Stockholm__Sweden_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Sydney__Australia___syd_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Tencent_Guangzhou___Mobile__China___tgdm_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Tencent_Guangzhou___Telecom__China___tgdt_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Tencent_Guangzhou___Unicom__China___tgdu_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Tokyo_Koto_City__Japan___tyo_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Vienna__Austria___vie_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:CS2ServerPicker.My.Resources.Resources.Warsaw__Poland___waw_">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+</members>
+</doc>

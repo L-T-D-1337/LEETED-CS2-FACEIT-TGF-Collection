@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="x-ua-compatible" content="ie=9">
+<title>DkZ CS2 Control v1.01.1_05</title>
+<hta:application
+    id="DkZApp"
+    applicationname="DkZ_CS2_Control"
+    border="thin"
+    caption="yes"
+    maximizebutton="no"
+    minimizebutton="yes"
+    singleinstance="yes"
+    sysmenu="yes"
+    scroll="no"
+    windowstate="normal" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e0e10; color: #f6f6f7; font-family: "Segoe UI", Arial, sans-serif; font-size: 13px; padding: 14px; overflow: hidden; }
+  h1 { font-size: 16px; color: #fa1e4e; letter-spacing: 1px; }
+  h1 span { color: #f6f6f7; font-weight: normal; }
+  .sub { color: #888; font-size: 11px; margin-bottom: 10px; }
+  .btn { display: inline-block; background: #1a1a1e; color: #f6f6f7; border: 1px solid #333; padding: 9px 12px; margin: 2px 3px 2px 0; cursor: pointer; font-size: 12px; font-weight: bold; }
+  .btn:hover { border-color: #fa1e4e; color: #fa1e4e; }
+  .btn.primary { background: #fa1e4e; color: #fff; border-color: #fa1e4e; padding: 11px 16px; }
+  .btn.primary:hover { background: #d0173f; }
+  .btn.green { border-color: #00D084; color: #00D084; }
+  .btn.blue  { border-color: #55ACEE; color: #55ACEE; }
+  .section { margin-top: 10px; border-top: 1px solid #222; padding-top: 8px; }
+  .label { color: #ec4899; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  #barWrap { background: #1a1a1e; border: 1px solid #333; height: 20px; width: 100%; margin: 6px 0; position: relative; }
+  #bar { background: #fa1e4e; height: 100%; width: 0%; }
+  #barTxt { position: absolute; top: 2px; left: 0; width: 100%; text-align: center; font-size: 11px; font-weight: bold; }
+  #steps { background: #131316; border: 1px solid #222; height: 150px; overflow-y: auto; padding: 5px; font-family: Consolas, monospace; font-size: 11px; }
+  .ok  { color: #00D084; }
+  .err { color: #fa1e4e; font-weight: bold; }
+  .inf { color: #55ACEE; }
+  .run { color: #ec4899; }
+  textarea { width: 100%; background: #131316; color: #f6f6f7; border: 1px solid #333; font-family: Consolas, monospace; font-size: 11px; padding: 5px; resize: none; }
+  #aiPrompt { height: 70px; border-color: #fa1e4e; }
+  #aiAnswer { height: 50px; border-color: #00D084; }
+  .hint { color: #666; font-size: 10px; margin-top: 2px; }
+</style>
+
+<script language="JScript">
+var WSH  = new ActiveXObject("WScript.Shell");
+var FSO  = new ActiveXObject("Scripting.FileSystemObject");
+var SHA  = new ActiveXObject("Shell.Application");
+var TEMP = WSH.ExpandEnvironmentStrings("%TEMP%");
+var LOG  = TEMP + "\\dkz_status.log";
+var PS1  = TEMP + "\\dkz_setres.ps1";
+var PS2  = TEMP + "\\dkz_cfgfix.ps1";
+var PS3  = TEMP + "\\dkz_analyse.ps1";
+var BAT  = TEMP + "\\dkz_worker.bat";
+var AIB  = TEMP + "\\dkz_ai_fix.bat";
+var AILOG= TEMP + "\\dkz_ai_out.log";
+var pollTimer = null;
+var lastSize = 0;
+var NATW = screen.width, NATH = screen.height;
+var TARGETHZ = 143;
+
+function isAdmin() {
+  try { return WSH.Run("cmd /c net session >nul 2>&1", 0, true) === 0; }
+  catch (e) { return false; }
+}
+function elevate() {
+  var self = DkZApp.commandLine.replace(/"/g, "");
+  SHA.ShellExecute("mshta.exe", '"' + self + '"', "", "runas", 1);
+  window.close();
+}
+function writeFile(path, content) {
+  var f = FSO.CreateTextFile(path, true, false);
+  f.Write(content); f.Close();
+}
+
+function writeHelpers() {
+  /* --- PS1: Aufloesung setzen MIT Hz-Lock ---
+     Sucht alle Modi fuer Ziel-WxH, nimmt hoechste Hz (bevorzugt TARGETHZ),
+     setzt dmFields inkl. DM_DISPLAYFREQUENCY -> kein Abfall auf 60/99 Hz. */
+  var ps = ""
+  + "param([int]$w,[int]$h,[int]$hz)\r\n"
+  + "$ErrorActionPreference='Stop'\r\n"
+  + "try {\r\n"
+  + "Add-Type @'\r\n"
+  + "using System;\r\n"
+  + "using System.Runtime.InteropServices;\r\n"
+  + "[StructLayout(LayoutKind.Sequential,CharSet=CharSet.Ansi)]\r\n"
+  + "public struct DEVMODE {\r\n"
+  + " [MarshalAs(UnmanagedType.ByValTStr,SizeConst=32)] public string dmDeviceName;\r\n"
+  + " public short dmSpecVersion; public short dmDriverVersion; public short dmSize; public short dmDriverExtra;\r\n"
+  + " public int dmFields; public int dmOrientation; public int dmPaperSize; public int dmPaperLength; public int dmPaperWidth;\r\n"
+  + " public int dmScale; public int dmCopies; public int dmDefaultSource; public int dmPrintQuality; public int dmColor;\r\n"
+  + " public int dmDuplex; public int dmYResolution; public int dmTTOption; public int dmCollate;\r\n"
+  + " [MarshalAs(UnmanagedType.ByValTStr,SizeConst=32)] public string dmFormName;\r\n"
+  + " public short dmLogPixels; public int dmBitsPerPel; public int dmPelsWidth; public int dmPelsHeight;\r\n"
+  + " public int dmDisplayFlags; public int dmDisplayFrequency; public int dmICMMethod; public int dmICMVersion;\r\n"
+  + " public int dmDitherType; public int dmReserved1; public int dmReserved2; public int dmPanningWidth; public int dmPanningHeight;\r\n"
+  + "}\r\n"
+  + "public class User32 {\r\n"
+  + " [DllImport(\"user32.dll\",CharSet=CharSet.Ansi)] public static extern int ChangeDisplaySettings(ref DEVMODE devMode,int flags);\r\n"
+  + " [DllImport(\"user32.dll\",CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string deviceName,int modeNum,ref DEVMODE devMode);\r\n"
+  + "}\r\n"
+  + "'@\r\n"
+  + "$d=New-Object DEVMODE\r\n"
+  + "$d.dmSize=[System.Runtime.InteropServices.Marshal]::SizeOf($d)\r\n"
+  + "$i=0; $best=0\r\n"
+  + "while([User32]::EnumDisplaySettings($null,$i,[ref]$d)){\r\n"
+  + "  if($d.dmPelsWidth -eq $w -and $d.dmPelsHeight -eq $h){\r\n"
+  + "    if($d.dmDisplayFrequency -eq $hz){ $best=$hz; break }\r\n"
+  + "    if($d.dmDisplayFrequency -gt $best){ $best=$d.dmDisplayFrequency }\r\n"
+  + "  }\r\n"
+  + "  $i++\r\n"
+  + "}\r\n"
+  + "if($best -eq 0){ Write-Host \"MODUS_FEHLT ${w}x${h} wird nicht angeboten (Custom Resolution in Nvidia App anlegen)\"; exit 2 }\r\n"
+  + "$d=New-Object DEVMODE\r\n"
+  + "$d.dmSize=[System.Runtime.InteropServices.Marshal]::SizeOf($d)\r\n"
+  + "[User32]::EnumDisplaySettings($null,-1,[ref]$d)|Out-Null\r\n"
+  + "$d.dmPelsWidth=$w; $d.dmPelsHeight=$h; $d.dmDisplayFrequency=$best\r\n"
+  + "$d.dmFields=0x5C0000\r\n"
+  + "$t=[User32]::ChangeDisplaySettings([ref]$d,2)\r\n"
+  + "if($t -ne 0){ Write-Host \"MODUS_TEST_FEHLER Code=$t bei ${w}x${h}@${best}Hz\"; exit 2 }\r\n"
+  + "$r=[User32]::ChangeDisplaySettings([ref]$d,0)\r\n"
+  + "if($r -eq 0){ Write-Host \"OK ${w}x${h} @ ${best}Hz\"; exit 0 } else { Write-Host \"FEHLER Code=$r\"; exit 1 }\r\n"
+  + "} catch { Write-Host \"EXCEPTION: $_\"; exit 1 }\r\n";
+  writeFile(PS1, ps);
+
+  /* --- PS2: CS2 videoconfig patchen (erzwingt In-Game 4:3 stretched) --- */
+  var ps2 = ""
+  + "param([int]$w,[int]$h)\r\n"
+  + "$ErrorActionPreference='Stop'\r\n"
+  + "try {\r\n"
+  + "$steam=(Get-ItemProperty 'HKCU:\\Software\\Valve\\Steam' -Name SteamPath).SteamPath -replace '/','\\\\'\r\n"
+  + "$files=Get-ChildItem \"$steam\\userdata\\*\\730\\local\\cfg\\cs2_video.txt\" -ErrorAction SilentlyContinue\r\n"
+  + "if(-not $files){ Write-Host 'CFG_FEHLT cs2_video.txt nicht gefunden - CS2 einmal starten und Video-Menue oeffnen'; exit 2 }\r\n"
+  + "$n=0\r\n"
+  + "foreach($f in $files){\r\n"
+  + "  $c=Get-Content $f.FullName -Raw\r\n"
+  + "  $pairs=@{ 'setting.defaultres'=\"$w\"; 'setting.defaultresheight'=\"$h\"; 'setting.aspectratiomode'='0'; 'setting.fullscreen'='1'; 'setting.nowindowborder'='0' }\r\n"
+  + "  foreach($k in $pairs.Keys){\r\n"
+  + "    $v=$pairs[$k]\r\n"
+  + "    if($c -match ('\"'+[regex]::Escape($k)+'\"')){\r\n"
+  + "      $c=[regex]::Replace($c, '\"'+[regex]::Escape($k)+'\"\\s+\"[^\"]*\"', ('\"'+$k+'\"'+\"`t`t`\"$v`\"\"))\r\n"
+  + "    } else {\r\n"
+  + "      $c=$c -replace '}\\s*$', (\"`t`\"$k`\"`t`t`\"$v`\"`r`n}\")\r\n"
+  + "    }\r\n"
+  + "  }\r\n"
+  + "  Set-Content -Path $f.FullName -Value $c -NoNewline\r\n"
+  + "  $n++\r\n"
+  + "}\r\n"
+  + "Write-Host \"OK $n Config-Datei(en) gepatcht: ${w}x${h}, 4:3, Vollbild\"\r\n"
+  + "exit 0\r\n"
+  + "} catch { Write-Host \"EXCEPTION: $_\"; exit 1 }\r\n";
+  writeFile(PS2, ps2);
+
+  /* --- PS3: System-Analyse (Blocker fuer Stretching finden) --- */
+  var ps3 = ""
+  + "$ErrorActionPreference='SilentlyContinue'\r\n"
+  + "Add-Type -AssemblyName System.Windows.Forms\r\n"
+  + "$b=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds\r\n"
+  + "Write-Host ('AKTUELL: '+$b.Width+'x'+$b.Height)\r\n"
+  + "$gpu=Get-CimInstance Win32_VideoController | Select-Object -First 1\r\n"
+  + "Write-Host ('GPU: '+$gpu.Name+' / Treiber '+$gpu.DriverVersion)\r\n"
+  + "Write-Host ('AKTIVE Hz: '+$gpu.CurrentRefreshRate)\r\n"
+  + "$hdr=Get-CimInstance -Namespace root\\wmi -ClassName WmiMonitorColorCharacteristics -ErrorAction SilentlyContinue\r\n"
+  + "$scal='UNBEKANNT'\r\n"
+  + "$keys=Get-ChildItem 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\Configuration' -ErrorAction SilentlyContinue\r\n"
+  + "foreach($k in $keys){ $v=(Get-ItemProperty $k.PSPath -Name Scaling -ErrorAction SilentlyContinue).Scaling; if($v -ne $null){ $scal=$v } }\r\n"
+  + "Write-Host ('REGISTRY Scaling: '+$scal+'  (4 = Vollbild-Stretch = RICHTIG)')\r\n"
+  + "Write-Host ''\r\n"
+  + "Write-Host 'VERFUEGBARE 4:3/5:4 MODI:'\r\n"
+  + "Add-Type @'\r\n"
+  + "using System; using System.Runtime.InteropServices;\r\n"
+  + "[StructLayout(LayoutKind.Sequential,CharSet=CharSet.Ansi)] public struct DEVMODE2 { [MarshalAs(UnmanagedType.ByValTStr,SizeConst=32)] public string a; public short b,c,d,e; public int dmFields,f,g,h,i,j,k,l,m,n,o,p,q,r; [MarshalAs(UnmanagedType.ByValTStr,SizeConst=32)] public string s; public short t; public int u; public int dmPelsWidth; public int dmPelsHeight; public int v; public int dmDisplayFrequency; public int w1,x,y,z1,z2,z3,z4; }\r\n"
+  + "public class U2 { [DllImport(\"user32.dll\",CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string d,int n,ref DEVMODE2 m); }\r\n"
+  + "'@\r\n"
+  + "$dm=New-Object DEVMODE2; $i=0; $found=@{}\r\n"
+  + "while([U2]::EnumDisplaySettings($null,$i,[ref]$dm)){\r\n"
+  + "  if(($dm.dmPelsWidth -eq 1280 -and ($dm.dmPelsHeight -eq 960 -or $dm.dmPelsHeight -eq 1024)) -or ($dm.dmPelsWidth -eq 1024 -and $dm.dmPelsHeight -eq 768)){\r\n"
+  + "    $key=''+$dm.dmPelsWidth+'x'+$dm.dmPelsHeight\r\n"
+  + "    if(-not $found[$key]){ $found[$key]=@() }\r\n"
+  + "    $found[$key]+=$dm.dmDisplayFrequency\r\n"
+  + "  }\r\n"
+  + "  $i++\r\n"
+  + "}\r\n"
+  + "if($found.Count -eq 0){ Write-Host '  KEINE 4:3 MODI! -> Custom Resolution in Nvidia App anlegen' }\r\n"
+  + "foreach($k in $found.Keys){ Write-Host ('  '+$k+' @ '+(($found[$k] | Sort-Object -Unique -Descending) -join ', ')+' Hz') }\r\n"
+  + "Write-Host ''\r\n"
+  + "Write-Host 'BLOCKER-CHECKLISTE (manuell pruefen):'\r\n"
+  + "Write-Host '  1. HDR AUS: Windows-Einstellungen > System > Anzeige > HDR deaktivieren'\r\n"
+  + "Write-Host '     (HDR blockiert GPU-Skalierung -> Balken statt Stretch)'\r\n"
+  + "Write-Host '  2. Nvidia App > Grafik > Image Scaling (NIS) AUS'\r\n"
+  + "Write-Host '     (NIS-Schaerfung = koerniges Rust-Film-Bild)'\r\n"
+  + "Write-Host '  3. Nvidia App > DSR-Faktoren AUS (DSR blockiert Skalierungsmodus)'\r\n"
+  + "Write-Host '  4. Nvidia App > DLSS/Schaerfung fuer CS2 AUS'\r\n"
+  + "exit 0\r\n";
+  writeFile(PS3, ps3);
+
+  /* --- Worker-Batch: Schritte + Log-Protokoll --- */
+  var b = ""
+  + "@echo off\r\n"
+  + "setlocal EnableDelayedExpansion\r\n"
+  + "set LOG=" + LOG + "\r\n"
+  + "set PS=" + PS1 + "\r\n"
+  + "set PSC=" + PS2 + "\r\n"
+  + "set PSA=" + PS3 + "\r\n"
+  + "set MODE=%~1\r\n"
+  + "set NW=%~2\r\n"
+  + "set NH=%~3\r\n"
+  + "set HZ=%~4\r\n"
+  + "type nul > \"%LOG%\"\r\n"
+  + "if /I \"%MODE%\"==\"ONECLICK\" goto ONECLICK\r\n"
+  + "if /I \"%MODE%\"==\"REGFIX\"   goto S_REGFIX\r\n"
+  + "if /I \"%MODE%\"==\"FSOFIX\"   goto S_FSOFIX\r\n"
+  + "if /I \"%MODE%\"==\"CFGFIX\"   goto S_CFGFIX\r\n"
+  + "if /I \"%MODE%\"==\"NPI\"      goto S_NPI\r\n"
+  + "if /I \"%MODE%\"==\"RES960\"   goto S_RES960\r\n"
+  + "if /I \"%MODE%\"==\"RES1024\"  goto S_RES1024\r\n"
+  + "if /I \"%MODE%\"==\"RESTORE\"  goto S_RESTORE\r\n"
+  + "if /I \"%MODE%\"==\"ANALYSE\"  goto S_ANALYSE\r\n"
+  + "echo ERR^|Unbekannter Modus^|%MODE%>>\"%LOG%\"\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 1\r\n"
+  + "\r\n"
+  + ":ONECLICK\r\n"
+  + "echo STEP^|1^|7^|Registry: GPU-Skalierung Vollbild...>>\"%LOG%\"\r\n"
+  + "call :DO_REGFIX\r\n"
+  + "echo STEP^|2^|7^|Fullscreen-Optimierungen cs2.exe aus...>>\"%LOG%\"\r\n"
+  + "call :DO_FSOFIX\r\n"
+  + "echo STEP^|3^|7^|CS2 Videoconfig patchen (4:3, 1280x960, Vollbild)...>>\"%LOG%\"\r\n"
+  + "call :DO_CFGFIX 1280 960\r\n"
+  + "echo STEP^|4^|7^|Desktop auf 1280x960 mit max Hz...>>\"%LOG%\"\r\n"
+  + "call :DO_RES 1280 960\r\n"
+  + "if errorlevel 1 ( echo ERR^|Aufloesung^|Siehe Details oben>>\"%LOG%\" & echo DONE>>\"%LOG%\" & exit /b 1 )\r\n"
+  + "echo STEP^|5^|7^|CS2 starten...>>\"%LOG%\"\r\n"
+  + "start \"\" \"steam://rungameid/730\"\r\n"
+  + "echo OK^|CS2-Start ausgeloest>>\"%LOG%\"\r\n"
+  + "echo STEP^|6^|7^|Warte auf CS2 (max 90s)...>>\"%LOG%\"\r\n"
+  + "set /a W=0\r\n"
+  + ":OC_WAIT1\r\n"
+  + "timeout /t 5 >nul\r\n"
+  + "tasklist /FI \"IMAGENAME eq cs2.exe\" 2>nul | findstr /I \"cs2.exe\" >nul && goto OC_RUN\r\n"
+  + "set /a W+=5\r\n"
+  + "if !W! GEQ 90 ( echo ERR^|CS2-Start^|Prozess nach 90s nicht gefunden>>\"%LOG%\" & call :DO_RES %NW% %NH% & echo DONE>>\"%LOG%\" & exit /b 1 )\r\n"
+  + "goto OC_WAIT1\r\n"
+  + ":OC_RUN\r\n"
+  + "echo OK^|CS2 laeuft>>\"%LOG%\"\r\n"
+  + ":OC_WAIT2\r\n"
+  + "timeout /t 5 >nul\r\n"
+  + "tasklist /FI \"IMAGENAME eq cs2.exe\" 2>nul | findstr /I \"cs2.exe\" >nul && goto OC_WAIT2\r\n"
+  + "echo STEP^|7^|7^|CS2 beendet - Restore %NW%x%NH%...>>\"%LOG%\"\r\n"
+  + "call :DO_RES %NW% %NH%\r\n"
+  + "echo OK^|Native Aufloesung zurueck>>\"%LOG%\"\r\n"
+  + "echo DONE>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":S_REGFIX\r\n"
+  + "echo STEP^|1^|1^|Registry-Fix...>>\"%LOG%\"\r\n"
+  + "call :DO_REGFIX\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_FSOFIX\r\n"
+  + "echo STEP^|1^|1^|FSO-Fix...>>\"%LOG%\"\r\n"
+  + "call :DO_FSOFIX\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_CFGFIX\r\n"
+  + "echo STEP^|1^|1^|CS2 Videoconfig patchen...>>\"%LOG%\"\r\n"
+  + "call :DO_CFGFIX 1280 960\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_NPI\r\n"
+  + "echo STEP^|1^|2^|Nvidia Profile Inspector laden...>>\"%LOG%\"\r\n"
+  + "call :DO_NPI\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_RES960\r\n"
+  + "echo STEP^|1^|1^|1280x960 mit max Hz...>>\"%LOG%\"\r\n"
+  + "call :DO_RES 1280 960\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_RES1024\r\n"
+  + "echo STEP^|1^|1^|1280x1024 mit max Hz...>>\"%LOG%\"\r\n"
+  + "call :DO_RES 1280 1024\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_RESTORE\r\n"
+  + "echo STEP^|1^|1^|Native %NW%x%NH% mit max Hz...>>\"%LOG%\"\r\n"
+  + "call :DO_RES %NW% %NH%\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + ":S_ANALYSE\r\n"
+  + "echo STEP^|1^|1^|Analysiere System...>>\"%LOG%\"\r\n"
+  + "for /f \"delims=\" %%O in ('powershell -NoProfile -ExecutionPolicy Bypass -File \"%PSA%\" 2^^^>^^^&1') do echo INF^|%%O>>\"%LOG%\"\r\n"
+  + "echo OK^|Analyse fertig - Blocker-Checkliste beachten>>\"%LOG%\"\r\n"
+  + "echo DONE>>\"%LOG%\"\r\nexit /b 0\r\n"
+  + "\r\n"
+  + ":DO_REGFIX\r\n"
+  + "set FIXED=0\r\n"
+  + "for /f \"delims=\" %%K in ('reg query \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\Configuration\" 2^^^>nul') do (\r\n"
+  + "  echo %%K | findstr /I \"Configuration\\\\\" >nul && (\r\n"
+  + "    reg add \"%%K\" /v Scaling /t REG_DWORD /d 4 /f >nul 2>&1 && set FIXED=1\r\n"
+  + "  )\r\n"
+  + ")\r\n"
+  + "if \"!FIXED!\"==\"1\" ( echo OK^|Scaling=4 gesetzt - Abmelden/Neustart noetig>>\"%LOG%\" ) else ( echo ERR^|Registry-Fix^|Keine Profile gefunden oder Zugriff verweigert>>\"%LOG%\" )\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_FSOFIX\r\n"
+  + "set STEAMPATH=\r\n"
+  + "for /f \"tokens=2*\" %%A in ('reg query \"HKCU\\Software\\Valve\\Steam\" /v SteamPath 2^^^>nul ^^^| findstr SteamPath') do set STEAMPATH=%%B\r\n"
+  + "if not defined STEAMPATH ( echo ERR^|FSO-Fix^|Steam nicht in Registry gefunden>>\"%LOG%\" & exit /b 1 )\r\n"
+  + "set STEAMPATH=!STEAMPATH:/=\\!\r\n"
+  + "set CS2EXE=!STEAMPATH!\\steamapps\\common\\Counter-Strike Global Offensive\\game\\bin\\win64\\cs2.exe\r\n"
+  + "if exist \"!CS2EXE!\" (\r\n"
+  + "  reg add \"HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers\" /v \"!CS2EXE!\" /t REG_SZ /d \"DISABLEDXMAXIMIZEDWINDOWEDMODE\" /f >nul 2>&1\r\n"
+  + "  echo OK^|FSO aus fuer cs2.exe>>\"%LOG%\"\r\n"
+  + ") else ( echo ERR^|FSO-Fix^|cs2.exe fehlt: !CS2EXE!>>\"%LOG%\" )\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_CFGFIX\r\n"
+  + "for /f \"delims=\" %%O in ('powershell -NoProfile -ExecutionPolicy Bypass -File \"%PSC%\" -w %1 -h %2 2^^^>^^^&1') do set CFGOUT=%%O\r\n"
+  + "echo !CFGOUT! | findstr /I \"^OK\" >nul && ( echo OK^|!CFGOUT!>>\"%LOG%\" & exit /b 0 )\r\n"
+  + "echo ERR^|CS2-Config^|!CFGOUT!>>\"%LOG%\"\r\n"
+  + "exit /b 1\r\n"
+  + "\r\n"
+  + ":DO_NPI\r\n"
+  + "set NPIDIR=%USERPROFILE%\\Desktop\\DkZ_NPI\r\n"
+  + "if not exist \"!NPIDIR!\" mkdir \"!NPIDIR!\"\r\n"
+  + "if exist \"!NPIDIR!\\nvidiaProfileInspector.exe\" goto NPI_START\r\n"
+  + "powershell -NoProfile -Command \"$ProgressPreference='SilentlyContinue'; try { $r=Invoke-RestMethod 'https://api.github.com/repos/Orbmu2k/nvidiaProfileInspector/releases/latest'; $u=($r.assets|Where-Object{$_.name -like '*.zip'}|Select-Object -First 1).browser_download_url; Invoke-WebRequest $u -OutFile '%USERPROFILE%\\Desktop\\DkZ_NPI\\npi.zip'; Expand-Archive '%USERPROFILE%\\Desktop\\DkZ_NPI\\npi.zip' -DestinationPath '%USERPROFILE%\\Desktop\\DkZ_NPI' -Force; Remove-Item '%USERPROFILE%\\Desktop\\DkZ_NPI\\npi.zip'; exit 0 } catch { exit 1 }\"\r\n"
+  + "if errorlevel 1 ( echo ERR^|NPI-Download^|GitHub nicht erreichbar>>\"%LOG%\" & exit /b 1 )\r\n"
+  + ":NPI_START\r\n"
+  + "echo STEP^|2^|2^|Inspector starten...>>\"%LOG%\"\r\n"
+  + "start \"\" \"!NPIDIR!\\nvidiaProfileInspector.exe\"\r\n"
+  + "echo OK^|Inspector offen - Guide siehe Panel unten>>\"%LOG%\"\r\n"
+  + "exit /b 0\r\n"
+  + "\r\n"
+  + ":DO_RES\r\n"
+  + "for /f \"delims=\" %%O in ('powershell -NoProfile -ExecutionPolicy Bypass -File \"%PS%\" -w %1 -h %2 -hz %HZ% 2^^^>^^^&1') do set PSOUT=%%O\r\n"
+  + "echo !PSOUT! | findstr /I \"^OK\" >nul && ( echo OK^|!PSOUT!>>\"%LOG%\" & exit /b 0 )\r\n"
+  + "echo ERR^|Aufloesung %1x%2^|!PSOUT!>>\"%LOG%\"\r\n"
+  + "exit /b 1\r\n";
+  writeFile(BAT, b);
+}
+
+function runTask(mode) {
+  document.getElementById("steps").innerHTML = "";
+  document.getElementById("aiPrompt").value = "";
+  setBar(0, "Starte: " + mode);
+  try { if (FSO.FileExists(LOG)) FSO.DeleteFile(LOG); } catch (e) {}
+  WSH.Run('cmd /c ""' + BAT + '" ' + mode + ' ' + NATW + ' ' + NATH + ' ' + TARGETHZ + '"', 0, false);
+  lastSize = 0;
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = window.setInterval(pollLog, 500);
+}
+
+function pollLog() {
+  var txt = "";
+  try {
+    if (!FSO.FileExists(LOG)) return;
+    var s = FSO.OpenTextFile(LOG, 1);
+    txt = s.AtEndOfStream ? "" : s.ReadAll();
+    s.Close();
+  } catch (e) { return; }
+  if (txt.length === lastSize) return;
+  lastSize = txt.length;
+  renderLog(txt);
+}
+
+function renderLog(txt) {
+  var lines = txt.split("\r\n"), html = "", done = false;
+  for (var i = 0; i < lines.length; i++) {
+    var L = lines[i]; if (!L) continue;
+    var p = L.split("|");
+    if (p[0] === "STEP") {
+      setBar(Math.round((parseInt(p[1],10)-0.5) / parseInt(p[2],10) * 100), p[3]);
+      html += '<div class="run">&gt;&gt; ' + p[3] + '</div>';
+    } else if (p[0] === "OK") {
+      html += '<div class="ok">[OK] ' + p[1] + '</div>';
+    } else if (p[0] === "INF") {
+      html += '<div class="inf">' + (p[1]||"").replace(/</g,"&lt;") + '</div>';
+    } else if (p[0] === "ERR") {
+      html += '<div class="err">[FEHLER] ' + p[1] + ' -- ' + (p[2]||"") + '</div>';
+      buildAiPrompt(p[1], p[2] || "keine Details", txt);
+    } else if (p[0] === "DONE") {
+      done = true;
+    }
+  }
+  if (done) { setBar(100, "Abgeschlossen"); clearInterval(pollTimer); pollTimer = null; }
+  var el = document.getElementById("steps");
+  el.innerHTML = html;
+  el.scrollTop = el.scrollHeight;
+}
+
+function setBar(pct, txt) {
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("barTxt").innerText = pct + "% - " + txt;
+}
+
+function buildAiPrompt(step, detail, fullLog) {
+  var os = "unbekannt";
+  try {
+    os = WSH.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProductName")
+       + " Build " + WSH.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\CurrentBuildNumber");
+  } catch (e) {}
+  var prompt = ""
+    + "Ich nutze das DkZ CS2 Stretched Control Panel (HTA + Batch + PowerShell) auf " + os + ".\n"
+    + "Native Aufloesung: " + NATW + "x" + NATH + ", Ziel-Monitor-Hz: " + TARGETHZ + ".\n"
+    + "Ziel: CS2 in 1280x960 (4:3 stretched auf 16:9, GPU-Skalierung Vollbild, Registry Scaling=4, CS2 videoconfig aspectratiomode=0).\n"
+    + "Bekannte Umgebung: Nvidia Systemsteuerung defekt (startet nicht), Nvidia App teils ausgegraut, HDR/NIS/DSR-Status unklar.\n"
+    + "FEHLGESCHLAGENER SCHRITT: " + step + "\n"
+    + "FEHLERDETAILS: " + detail + "\n"
+    + "VOLLSTAENDIGES LOG:\n" + fullLog + "\n"
+    + "Gib mir NUR Windows-CMD-Befehle (Batch-kompatibel, eine Aktion pro Zeile, keine Erklaerungen, keine Drittanbieter-Software), die das Problem beheben.";
+  document.getElementById("aiPrompt").value = prompt;
+}
+
+function copyPrompt() {
+  var t = document.getElementById("aiPrompt");
+  t.select(); document.execCommand("copy");
+  setBar(100, "Prompt kopiert");
+}
+
+function runAiAnswer() {
+  var cmd = document.getElementById("aiAnswer").value;
+  cmd = cmd.replace(/```[a-z]*\r?\n?/gi, "").replace(/```/g, "").replace(/^\s+|\s+$/g, "");
+  if (!cmd) { alert("Keine KI-Antwort eingetragen."); return; }
+  if (!confirm("Diese Befehle laufen mit ADMIN-Rechten:\n\n" + cmd + "\n\nAusfuehren?")) return;
+  writeFile(AIB, "@echo off\r\n" + cmd.replace(/\n/g, "\r\n") + "\r\n");
+  var rc = WSH.Run('cmd /c ""' + AIB + '" > "' + AILOG + '" 2>&1"', 0, true);
+  var out = "";
+  try { var s = FSO.OpenTextFile(AILOG, 1); out = s.AtEndOfStream ? "(keine Ausgabe)" : s.ReadAll(); s.Close(); } catch (e) { out = "(Log nicht lesbar)"; }
+  var el = document.getElementById("steps");
+  el.innerHTML += '<div class="' + (rc === 0 ? 'ok' : 'err') + '">KI-Fix (Exit ' + rc + '):</div><div class="inf">' + out.replace(/</g,"&lt;").replace(/\n/g,"<br>") + '</div>';
+  el.scrollTop = el.scrollHeight;
+  setBar(100, rc === 0 ? "KI-Fix erfolgreich" : "KI-Fix Fehler (Exit " + rc + ")");
+}
+
+function init() {
+  window.resizeTo(740, 920);
+  if (!isAdmin()) {
+    document.getElementById("barTxt").innerText = "Fordere Admin-Rechte an...";
+    elevate(); return;
+  }
+  writeHelpers();
+  document.getElementById("sysinfo").innerText =
+    "Admin: JA | Native: " + NATW + "x" + NATH + " | Ziel-Hz: " + TARGETHZ;
+  setBar(0, "Bereit - erst ANALYSE druecken");
+}
+</script>
+</head>
+
+<body onload="init()">
+  <h1>DkZ <span>| CS2 STRETCHED CONTROL</span></h1>
+  <div class="sub">v1.01.1_05 - <span id="sysinfo">Initialisiere...</span></div>
+
+  <div>
+    <button class="btn blue" onclick="runTask('ANALYSE')">1. ANALYSE (Modi, Hz, Blocker pruefen)</button>
+    <button class="btn primary" onclick="runTask('ONECLICK')">2. 1-KLICK-SETUP (alles + CS2)</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Aufloesung (mit Hz-Lock auf max/143)</div>
+    <button class="btn" onclick="runTask('RES960')">1280 x 960</button>
+    <button class="btn" onclick="runTask('RES1024')">1280 x 1024</button>
+    <button class="btn blue" onclick="runTask('RESTORE')">Native zurueck</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Einzel-Fixes</div>
+    <button class="btn" onclick="runTask('REGFIX')">GPU-Skalierung Vollbild</button>
+    <button class="btn" onclick="runTask('FSOFIX')">FSO aus (cs2.exe)</button>
+    <button class="btn" onclick="runTask('CFGFIX')">CS2-Config: 4:3 erzwingen</button>
+    <button class="btn" onclick="runTask('NPI')">Nvidia Inspector</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Fortschritt</div>
+    <div id="barWrap"><div id="bar"></div><div id="barTxt">0% - Bereit</div></div>
+    <div id="steps"></div>
+  </div>
+
+  <div class="section">
+    <div class="label">Fehler-Prompt fuer KI (automatisch)</div>
+    <textarea id="aiPrompt" readonly></textarea>
+    <button class="btn" onclick="copyPrompt()">Prompt kopieren</button>
+  </div>
+
+  <div class="section">
+    <div class="label">KI-Antwort eintragen und ausfuehren</div>
+    <textarea id="aiAnswer" placeholder="CMD-Befehle der KI hier einfuegen..."></textarea>
+    <button class="btn green" onclick="runAiAnswer()">KI-Fix ausfuehren</button>
+    <div class="hint">Befehle werden vor Ausfuehrung angezeigt und muessen bestaetigt werden.</div>
+  </div>
+
+  <div class="section hint">
+    INSPECTOR-GUIDE (Profil "Counter-Strike 2"): Vertical Sync = Force off / Low Latency = Ultra / Texture Filtering Quality = High Performance / Anisotropic = Off / Antialiasing = Off / Power = Prefer Max Performance / Threaded Optimization = On / dann "Apply changes".<br>
+    STRETCH-BLOCKER: HDR aus (Windows Anzeige-Einstellungen) - NIS/Image Scaling aus (Nvidia App, macht das koernige Bild) - DSR-Faktoren aus - DLSS aus fuer CS2.<br>
+    IN CS2: Vollbild + Seitenverhaeltnis 4:3 + 1280x960 (wird durch CFGFIX automatisch gesetzt).
+  </div>
+</body>
+</html>

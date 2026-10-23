@@ -1,0 +1,9 @@
+DkZ HINWEIS - v1.01.1_Session01_Step07
+=======================================
+cs2-Map-Configs-GoldKingZ ist ein SERVER-Plugin (CounterStrikeSharp).
+Es laeuft NUR auf einem dedizierten CS2-Server mit:
+  - Metamod:Source 2.x
+  - CounterStrikeSharp
+Installation in den CS2-CLIENT bringt nichts und wird deshalb
+vom Installer bewusst NICHT durchgefuehrt.
+Das Original-ZIP liegt hier unveraendert bei.

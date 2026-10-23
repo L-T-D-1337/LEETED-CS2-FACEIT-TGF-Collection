@@ -1,0 +1,433 @@
+﻿NETCODE2 - read-only diagnostic; collected 2026-10-16T15:19:58.5204629+02:00; target 158.173.155.192; OS Windows
+
+
+===== System =====
+
+
+Caption     : Microsoft Windows 10 Pro
+Version     : 10.0.18363
+BuildNumber : 18363
+
+
+
+
+
+===== TCP GLOBAL =====
+Der aktive Status wird abgefragt...
+
+Globale TCP-Parameter
+----------------------------------------------
+Zustand der empfangsseitigen Skalierung          : enabled 
+Autom. Abstimmungsgrad Empfangsfenster    : normal 
+Add-On "Überlastungssteuerungsanbieter"  : default 
+ECN-Funktion                      : disabled 
+RFC 1323-Zeitstempel                 : disabled 
+RTO (anfänglich)                         : 2000 
+Zustand der Empfangssegmentzusammenfügung    : disabled 
+Nicht-SACK-RTT-Resilienz             : disabled 
+Maximale SYN-Neuübertragungen             : 2 
+Fast Open                           : enabled 
+Fast Open-Fallback                  : enabled 
+HyStart                             : enabled 
+Schrittsteuerungsprofil                      : off 
+
+
+
+===== TCP SUPPLEMENTAL =====
+
+Globale TCP-Standardvorlage: internet
+
+Zusätzliche TCP-Parameter
+----------------------------------------------
+Mindest-RTO (ms)                  : 300 
+Anfängliches Überlastungsfenster (MSS)     : 10 
+Überlastungssteuerungsanbieter         : cubic 
+Neustart des Überlastungsfensters aktivieren    : disabled 
+Zeitüberschreitung für verzögerte Bestätigung (ms)          : 40 
+Häufigkeit für verzögerte Bestätigung               : 2 
+RACK aktivieren                         : enabled 
+Tail Loss Probe aktivieren              : enabled 
+
+Verwenden Sie zum Anzeigen der aktiven Filter die Befehle
+"netsh int tcp show supplementalports" und "netsh int tcp show supplementalsubnets".
+
+
+
+===== TCP HEURISTICS =====
+TCP-Parameter für die Fensterskalierungsheuristik
+----------------------------------------------
+Fensterskalierungsheuristik         : disabled 
+Qualifizierende Zielschwelle  : 3 
+Profiltyp unknown              : normal 
+Profiltyp public               : normal 
+Profiltyp private              : normal 
+Profiltyp domain               : normal 
+
+
+
+===== IPv4 INTERFACES & MTU =====
+
+   MTU  Medienerkennungsstatus   Bytes eingehend  Bytes ausgehend  Schnittstelle
+------  ---------------  ---------  ---------  -------------
+4294967295                1          0     261687  Loopback Pseudo-Interface 1
+  1492                1          0  148842492  LAN-Verbindung
+  1450                1  2335603156  393470486  CyberGhost (IKEv2)
+  1420                1  7937674019  1833379444  Ethernet
+  1492                1          0    3733946  LAN-Verbindung 3
+
+
+
+===== NETWORK ADAPTERS =====
+
+Name             InterfaceDescription                    Status LinkSpeed MacAddress       
+----             --------------------                    ------ --------- ----------       
+LAN-Verbindung   TAP-Windows Adapter V9 #2               Up     1 Gbps    00-FF-C3-B2-77-CE
+LAN-Verbindung 3 TAP-Windows Adapter V9                  Up     1 Gbps    00-FF-2F-3F-22-79
+Ethernet         Intel(R) Ethernet Connection (2) I219-V Up     1 Gbps    30-9C-23-63-E0-E9
+
+
+
+
+===== IP CONFIGURATION (contains local addresses) =====
+
+
+InterfaceAlias       : LAN-Verbindung
+InterfaceIndex       : 15
+InterfaceDescription : TAP-Windows Adapter V9 #2
+NetProfile.Name      : LAN-Verbindung
+IPv4Address          : 169.254.123.95
+IPv6DefaultGateway   : 
+IPv4DefaultGateway   : 
+DNSServer            : 10.0.0.243
+
+InterfaceAlias       : Ethernet
+InterfaceIndex       : 4
+InterfaceDescription : Intel(R) Ethernet Connection (2) I219-V
+NetProfile.Name      : Netzwerk
+IPv4Address          : 192.168.2.69
+IPv4DefaultGateway   : 192.168.2.1
+DNSServer            : 10.0.0.243
+
+InterfaceAlias       : LAN-Verbindung 3
+InterfaceIndex       : 7
+InterfaceDescription : TAP-Windows Adapter V9
+NetProfile.Name      : LAN-Verbindung 3
+IPv4Address          : 169.254.123.184
+IPv6DefaultGateway   : 
+IPv4DefaultGateway   : 
+DNSServer            : 10.0.0.243
+
+InterfaceAlias       : CyberGhost (IKEv2)
+InterfaceIndex       : 26
+InterfaceDescription : 
+NetProfile.Name      : CyberGhost (IKEv2)
+IPv4Address          : 10.7.1.7
+IPv4DefaultGateway   : 0.0.0.0
+DNSServer            : 10.0.0.243
+
+
+
+
+
+===== IPv4 INTERFACE SETTINGS =====
+
+InterfaceAlias              InterfaceIndex ConnectionState      NlMtu InterfaceMetric     Dhcp
+--------------              -------------- ---------------      ----- ---------------     ----
+LAN-Verbindung 3                         7       Connected       1492            4228 Disabled
+Ethernet                                 4       Connected       1420            4250  Enabled
+CyberGhost (IKEv2)                      26       Connected       1450               3 Disabled
+LAN-Verbindung                          15       Connected       1492            4228 Disabled
+Loopback Pseudo-Interface 1              1       Connected 4294967295            4300 Disabled
+
+
+
+
+===== DEFAULT ROUTES =====
+
+ifIndex DestinationPrefix NextHop     RouteMetric ifMetric PolicyStore
+------- ----------------- -------     ----------- -------- -----------
+26      0.0.0.0/0         0.0.0.0               1 3        ActiveStore
+4       0.0.0.0/0         192.168.2.1           0 4250     ActiveStore
+
+
+
+
+===== NIC RSS =====
+
+
+Name                                            : Ethernet
+InterfaceDescription                            : Intel(R) Ethernet Connection (2) I219-V
+Enabled                                         : True
+NumberOfReceiveQueues                           : 2
+Profile                                         : Closest
+BaseProcessor: [Group:Number]                   : 0:0
+MaxProcessor: [Group:Number]                    : 0:10
+MaxProcessors                                   : 4
+RssProcessorArray: [Group:Number/NUMA Distance] : 0:0/0  0:2/0  0:4/0  0:6/0  0:8/0  0:10/0  
+IndirectionTable: [Group:Number]                : 
+
+
+
+
+
+===== NIC LSO =====
+
+
+Name                            : Ethernet
+InterfaceDescription            : Intel(R) Ethernet Connection (2) I219-V
+Version                         : LSO Version 2
+V1IPv4Enabled                   : False
+IPv4Enabled                     : False
+IPv6Enabled                     : False
+V1IPv4MaxOffloadSizeSupported   : 64240
+V1IPv4MinSegmentCountSupported  : 2
+V1IPv4TcpOptionsSupported       : True
+V1IPv4IpOptionsSupported        : True
+IPv4MaxOffloadSizeSupported     : 64240
+IPv4MinSegmentCountSupported    : 2
+IPv6MaxOffLoadSizeSupported     : 64240
+IPv6MinSegmentCountSupported    : 2
+IPv6IpExtensionHeadersSupported : False
+IPv6TcpOptionsSupported         : True
+
+
+
+
+
+===== NIC RSC =====
+
+
+===== NIC CHECKSUM OFFLOAD =====
+
+
+Name                                    : Ethernet
+InterfaceDescription                    : Intel(R) Ethernet Connection (2) I219-V
+IpIPv4Enabled                           : RxTxEnabled
+TcpIPv4Enabled                          : RxTxEnabled
+TcpIPv6Enabled                          : RxTxEnabled
+UdpIPv4Enabled                          : RxTxEnabled
+UdpIPv6Enabled                          : RxTxEnabled
+IPv4TransmitIpOptionsSupported          : True
+IPv4TransmitTcpOptionsSupported         : True
+IPv4TransmitTcpChecksumSupported        : True
+IPv4TransmitUdpChecksumSupported        : True
+IPv4TransmitIpChecksumSupported         : True
+IPv4ReceiveIpOptionsSupported           : True
+IPv4ReceiveTcpOptionsSupported          : True
+IPv4ReceiveTcpChecksumSupported         : True
+IPv4ReceiveUdpChecksumSupported         : True
+IPv4ReceiveIpChecksumSupported          : True
+IPv6TransmitIpExtensionHeadersSupported : True
+IPv6TransmitTcpOptionsSupported         : True
+IPv6TransmitTcpChecksumSupported        : True
+IPv6TransmitUdpChecksumSupported        : True
+IPv6ReceiveIpExtensionHeadersSupported  : False
+IPv6ReceiveTcpOptionsSupported          : True
+IPv6ReceiveTcpChecksumSupported         : True
+IPv6ReceiveUdpChecksumSupported         : True
+
+
+
+
+
+===== NIC ADVANCED DRIVER PROPERTIES =====
+
+Name             DisplayName                              DisplayValue                      RegistryKeyword          RegistryValue
+----             -----------                              ------------                      ---------------          -------------
+LAN-Verbindung   Non-Admin Access                         Allowed                           AllowNonAdmin            {1}          
+LAN-Verbindung   Media Status                             Always Connected                  MediaStatus              {1}          
+LAN-Verbindung   MTU                                      1500                              MTU                      {1500}       
+LAN-Verbindung   MAC Address                              --                                NetworkAddress           {--}         
+LAN-Verbindung 3 Non-Admin Access                         Allowed                           AllowNonAdmin            {1}          
+LAN-Verbindung 3 Media Status                             Always Connected                  MediaStatus              {1}          
+LAN-Verbindung 3 MTU                                      1500                              MTU                      {1500}       
+LAN-Verbindung 3 MAC Address                              --                                NetworkAddress           {--}         
+Ethernet         Flusssteuerung                           Rx und Tx aktiviert               *FlowControl             {3}          
+Ethernet         Interrupt-Drosselung                     Aktiviert                         *InterruptModeration     {1}          
+Ethernet         IPv4-Prüfsummen abladen                  Rx und Tx aktiviert               *IPChecksumOffloadIPv4   {3}          
+Ethernet         Jumbo Packet                             Deaktiviert                       *JumboPacket             {1514}       
+Ethernet         Large-Send-Offload V2 (IPv4)             Deaktiviert                       *LsoV2IPv4               {0}          
+Ethernet         Large-Send-Offload V2 (IPv6)             Deaktiviert                       *LsoV2IPv6               {0}          
+Ethernet         Max. Anzahl RSS-Warteschlangen           2 Warteschlangen                  *NumRssQueues            {2}          
+Ethernet         Protokoll-ARP-Abladung                   Aktiviert                         *PMARPOffload            {1}          
+Ethernet         Protokoll-NS-Abladung                    Aktiviert                         *PMNSOffload             {1}          
+Ethernet         Paketpriorität und VLAN                  Paketpriorität und VLAN aktiviert *PriorityVLANTag         {3}          
+Ethernet         PTP Hardware Timestamp                   Deaktiviert                       *PtpHardwareTimestamp    {0}          
+Ethernet         Empfangspuffer                           256                               *ReceiveBuffers          {256}        
+Ethernet         RSS (Empfangsseitige Skalierung)         Aktiviert                         *RSS                     {1}          
+Ethernet         RSS-Load-Balancing-Profil                Nächster Prozessor                *RSSProfile              {1}          
+Ethernet         Software Timestamp                       Deaktiviert                       *SoftwareTimestamp       {0}          
+Ethernet         Geschwindigkeit und Duplex               Automatische Aushandlung          *SpeedDuplex             {0}          
+Ethernet         TCP-Prüfsummen abladen (IPv4)            Rx und Tx aktiviert               *TCPChecksumOffloadIPv4  {3}          
+Ethernet         TCP-Prüfsummen abladen (IPv6)            Rx und Tx aktiviert               *TCPChecksumOffloadIPv6  {3}          
+Ethernet         Übertragungspuffer                       512                               *TransmitBuffers         {512}        
+Ethernet         UDP-Prüfsummen abladen (IPv4)            Rx und Tx aktiviert               *UDPChecksumOffloadIPv4  {3}          
+Ethernet         UDP-Prüfsummen abladen (IPv6)            Rx und Tx aktiviert               *UDPChecksumOffloadIPv6  {3}          
+Ethernet         Akt. über Magic Packet                   Aktiviert                         *WakeOnMagicPacket       {1}          
+Ethernet         Akt. bei Musterübereinstimmung           Aktiviert                         *WakeOnPattern           {1}          
+Ethernet         Adaptives Interframe-Spacing             Deaktiviert                       AdaptiveIFS              {0}          
+Ethernet         Geschwindigkeits-Akkusparoption          Deaktiviert                       AutoPowerSaveModeEnabled {0}          
+Ethernet         Energieeffizientes Ethernet              Ein                               EEELinkAdvertisement     {1}          
+Ethernet         PME aktivieren                           Aktiviert                         EnablePME                {1}          
+Ethernet         Interrupt-Drosselungsrate                Adaptiv                           ITR                      {65535}      
+Ethernet         Kompatibilitätsmodus für ältere Switches Deaktiviert                       LinkNegotiationProcess   {1}          
+Ethernet         Verbindungsereignis protokollieren       Aktiviert                         LogLinkStateEvent        {51}         
+Ethernet         Gigabit Master/Slave-Modus               Automatische Erkennung            MasterSlave              {0}          
+Ethernet         Lokal verwaltete Adresse                 --                                NetworkAddress           {--}         
+Ethernet         Geschw. beim Abschalten reduzieren       Aktiviert                         ReduceSpeedOnPowerDown   {1}          
+Ethernet         Systemleerlauf-Energiesparoption         Deaktiviert                       SipsEnabled              {0}          
+Ethernet         ULP-Modus                                Aktiviert                         ULPMode                  {1}          
+Ethernet         Auf Verbindung warten                    Automatische Erkennung            WaitAutoNegComplete      {2}          
+Ethernet         Akt. bei Verbindung                      Deaktiviert                       WakeOnLink               {0}          
+
+
+
+
+===== NIC STATISTICS (counters since adapter start) =====
+
+
+Caption                  : MSFT_NetAdapterStatisticsSettingData 'Intel(R) Ethernet Connection (2) I219-V'
+Description              : Intel(R) Ethernet Connection (2) I219-V
+ElementName              : Intel(R) Ethernet Connection (2) I219-V
+InstanceID               : {1B362AB9-2CF3-4BB8-BB12-97B478F3C296}
+InterfaceDescription     : Intel(R) Ethernet Connection (2) I219-V
+Name                     : Ethernet
+Source                   : 2
+SystemName               : DESKTOP-243BUOH
+OutboundDiscardedPackets : 0
+OutboundPacketErrors     : 0
+RdmaStatistics           : MSFT_NetAdapter_RdmaStatistics
+ReceivedBroadcastBytes   : 13943759
+ReceivedBroadcastPackets : 226039
+ReceivedBytes            : 8561603239
+ReceivedDiscardedPackets : 0
+ReceivedMulticastBytes   : 31689759
+ReceivedMulticastPackets : 239989
+ReceivedPacketErrors     : 0
+ReceivedUnicastBytes     : 8482673909
+ReceivedUnicastPackets   : 7857925
+RscStatistics            : MSFT_NetAdapter_RscStatistics
+SentBroadcastBytes       : 76191296
+SentBroadcastPackets     : 250510
+SentBytes                : 2083273262
+SentMulticastBytes       : 5245495
+SentMulticastPackets     : 37263
+SentUnicastBytes         : 1976111463
+SentUnicastPackets       : 5490480
+SupportedStatistics      : 4163583
+PSComputerName           : 
+ifAlias                  : Ethernet
+InterfaceAlias           : Ethernet
+ifDesc                   : Intel(R) Ethernet Connection (2) I219-V
+
+
+
+
+
+===== WIREGUARD OR VPN ADAPTERS (if present) =====
+
+
+Name                       : LAN-Verbindung
+InterfaceDescription       : TAP-Windows Adapter V9 #2
+InterfaceIndex             : 15
+MacAddress                 : 00-FF-C3-B2-77-CE
+MediaType                  : 802.3
+PhysicalMediaType          : Unspecified
+InterfaceOperationalStatus : Up
+AdminStatus                : Up
+LinkSpeed(Gbps)            : 1
+MediaConnectionState       : Connected
+ConnectorPresent           : False
+DriverInformation          : Driver Date 2024-02-27 Version 9.27.0.0 NDIS 6.30
+
+Name                       : LAN-Verbindung 3
+InterfaceDescription       : TAP-Windows Adapter V9
+InterfaceIndex             : 7
+MacAddress                 : 00-FF-2F-3F-22-79
+MediaType                  : 802.3
+PhysicalMediaType          : Unspecified
+InterfaceOperationalStatus : Up
+AdminStatus                : Up
+LinkSpeed(Gbps)            : 1
+MediaConnectionState       : Connected
+ConnectorPresent           : False
+DriverInformation          : Driver Date 2024-02-27 Version 9.27.0.0 NDIS 6.30
+
+
+
+
+
+===== ICMP TEST SUMMARY =====
+
+
+Name  : target
+Value : 158.173.155.192
+
+Name  : datetime
+Value : 2026-10-16T15:20:20.6003919+02:00
+
+Name  : requested
+Value : 20
+
+Name  : replies
+Value : 20
+
+Name  : loss_percent
+Value : 0
+
+Name  : min_ms
+Value : 12
+
+Name  : avg_ms
+Value : 12,95
+
+Name  : max_ms
+Value : 13
+
+Name  : important
+Value : ICMP reply times are not CS2 UDP server latency or WireGuard throughput. Blocked ICMP is not proof of packet loss.
+
+
+
+
+
+===== IPv4 PMTU PROBES (payload bytes; +28 bytes IPv4+ICMP header). No automatic MTU changes. =====
+--- ping -4 -n 2 -f -l 1472 158.173.155.192 (test packet MTU 1500) ---
+
+Ping wird ausgeführt für 158.173.155.192 mit 1472 Bytes Daten:
+Paket müsste fragmentiert werden, DF-Flag ist jedoch gesetzt.
+Paket müsste fragmentiert werden, DF-Flag ist jedoch gesetzt.
+
+Ping-Statistik für 158.173.155.192:
+    Pakete: Gesendet = 2, Empfangen = 0, Verloren = 2
+    (100% Verlust),
+--- ping -4 -n 2 -f -l 1464 158.173.155.192 (test packet MTU 1492) ---
+
+Ping wird ausgeführt für 158.173.155.192 mit 1464 Bytes Daten:
+Paket müsste fragmentiert werden, DF-Flag ist jedoch gesetzt.
+Paket müsste fragmentiert werden, DF-Flag ist jedoch gesetzt.
+
+Ping-Statistik für 158.173.155.192:
+    Pakete: Gesendet = 2, Empfangen = 0, Verloren = 2
+    (100% Verlust),
+--- ping -4 -n 2 -f -l 1452 158.173.155.192 (test packet MTU 1480) ---
+
+Ping wird ausgeführt für 158.173.155.192 mit 1452 Bytes Daten:
+Paket müsste fragmentiert werden, DF-Flag ist jedoch gesetzt.
+Paket müsste fragmentiert werden, DF-Flag ist jedoch gesetzt.
+
+Ping-Statistik für 158.173.155.192:
+    Pakete: Gesendet = 2, Empfangen = 0, Verloren = 2
+    (100% Verlust),
+--- ping -4 -n 2 -f -l 1392 158.173.155.192 (test packet MTU 1420) ---
+
+Ping wird ausgeführt für 158.173.155.192 mit 1392 Bytes Daten:
+Antwort von 158.173.155.192: Bytes=1392 Zeit=14ms TTL=58
+Antwort von 158.173.155.192: Bytes=1392 Zeit=14ms TTL=58
+
+Ping-Statistik für 158.173.155.192:
+    Pakete: Gesendet = 2, Empfangen = 2, Verloren = 0
+    (0% Verlust),
+Ca. Zeitangaben in Millisek.:
+    Minimum = 14ms, Maximum = 14ms, Mittelwert = 14ms
+
